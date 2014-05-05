@@ -40,3 +40,10 @@ CREATE TABLE tx_newscatinvite_domain_model_invitation (
  KEY language (l10n_parent,sys_language_uid)
 
 );
+
+#
+# Table structure for table 'tx_news_domain_model_news'
+#
+CREATE TABLE tx_news_domain_model_news (
+	tx_newscatinvite_invitations int(11) DEFAULT '0' NOT NULL,
+);

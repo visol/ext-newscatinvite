@@ -6,30 +6,39 @@
 
 			<trans-unit id="tx_newscatinvite_domain_model_invitation">
 				<source>Invitation</source>
+				<target>Einladung</target>
 			</trans-unit>
 			<trans-unit id="tx_newscatinvite_domain_model_invitation.status">
 				<source>Status</source>
+				<target>Status</target>
 			</trans-unit>
 			<trans-unit id="tx_newscatinvite_domain_model_invitation.status.-1">
 				<source>Rejected</source>
+				<target>Abgelehnt</target>
 			</trans-unit>
 			<trans-unit id="tx_newscatinvite_domain_model_invitation.status.1">
 				<source>Approved</source>
+				<target>Angenommen</target>
 			</trans-unit>
 			<trans-unit id="tx_newscatinvite_domain_model_invitation.sent">
 				<source>Sent</source>
+				<target>Mail gesendet</target>
 			</trans-unit>
 			<trans-unit id="tx_newscatinvite_domain_model_invitation.category">
 				<source>Category</source>
+				<target>Kategorie</target>
 			</trans-unit>
 			<trans-unit id="tx_newscatinvite_domain_model_invitation.news">
 				<source>News</source>
+				<target>News</target>
 			</trans-unit>
 			<trans-unit id="tx_news_domain_model_news.tx_newscatinvite_invitations">
 				<source>Invitations</source>
+				<target>Einladungen</target>
 			</trans-unit>
 			<trans-unit id="tx_news_domain_model_news.tx_newscatinvite_invitations.newRecordLinkTitle">
 				<source>Add new Invitation</source>
+				<target>Neue Einladung erstellen</target>
 			</trans-unit>
 
 		</body>
