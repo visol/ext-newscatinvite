@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-05-05T19:06:45Z" product-name="newscatinvite">
+		<header/>
+		<body>
+
+			<trans-unit id="tx_newscatinvite_domain_model_invitation">
+				<source>Invitation</source>
+			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.status">
+				<source>status</source>
+			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.sent">
+				<source>sent</source>
+			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.category">
+				<source>category</source>
+			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.news">
+				<source>news</source>
+			</trans-unit>
+			
+		</body>
+	</file>
+</xliff>
