@@ -49,24 +49,21 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * category
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<>
-	 * @cascade remove
+	 * @var \Tx_News_Domain_Model_Category
 	 */
 	protected $category;
 
 	/**
 	 * news
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<>
-	 * @cascade remove
+	 * @var \Tx_News_Domain_Model_News
 	 */
 	protected $news;
 
 	/**
 	 * approvingBeuser
 	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<>
-	 * @cascade remove
+	 * @var int
 	 */
 	protected $approvingBeuser;
 
@@ -140,29 +137,9 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Adds a
-	 *
-	 * @param  $category
-	 * @return void
-	 */
-	public function addCategory($category) {
-		$this->category->attach($category);
-	}
-
-	/**
-	 * Removes a
-	 *
-	 * @param $categoryToRemove The  to be removed
-	 * @return void
-	 */
-	public function removeCategory($categoryToRemove) {
-		$this->category->detach($categoryToRemove);
-	}
-
-	/**
 	 * Returns the category
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<> $category
+	 * @return \Tx_News_Domain_Model_Category $category
 	 */
 	public function getCategory() {
 		return $this->category;
@@ -171,37 +148,17 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the category
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<> $category
+	 * @param \Tx_News_Domain_Model_Category $category
 	 * @return void
 	 */
-	public function setCategory(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $category) {
+	public function setCategory(\Tx_News_Domain_Model_Category $category) {
 		$this->category = $category;
-	}
-
-	/**
-	 * Adds a
-	 *
-	 * @param  $news
-	 * @return void
-	 */
-	public function addNews($news) {
-		$this->news->attach($news);
-	}
-
-	/**
-	 * Removes a
-	 *
-	 * @param $newsToRemove The  to be removed
-	 * @return void
-	 */
-	public function removeNews($newsToRemove) {
-		$this->news->detach($newsToRemove);
 	}
 
 	/**
 	 * Returns the news
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<> $news
+	 * @return \Tx_News_Domain_Model_News $news
 	 */
 	public function getNews() {
 		return $this->news;
@@ -210,37 +167,17 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the news
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<> $news
+	 * @param \Tx_News_Domain_Model_News $news
 	 * @return void
 	 */
-	public function setNews(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $news) {
+	public function setNews(\Tx_News_Domain_Model_News $news) {
 		$this->news = $news;
-	}
-
-	/**
-	 * Adds a
-	 *
-	 * @param  $approvingBeuser
-	 * @return void
-	 */
-	public function addApprovingBeuser($approvingBeuser) {
-		$this->approvingBeuser->attach($approvingBeuser);
-	}
-
-	/**
-	 * Removes a
-	 *
-	 * @param $approvingBeuserToRemove The  to be removed
-	 * @return void
-	 */
-	public function removeApprovingBeuser($approvingBeuserToRemove) {
-		$this->approvingBeuser->detach($approvingBeuserToRemove);
 	}
 
 	/**
 	 * Returns the approvingBeuser
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<> $approvingBeuser
+	 * @return int $approvingBeuser
 	 */
 	public function getApprovingBeuser() {
 		return $this->approvingBeuser;
@@ -249,10 +186,10 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the approvingBeuser
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<> $approvingBeuser
+	 * @param int $approvingBeuser
 	 * @return void
 	 */
-	public function setApprovingBeuser(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $approvingBeuser) {
+	public function setApprovingBeuser($approvingBeuser) {
 		$this->approvingBeuser = $approvingBeuser;
 	}
 
