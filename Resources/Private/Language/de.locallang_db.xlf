@@ -32,6 +32,10 @@
 				<source>News</source>
 				<target>News</target>
 			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.approving_beuser">
+				<source>Approving Beuser</source>
+				<target>Genehmigender Benutzer</target>
+			</trans-unit>
 			<trans-unit id="tx_news_domain_model_news.tx_newscatinvite_invitations">
 				<source>Invitations</source>
 				<target>Einladungen</target>

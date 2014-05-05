@@ -198,4 +198,56 @@ class InvitationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->subject->removeNews($news);
 
 	}
+
+	/**
+	 * @test
+	 */
+	public function getApprovingBeuserReturnsInitialValueFor() {
+		$newObjectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->assertEquals(
+			$newObjectStorage,
+			$this->subject->getApprovingBeuser()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setApprovingBeuserForObjectStorageContainingSetsApprovingBeuser() {
+		$approvingBeuser = new ();
+		$objectStorageHoldingExactlyOneApprovingBeuser = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$objectStorageHoldingExactlyOneApprovingBeuser->attach($approvingBeuser);
+		$this->subject->setApprovingBeuser($objectStorageHoldingExactlyOneApprovingBeuser);
+
+		$this->assertAttributeEquals(
+			$objectStorageHoldingExactlyOneApprovingBeuser,
+			'approvingBeuser',
+			$this->subject
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addApprovingBeuserToObjectStorageHoldingApprovingBeuser() {
+		$approvingBeuser = new ();
+		$approvingBeuserObjectStorageMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array('attach'), array(), '', FALSE);
+		$approvingBeuserObjectStorageMock->expects($this->once())->method('attach')->with($this->equalTo($approvingBeuser));
+		$this->inject($this->subject, 'approvingBeuser', $approvingBeuserObjectStorageMock);
+
+		$this->subject->addApprovingBeuser($approvingBeuser);
+	}
+
+	/**
+	 * @test
+	 */
+	public function removeApprovingBeuserFromObjectStorageHoldingApprovingBeuser() {
+		$approvingBeuser = new ();
+		$approvingBeuserObjectStorageMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array('detach'), array(), '', FALSE);
+		$approvingBeuserObjectStorageMock->expects($this->once())->method('detach')->with($this->equalTo($approvingBeuser));
+		$this->inject($this->subject, 'approvingBeuser', $approvingBeuserObjectStorageMock);
+
+		$this->subject->removeApprovingBeuser($approvingBeuser);
+
+	}
 }

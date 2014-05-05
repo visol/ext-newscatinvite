@@ -59,7 +59,7 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
 		),
-		'searchFields' => 'status,sent,category,news,',
+		'searchFields' => 'status,sent,category,news,approving_beuser,',
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Invitation.php',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_newscatinvite_domain_model_invitation.gif'
 	),

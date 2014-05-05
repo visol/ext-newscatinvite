@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-05-05T19:06:45Z" product-name="newscatinvite">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-05-05T20:30:55Z" product-name="newscatinvite">
 		<header/>
 		<body>
 
@@ -25,13 +25,15 @@
 			<trans-unit id="tx_newscatinvite_domain_model_invitation.news">
 				<source>News</source>
 			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.approving_beuser">
+				<source>Approving Beuser</source>
+			</trans-unit>
 			<trans-unit id="tx_news_domain_model_news.tx_newscatinvite_invitations">
 				<source>Invitations</source>
 			</trans-unit>
 			<trans-unit id="tx_news_domain_model_news.tx_newscatinvite_invitations.newRecordLinkTitle">
 				<source>Add new Invitation</source>
 			</trans-unit>
-
 		</body>
 	</file>
 </xliff>

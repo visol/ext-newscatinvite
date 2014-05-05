@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-05-05T19:06:45Z" product-name="newscatinvite">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-05-05T20:30:55Z" product-name="newscatinvite">
 		<header/>
 		<body>
 
@@ -15,6 +15,9 @@
 			</trans-unit>
 			<trans-unit id="news.description">
 				<source>news</source>
+			</trans-unit>
+			<trans-unit id="approving_beuser.description">
+				<source>approvingBeuser</source>
 			</trans-unit>
 		</body>
 	</file>

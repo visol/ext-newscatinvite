@@ -6,10 +6,10 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 	'ctrl' => $TCA['tx_newscatinvite_domain_model_invitation']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'status, sent, category, news',
+		'showRecordFieldList' => 'status, sent, category, news, approving_beuser',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'status, sent, category, news'),
+		'1' => array('showitem' => 'status, sent, category, news, approving_beuser'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -74,6 +74,19 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 				'maxitems' => 1,
 			),
 		),
+		'approving_beuser' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.approving_beuser',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'be_users',
+				'foreign_table_where' => ' ORDER BY be_users.username',
+				'minitems' => 0,
+				'maxitems' => 1,
+				'readOnly' => 1,
+			),
+		),
+		
 	),
 );
 

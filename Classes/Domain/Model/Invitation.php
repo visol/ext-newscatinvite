@@ -63,6 +63,14 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $news;
 
 	/**
+	 * approvingBeuser
+	 *
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<>
+	 * @cascade remove
+	 */
+	protected $approvingBeuser;
+
+	/**
 	 * __construct
 	 */
 	public function __construct() {
@@ -81,6 +89,7 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected function initStorageObjects() {
 		$this->category = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->news = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->approvingBeuser = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
@@ -206,6 +215,45 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setNews(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $news) {
 		$this->news = $news;
+	}
+
+	/**
+	 * Adds a
+	 *
+	 * @param  $approvingBeuser
+	 * @return void
+	 */
+	public function addApprovingBeuser($approvingBeuser) {
+		$this->approvingBeuser->attach($approvingBeuser);
+	}
+
+	/**
+	 * Removes a
+	 *
+	 * @param $approvingBeuserToRemove The  to be removed
+	 * @return void
+	 */
+	public function removeApprovingBeuser($approvingBeuserToRemove) {
+		$this->approvingBeuser->detach($approvingBeuserToRemove);
+	}
+
+	/**
+	 * Returns the approvingBeuser
+	 *
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<> $approvingBeuser
+	 */
+	public function getApprovingBeuser() {
+		return $this->approvingBeuser;
+	}
+
+	/**
+	 * Sets the approvingBeuser
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<> $approvingBeuser
+	 * @return void
+	 */
+	public function setApprovingBeuser(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $approvingBeuser) {
+		$this->approvingBeuser = $approvingBeuser;
 	}
 
 }
