@@ -35,7 +35,8 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 			'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.sent',
 			'config' => array(
 				'type' => 'check',
-				'default' => 0
+				'default' => 0,
+				'readOnly' => 1,
 			),
 		),
 		'category' => array(

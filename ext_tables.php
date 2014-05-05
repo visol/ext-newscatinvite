@@ -67,7 +67,7 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 
 $tmp_newscatinvite_columns = array(
 	'tx_newscatinvite_invitations' => array(
-		'exclude' => 0,
+		'exclude' => 1,
 		'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.tx_newscatinvite_invitations',
 		'config' => array(
 			'type' => 'inline',

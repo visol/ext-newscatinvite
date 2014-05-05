@@ -6,7 +6,7 @@
 
 			<trans-unit id="tx_newscatinvite_domain_model_invitation">
 				<source>Invitation</source>
-				<target>Einladung</target>
+				<target>Nachrichtenkategorien-Einladung</target>
 			</trans-unit>
 			<trans-unit id="tx_newscatinvite_domain_model_invitation.status">
 				<source>Status</source>
@@ -38,7 +38,7 @@
 			</trans-unit>
 			<trans-unit id="tx_news_domain_model_news.tx_newscatinvite_invitations">
 				<source>Invitations</source>
-				<target>Einladungen</target>
+				<target>Kategorien-Einladungen</target>
 			</trans-unit>
 			<trans-unit id="tx_news_domain_model_news.tx_newscatinvite_invitations.newRecordLinkTitle">
 				<source>Add new Invitation</source>

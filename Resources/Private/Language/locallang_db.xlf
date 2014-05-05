@@ -5,7 +5,7 @@
 		<body>
 
 			<trans-unit id="tx_newscatinvite_domain_model_invitation">
-				<source>Invitation</source>
+				<source>News Category Invitation</source>
 			</trans-unit>
 			<trans-unit id="tx_newscatinvite_domain_model_invitation.status">
 				<source>Status</source>
@@ -29,7 +29,7 @@
 				<source>Approving Beuser</source>
 			</trans-unit>
 			<trans-unit id="tx_news_domain_model_news.tx_newscatinvite_invitations">
-				<source>Invitations</source>
+				<source>Category Invitations</source>
 			</trans-unit>
 			<trans-unit id="tx_news_domain_model_news.tx_newscatinvite_invitations.newRecordLinkTitle">
 				<source>Add new Invitation</source>
