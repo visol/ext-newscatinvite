@@ -45,7 +45,6 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 				'type' => 'select',
 				'renderMode' => 'tree',
 				'treeConfig' => array(
-					'dataProvider' => 'Tx_News_TreeProvider_DatabaseTreeDataProvider',
 					'rootUid' => 4,
 					'parentField' => 'parentcategory',
 					'appearance' => array(
