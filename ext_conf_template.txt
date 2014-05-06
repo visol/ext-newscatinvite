@@ -1,0 +1,2 @@
+# cat=basic/enable; type=integer; label= UID of root category for invitations
+rootCategoryUid = 4

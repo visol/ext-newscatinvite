@@ -3,6 +3,8 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
+$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['newscatinvite']);
+
 $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 	'ctrl' => $TCA['tx_newscatinvite_domain_model_invitation']['ctrl'],
 	'interface' => array(
@@ -46,7 +48,7 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 				'type' => 'select',
 				'renderMode' => 'tree',
 				'treeConfig' => array(
-					'rootUid' => 4,
+					'rootUid' => $extensionConfiguration['rootCategoryUid'],
 					'parentField' => 'parentcategory',
 					'appearance' => array(
 						'showHeader' => TRUE,
