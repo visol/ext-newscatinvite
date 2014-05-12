@@ -16,11 +16,11 @@ if (TYPO3_MODE === 'BE') {
 	 */
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
 		'Visol.' . $_EXTKEY,
-		'web',	 // Make module a submodule of 'web'
-		'invitations',	// Submodule key
-		'',						// Position
+		'user',
+		'invitations',
+		'top',
 		array(
-			'Invitation' => 'list, show, new, create, edit, update, delete',
+			'Invitation' => 'list, listArchive, approve, reject',
 		),
 		array(
 			'access' => 'user,group',

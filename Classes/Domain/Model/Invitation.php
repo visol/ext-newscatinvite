@@ -31,6 +31,16 @@ namespace Visol\Newscatinvite\Domain\Model;
  * Invitation
  */
 class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+	const STATUS_APPROVED = 1;
+	const STATUS_REJECTED = -1;
+
+
+	/**
+	 * tstamp
+	 *
+	 * @var \DateTime
+	 */
+	protected $tstamp;
 
 	/**
 	 * status
@@ -63,7 +73,7 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * approvingBeuser
 	 *
-	 * @var int
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\BackendUser
 	 */
 	protected $approvingBeuser;
 
@@ -87,6 +97,27 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->category = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->news = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		$this->approvingBeuser = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+	}
+
+	/**
+	 * Returns the tstamp
+	 *
+	 * @return \DateTime $tstamp
+	 */
+	public function getTstamp() {
+		// TODO: Datum aus DB ausgeben
+		return new \DateTime();
+		return $this->tstamp;
+	}
+
+	/**
+	 * Sets the tstamp
+	 *
+	 * @param \DateTime $tstamp
+	 * @return void
+	 */
+	public function setTstamp(\DateTime $tstamp) {
+		$this->tstamp = $tstamp;
 	}
 
 	/**
@@ -177,7 +208,7 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the approvingBeuser
 	 *
-	 * @return int $approvingBeuser
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\BackendUser $approvingBeuser
 	 */
 	public function getApprovingBeuser() {
 		return $this->approvingBeuser;
@@ -186,10 +217,10 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the approvingBeuser
 	 *
-	 * @param int $approvingBeuser
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $approvingBeuser
 	 * @return void
 	 */
-	public function setApprovingBeuser($approvingBeuser) {
+	public function setApprovingBeuser(\TYPO3\CMS\Extbase\Domain\Model\BackendUser $approvingBeuser) {
 		$this->approvingBeuser = $approvingBeuser;
 	}
 

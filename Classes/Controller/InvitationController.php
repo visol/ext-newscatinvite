@@ -27,6 +27,7 @@ namespace Visol\Newscatinvite\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+
 /**
  * InvitationController
  */
@@ -41,80 +42,78 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	protected $invitationRepository;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository
+	 * @inject
+	 */
+	protected $backendUserRepository;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
+	 * @inject
+	 */
+	protected $configurationManager;
+
+
+
+	/**
 	 * action list
 	 *
 	 * @return void
 	 */
 	public function listAction() {
+		//$settings = $this->configurationManager->getConfiguration(\Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'Visol.Newscatinvite', 'Invitations');$settings = $this->configurationManager->getConfiguration(\Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'Visol.Newscatinvite', 'Invitations');
+		//$settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'Visol.Newscatinvite', 'Invitations');$settings = $this->configurationManager->getConfiguration(\Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($settings);
+
+		$invitations = $this->invitationRepository->findByStatus(0);
+		$this->view->assign('invitations', $invitations);
+	}
+
+	/**
+	 * action listArchive
+	 *
+	 * @return void
+	 */
+	public function listArchiveAction() {
 		$invitations = $this->invitationRepository->findAll();
 		$this->view->assign('invitations', $invitations);
 	}
 
 	/**
-	 * action show
-	 *
-	 * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
-	 * @return void
-	 */
-	public function showAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation) {
-		$this->view->assign('invitation', $invitation);
-	}
-
-	/**
-	 * action new
-	 *
-	 * @param \Visol\Newscatinvite\Domain\Model\Invitation $newInvitation
-	 * @ignorevalidation $newInvitation
-	 * @return void
-	 */
-	public function newAction(\Visol\Newscatinvite\Domain\Model\Invitation $newInvitation = NULL) {
-		$this->view->assign('newInvitation', $newInvitation);
-	}
-
-	/**
-	 * action create
-	 *
-	 * @param \Visol\Newscatinvite\Domain\Model\Invitation $newInvitation
-	 * @return void
-	 */
-	public function createAction(\Visol\Newscatinvite\Domain\Model\Invitation $newInvitation) {
-		$this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See <a href="http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain" target="_blank">Wiki</a>', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-		$this->invitationRepository->add($newInvitation);
-		$this->redirect('list');
-	}
-
-	/**
-	 * action edit
+	 * action approve
 	 *
 	 * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
 	 * @ignorevalidation $invitation
+	 * @dontvalidate  $invitation
 	 * @return void
 	 */
-	public function editAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation) {
-		$this->view->assign('invitation', $invitation);
-	}
-
-	/**
-	 * action update
-	 *
-	 * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
-	 * @return void
-	 */
-	public function updateAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation) {
-		$this->addFlashMessage('The object was updated. Please be aware that this action is publicly accessible unless you implement an access check. See <a href="http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain" target="_blank">Wiki</a>', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+	public function approveAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation) {
+		$backendUser = $this->backendUserRepository->findByUid($GLOBALS["BE_USER"]->user["uid"]);
+		$invitation->setStatus(\Visol\Newscatinvite\Domain\Model\Invitation::STATUS_APPROVED);
+		$invitation->setApprovingBeuser($backendUser);
 		$this->invitationRepository->update($invitation);
+
+		$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('approveMessage', 'Newscatinvite'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+
 		$this->redirect('list');
 	}
 
 	/**
-	 * action delete
+	 * action reject
 	 *
 	 * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
+	 * @ignorevalidation $invitation
+	 * @dontvalidate  $invitation
 	 * @return void
 	 */
-	public function deleteAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation) {
-		$this->addFlashMessage('The object was deleted. Please be aware that this action is publicly accessible unless you implement an access check. See <a href="http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain" target="_blank">Wiki</a>', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-		$this->invitationRepository->remove($invitation);
+	public function rejectAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation) {
+		$backendUser = $this->backendUserRepository->findByUid($GLOBALS["BE_USER"]->user["uid"]);
+		$invitation->setStatus(\Visol\Newscatinvite\Domain\Model\Invitation::STATUS_REJECTED);
+		$invitation->setApprovingBeuser($backendUser);
+		$this->invitationRepository->update($invitation);
+
+		$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('rejectMessage', 'Newscatinvite'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+
 		$this->redirect('list');
 	}
 

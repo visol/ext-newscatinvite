@@ -1,0 +1,60 @@
+{namespace nci = Visol\Newscatinvite\ViewHelpers}
+
+<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
+	<tr class="t3-row-header">
+		<td>&nbsp;</td>
+		<td>
+			{f:translate(key: 'tableNewsTitle')}
+		</td>
+		<td>&nbsp;</td>
+		<td>{f:translate(key: 'tableCommentTitle')}</td>
+	</tr>
+
+	<f:for each="{invitations}" as="invitation">
+		<tr class="db_list_normal">
+			<td class="col-icon">
+				<a href="#" onClick="Clickmenu.show('tx_news_domain_model_news', '{invitation.news.uid}', '1', '', '', ''); return false;" title="id={invitation.news.uid}">
+					<nci:spriteIconForRecord table="tx_news_domain_model_news" object="{invitation.news}" />
+				</a>
+			</td>
+			<td class="t3-title-column">
+				{invitation.news.title}
+
+				<!--
+				<f:comment>
+				<a href="alt_doc.php?edit[tx_news_domain_model_news][{invitation.news.uid}]=edit&returnUrl={returnUrl}">
+					<b>asdf</b>
+				</a>
+				</f:comment>
+				-->
+			</td>
+
+			<td>
+				<f:if condition="{invitation.status} != 0">
+					<f:then>
+						{f:translate(key :'tx_newscatinvite_domain_model_invitation.status.{invitation.status}')}
+					</f:then>
+					<f:else>
+						<f:link.action action="approve" arguments="{invitation: invitation}" title="{f:translate(key: 'approveButtonTitle')}">
+							<f:be.buttons.icon icon="status-status-permission-granted" /> {f:translate(key: 'approveButtonLabel')}
+						</f:link.action>
+						<f:link.action action="reject" arguments="{invitation: invitation}" title="{f:translate(key: 'rejectButtonTitle')}">
+							<f:be.buttons.icon icon="status-status-permission-denied" /> {f:translate(key: 'rejectButtonLabel')}
+						</f:link.action>
+					</f:else>
+				</f:if>
+				<br/>
+			</td>
+			<td>
+				<f:if condition="{invitation.status} != 0">
+					<f:then>
+						{invitation.approvingBeuser.realName}<br/>
+						{invitation.tstamp -> f:format.date(format:'d.m.Y H:i')}
+					</f:then>
+					<f:else>
+					</f:else>
+				</f:if>
+			</td>
+		</tr>
+	</f:for>
+</table>

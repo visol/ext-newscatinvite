@@ -1,10 +1,12 @@
+{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+{namespace nci = Visol\Newscatinvite\ViewHelpers}
 
 <f:layout name="Default" />
 
 <f:section name="content">
 	<f:flashMessages renderMode="div" />
 
-	<h1>{f:translate(key: 'submoduleOverviewTitle')}</h1>
+	<h1>{f:translate(key: 'submoduleArchiveTitle')}</h1>
 
 	<f:groupedFor each="{invitations}" as="invitationsByCategory" groupBy="category" groupKey="category">
 		<h2>{category.title}</h2>

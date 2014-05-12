@@ -88,7 +88,11 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 				'readOnly' => 1,
 			),
 		),
-		
+		'tstamp' => array(
+			'config' => array(
+				'type' => 'passthrough',
+			),
+		),
 	),
 );
 
