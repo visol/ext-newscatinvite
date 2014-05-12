@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-05-05T20:30:55Z" product-name="newscatinvite">
+		<header/>
+		<body>
+
+			<trans-unit id="tx_newscatinvite_domain_model_invitation">
+				<source>Invitation</source>
+				<target>Einladung</target>
+			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.status">
+				<source>status</source>
+				<target>Status</target>
+			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.status.-1">
+				<source>rejected</source>
+				<target>abgelehnt</target>
+			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.status.1">
+				<source>approved</source>
+				<target>angenommen</target>
+			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.sent">
+				<source>sent</source>
+				<target>sent</target>
+			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.category">
+				<source>category</source>
+				<target>category</target>
+			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.news">
+				<source>news</source>
+				<target>news</target>
+			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.approving_beuser">
+				<source>approvingBeuser</source>
+				<target>approvingBeuser</target>
+			</trans-unit>
+			<trans-unit id="submoduleOverviewTitle">
+				<source>Overview</source>
+				<target>Übersicht</target>
+			</trans-unit>
+			<trans-unit id="submoduleArchiveTitle">
+				<source>Archive</source>
+				<target>Archiv</target>
+			</trans-unit>
+			<trans-unit id="tableNewsTitle">
+				<source>news title</source>
+				<target>News-Titel</target>
+			</trans-unit>
+			<trans-unit id="tableCommentTitle">
+				<source>comments</source>
+				<target>Bemerkungen</target>
+			</trans-unit>
+			<trans-unit id="approveButtonLabel">
+				<source>Approve</source>
+				<target>Annehmen</target>
+			</trans-unit>
+			<trans-unit id="rejectButtonLabel">
+				<source>Reject</source>
+				<target>Ablehnen</target>
+			</trans-unit>
+			<trans-unit id="approveButtonTitle">
+				<source>Approve this invitation</source>
+				<target>Diese Einladung annehmen</target>
+			</trans-unit>
+			<trans-unit id="rejectButtonTitle">
+				<source>Reject this invitation</source>
+				<target>Diese Einladung ablehnen</target>
+			</trans-unit>
+			<trans-unit id="approveMessage">
+				<source>The invitation has been approved.</source>
+				<target>Die Einladung wurde angenommen.</target>
+			</trans-unit>
+			<trans-unit id="rejectMessage">
+				<source>The invitation has been rejected.</source>
+				<target>Die Einladung wurde abgelehnt.</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
