@@ -57,7 +57,6 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 						'maxLevels' => 99,
 					),
 				),
-				'MM' => 'tx_news_domain_model_news_category_mm',
 				'foreign_table' => 'tx_news_domain_model_category',
 				'foreign_table_where' => ' AND (tx_news_domain_model_category.sys_language_uid = 0 OR tx_news_domain_model_category.l10n_parent = 0) ORDER BY tx_news_domain_model_category.sorting',
 				'size' => 10,

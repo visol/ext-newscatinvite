@@ -39,4 +39,25 @@ class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		$this->setDefaultQuerySettings($querySettings);
 	}
 
+	public function findByStatusAndCategories($status, Array $categories) {
+		$query = $this->createQuery();
+		$query->matching(
+			$query->logicalAnd(
+				$query->equals('status', $status),
+				$query->in('category', $categories)
+			)
+		);
+
+		return $query->execute();
+	}
+
+	public function findByCategories(Array $categories) {
+		$query = $this->createQuery();
+		$query->matching(
+			$query->in('category', $categories)
+		);
+
+		return $query->execute();
+	}
+
 }

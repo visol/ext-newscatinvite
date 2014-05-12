@@ -32,6 +32,7 @@ namespace Visol\Newscatinvite\Domain\Model;
  */
 class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	const STATUS_APPROVED = 1;
+	const STATUS_PENDING = 0;
 	const STATUS_REJECTED = -1;
 
 

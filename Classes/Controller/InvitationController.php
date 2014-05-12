@@ -26,6 +26,9 @@ namespace Visol\Newscatinvite\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use Visol\Newscatinvite\Domain\Model\Invitation;
 
 
 /**
@@ -65,7 +68,15 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		//$settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'Visol.Newscatinvite', 'Invitations');$settings = $this->configurationManager->getConfiguration(\Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($settings);
 
-		$invitations = $this->invitationRepository->findByStatus(0);
+		$categoryList = \Tx_News_Utility_CategoryProvider::getUserMounts ();
+
+		if (empty($categoryList)) {
+			$invitations = $this->invitationRepository->findByStatus(0);
+		} else {
+			$categoryUidArray = GeneralUtility::trimExplode(',', $categoryList);
+			$invitations = $this->invitationRepository->findByStatusAndCategories(Invitation::STATUS_PENDING, $categoryUidArray);
+		}
+
 		$this->view->assign('invitations', $invitations);
 	}
 
@@ -75,7 +86,15 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return void
 	 */
 	public function listArchiveAction() {
-		$invitations = $this->invitationRepository->findAll();
+		$categoryList = \Tx_News_Utility_CategoryProvider::getUserMounts ();
+
+		if (empty($categoryList)) {
+			$invitations = $this->invitationRepository->findAll();
+		} else {
+			$categoryUidArray = GeneralUtility::trimExplode(',', $categoryList);
+			$invitations = $this->invitationRepository->findByCategories($categoryUidArray);
+		}
+
 		$this->view->assign('invitations', $invitations);
 	}
 
