@@ -49,7 +49,7 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 				'renderMode' => 'tree',
 				'treeConfig' => array(
 					'rootUid' => $extensionConfiguration['rootCategoryUid'],
-					'parentField' => 'parentcategory',
+					'parentField' => 'parent',
 					'appearance' => array(
 						'showHeader' => TRUE,
 						'allowRecursiveMode' => TRUE,
@@ -57,8 +57,8 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 						'maxLevels' => 99,
 					),
 				),
-				'foreign_table' => 'tx_news_domain_model_category',
-				'foreign_table_where' => ' AND (tx_news_domain_model_category.sys_language_uid = 0 OR tx_news_domain_model_category.l10n_parent = 0) ORDER BY tx_news_domain_model_category.sorting',
+				'foreign_table' => 'sys_category',
+				'foreign_table_where' => ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.sorting',
 				'size' => 10,
 				'autoSizeMax' => 20,
 				'minitems' => 1,
