@@ -68,12 +68,11 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		//$settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'Visol.Newscatinvite', 'Invitations');$settings = $this->configurationManager->getConfiguration(\Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($settings);
 
-		$categoryList = \Tx_News_Utility_CategoryProvider::getUserMounts ();
+		$categoryUidArray = $GLOBALS['BE_USER']->getCategoryMountPoints();
 
-		if (empty($categoryList)) {
+		if (empty($categoryUidArray)) {
 			$invitations = $this->invitationRepository->findByStatus(0);
 		} else {
-			$categoryUidArray = GeneralUtility::trimExplode(',', $categoryList);
 			$invitations = $this->invitationRepository->findByStatusAndCategories(Invitation::STATUS_PENDING, $categoryUidArray);
 		}
 
@@ -86,12 +85,11 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return void
 	 */
 	public function listArchiveAction() {
-		$categoryList = \Tx_News_Utility_CategoryProvider::getUserMounts ();
+		$categoryUidArray = $GLOBALS['BE_USER']->getCategoryMountPoints();
 
-		if (empty($categoryList)) {
+		if (empty($categoryUidArray)) {
 			$invitations = $this->invitationRepository->findAll();
 		} else {
-			$categoryUidArray = GeneralUtility::trimExplode(',', $categoryList);
 			$invitations = $this->invitationRepository->findByCategories($categoryUidArray);
 		}
 
@@ -135,5 +133,20 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 
 		$this->redirect('list');
 	}
+
+	/**
+	 * Check if given category is allowed by the access rights
+	 *
+	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $child
+	 * @return bool
+	 */
+	/*protected function isCategoryAllowed ($child) {
+		$mounts = \Tx_News_Utility_CategoryProvider::getUserMounts ();
+		if (empty($mounts)) {
+			return TRUE;
+		}
+
+		return GeneralUtility::inList ($mounts, $child->getId ());
+	}*/
 
 }
