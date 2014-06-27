@@ -55,6 +55,7 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 						'allowRecursiveMode' => TRUE,
 						'expandAll' => TRUE,
 						'maxLevels' => 99,
+						'nonSelectableLevels' => '0,1'
 					),
 				),
 				'foreign_table' => 'sys_category',
