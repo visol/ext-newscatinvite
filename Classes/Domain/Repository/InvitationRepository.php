@@ -44,9 +44,12 @@ class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		$query->matching(
 			$query->logicalAnd(
 				$query->equals('status', $status),
-				$query->in('category', $categories)
+				$query->in('category', $categories),
+				$query->greaterThan('category.uid', 0),
+				$query->greaterThan('news.uid', 0)
 			)
 		);
+
 
 		return $query->execute();
 	}
@@ -54,7 +57,11 @@ class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	public function findByCategories(Array $categories) {
 		$query = $this->createQuery();
 		$query->matching(
-			$query->in('category', $categories)
+			$query->logicalAnd(
+				$query->in('category', $categories),
+				$query->greaterThan('category.uid', 0),
+				$query->greaterThan('news.uid', 0)
+			)
 		);
 
 		return $query->execute();
