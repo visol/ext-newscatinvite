@@ -134,19 +134,4 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		$this->redirect('list');
 	}
 
-	/**
-	 * Check if given category is allowed by the access rights
-	 *
-	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $child
-	 * @return bool
-	 */
-	/*protected function isCategoryAllowed ($child) {
-		$mounts = \Tx_News_Utility_CategoryProvider::getUserMounts ();
-		if (empty($mounts)) {
-			return TRUE;
-		}
-
-		return GeneralUtility::inList ($mounts, $child->getId ());
-	}*/
-
 }
