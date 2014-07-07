@@ -20,7 +20,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'shy' => '',
 	'priority' => '',
 	'module' => '',
-	'state' => 'alpha',
+	'state' => 'stable',
 	'internal' => '',
 	'uploadfolder' => '0',
 	'createDirs' => '',
@@ -33,7 +33,8 @@ $EM_CONF[$_EXTKEY] = array(
 			'extbase' => '6.2',
 			'fluid' => '6.2',
 			'typo3' => '6.2',
-			'news' => '3.0.0-3.0.99',
+			'news' => '3.0.0-3.99.99',
+			'roq_newsevent' => '3.0.0-3.99.99',
 		),
 		'conflicts' => array(
 		),
