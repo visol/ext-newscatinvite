@@ -1,0 +1,38 @@
+plugin.tx_news {
+  objects {
+     Tx_News_Domain_Repository_NewsRepository {
+        className = Visol\Newscatinvite\Domain\Repository\NewsRepository
+     }
+     Tx_RoqNewsevent_Domain_Repository_EventRepository {
+        className = Visol\Newscatinvite\Domain\Repository\EventRepository
+     }
+     Tx_News_Domain_Domain_News {
+        className = Visol\Newscatinvite\Domain\Model\News
+     }
+  }
+}
+
+config.tx_extbase.persistence.classes {
+	Visol\Newscatinvite\Domain\Model\News {
+		mapping {
+			tableName = tx_news_domain_model_news
+			columns {
+				invitations.mapOnProperty = invitations
+			}
+		}
+	}
+	Visol\Newscatinvite\Domain\Model\Event {
+		mapping {
+			tableName = tx_news_domain_model_news
+			columns {
+				invitations.mapOnProperty = invitations
+			}
+		}
+	}
+	Tx_News_Domain_Model_Category {
+		mapping {
+			tableName = sys_category
+		}
+	}
+}
+

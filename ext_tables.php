@@ -45,20 +45,19 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'dividers2tabs' => TRUE,
-
-		'versioningWS' => 2,
-		'versioning_followPages' => TRUE,
-
-		'origUid' => 't3_origuid',
-		'languageField' => 'sys_language_uid',
-		'transOrigPointerField' => 'l10n_parent',
-		'transOrigDiffSourceField' => 'l10n_diffsource',
-		'delete' => 'deleted',
-		'enablecolumns' => array(
-			'disabled' => 'hidden',
-			'starttime' => 'starttime',
-			'endtime' => 'endtime',
-		),
+		// Removed versioning, translations, deleteClause and enableColumns to make Extbase constraint for invitations working
+		//'versioningWS' => 2,
+		//'versioning_followPages' => TRUE,
+		//'origUid' => 't3_origuid',
+		//'languageField' => 'sys_language_uid',
+		//'transOrigPointerField' => 'l10n_parent',
+		//'transOrigDiffSourceField' => 'l10n_diffsource',
+		//'delete' => 'deleted',
+		//'enablecolumns' => array(
+		//	'disabled' => 'hidden',
+		//	'starttime' => 'starttime',
+		//	'endtime' => 'endtime',
+		//),
 		'searchFields' => 'status,sent,category,news,approving_beuser,',
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Invitation.php',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_newscatinvite_domain_model_invitation.gif'
@@ -66,7 +65,7 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 );
 
 $tmp_newscatinvite_columns = array(
-	'tx_newscatinvite_invitations' => array(
+	'invitations' => array(
 		'exclude' => 1,
 		'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.tx_newscatinvite_invitations',
 		'config' => array(
@@ -91,7 +90,7 @@ $tmp_newscatinvite_columns = array(
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 	'tx_news_domain_model_news',
-	'tx_newscatinvite_invitations',
+	'invitations',
 	'',
 	'after:categories'
 );
