@@ -65,6 +65,8 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 				'minitems' => 1,
 				'maxitems' => 1,
 			),
+			// hide field if notification mail was already sent
+			'displayCond' => 'FIELD:sent:!=:1',
 		),
 		'news' => array(
 			'exclude' => 0,
