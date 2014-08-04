@@ -64,6 +64,10 @@
 				<source>Reject</source>
 				<target>Ablehnen</target>
 			</trans-unit>
+			<trans-unit id="deleteButtonLabel">
+				<source>Delete</source>
+				<target>Löschen</target>
+			</trans-unit>
 			<trans-unit id="approveButtonTitle">
 				<source>Approve this invitation</source>
 				<target>Diese Einladung annehmen</target>
@@ -72,6 +76,10 @@
 				<source>Reject this invitation</source>
 				<target>Diese Einladung ablehnen</target>
 			</trans-unit>
+			<trans-unit id="deleteButtonTitle">
+				<source>Delete this invitation</source>
+				<target>Diese Einladung löschen</target>
+			</trans-unit>
 			<trans-unit id="approveMessage">
 				<source>The invitation has been approved.</source>
 				<target>Die Einladung wurde angenommen.</target>
@@ -79,6 +87,14 @@
 			<trans-unit id="rejectMessage">
 				<source>The invitation has been rejected.</source>
 				<target>Die Einladung wurde abgelehnt.</target>
+			</trans-unit>
+			<trans-unit id="deleteMessage">
+				<source>The invitation has been deleted.</source>
+				<target>Die Einladung wurde gelöscht.</target>
+			</trans-unit>
+			<trans-unit id="deleteConfirmation">
+				<source>Are you sure to delete this invitation?</source>
+				<target>Sind Sie sicher, dass Sie diese Einladung löschen möchten?</target>
 			</trans-unit>
 		</body>
 	</file>

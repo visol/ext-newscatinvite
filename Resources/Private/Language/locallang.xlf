@@ -49,17 +49,29 @@
 			<trans-unit id="rejectButtonLabel">
 				<source>Reject</source>
 			</trans-unit>
+			<trans-unit id="deleteButtonLabel">
+				<source>Delete</source>
+			</trans-unit>
 			<trans-unit id="approveButtonTitle">
 				<source>Approve this invitation</source>
 			</trans-unit>
 			<trans-unit id="rejectButtonTitle">
 				<source>Reject this invitation</source>
 			</trans-unit>
+			<trans-unit id="deleteButtonTitle">
+				<source>Delete this invitation</source>
+			</trans-unit>
 			<trans-unit id="approveMessage">
 				<source>The invitation has been approved.</source>
 			</trans-unit>
 			<trans-unit id="rejectMessage">
 				<source>The invitation has been rejected.</source>
+			</trans-unit>
+			<trans-unit id="deleteMessage">
+				<source>The invitation has been deleted.</source>
+			</trans-unit>
+			<trans-unit id="deleteConfirmation">
+				<source>Are you sure to delete this invitation?</source>
 			</trans-unit>
 		</body>
 	</file>

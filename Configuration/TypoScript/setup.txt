@@ -58,4 +58,8 @@ module.tx_newscatinvite {
 		partialRootPath = {$module.tx_newscatinvite.view.partialRootPath}
 		layoutRootPath = {$module.tx_newscatinvite.view.layoutRootPath}
 	}
+	settings {
+		newsDetailPid = 28
+		eventDetailPid = 29
+	}
 }

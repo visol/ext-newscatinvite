@@ -1,39 +1,14 @@
 
 <f:layout name="Default" />
 
-This Template is responsible for creating a table of domain objects.
-
-If you modify this template, do not forget to change the overwrite settings
-in /Configuration/ExtensionBuilder/settings.yaml:
-  Resources:
-    Private:
-      Templates:
-        List.html: keep
-
-Otherwise your changes will be overwritten the next time you save the extension in the extension builder
-
 <f:section name="content">
-<h1>Listing for Invitation</h1>
+	<f:flashMessages renderMode="div" />
 
-<f:flashMessages />
+	<h1>{f:translate(key: 'submoduleOverviewTitle')}</h1>
 
-<table  class="tx_newscatinvite" >
-	<tr>
-		<th><f:translate key="tx_newscatinvite_domain_model_invitation.status" /></th>
-		<th><f:translate key="tx_newscatinvite_domain_model_invitation.sent" /></th>
-		<th> </th>
-		<th> </th>
-	</tr>
-
-	<f:for each="{invitations}" as="invitation">
-		<tr>
-			<td><f:link.action action="show" arguments="{invitation : invitation}"> {invitation.status}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{invitation : invitation}"> {invitation.sent}</f:link.action></td>
-			<td><f:link.action action="edit" arguments="{invitation : invitation}">Edit</f:link.action></td>
-			<td><f:link.action action="delete" arguments="{invitation : invitation}">Delete</f:link.action></td>
-		</tr>
-	</f:for>
-</table>
-
-<f:link.action action="new">New Invitation</f:link.action>
+	<p>{f:translate(key: 'submoduleOverviewDescription')}</p>
+	<f:groupedFor each="{invitations}" as="invitationsByCategory" groupBy="category" groupKey="category">
+		<h2>{category.title}</h2>
+		<f:render partial="Invitation/Table" arguments="{invitations: invitationsByCategory, settings: settings}" />
+	</f:groupedFor>
 </f:section>

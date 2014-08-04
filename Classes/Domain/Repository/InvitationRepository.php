@@ -62,7 +62,11 @@ class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 			$query->logicalAnd(
 				$query->in('category', $categories),
 				$query->greaterThan('category.uid', 0),
-				$query->greaterThan('news.uid', 0)
+				$query->greaterThan('news.uid', 0),
+				$query->logicalOr(
+					$query->equals('status', \Visol\Newscatinvite\Domain\Model\Invitation::STATUS_APPROVED),
+					$query->equals('status', \Visol\Newscatinvite\Domain\Model\Invitation::STATUS_REJECTED)
+				)
 			)
 		);
 

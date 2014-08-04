@@ -7,12 +7,12 @@ if (!defined('TYPO3_MODE')) {
 	'Visol.' . $_EXTKEY,
 	'Invitations',
 	array(
-		'Invitation' => 'list, show, new, create, edit, update, delete',
+		'Invitation' => 'list, show, new, create, edit, update, remove',
 		
 	),
 	// non-cacheable actions
 	array(
-		'Invitation' => 'create, update, delete',
+		'Invitation' => 'create, update, remove',
 		
 	)
 );

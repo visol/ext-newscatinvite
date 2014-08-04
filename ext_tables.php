@@ -20,7 +20,7 @@ if (TYPO3_MODE === 'BE') {
 		'invitations',
 		'top',
 		array(
-			'Invitation' => 'list, listArchive, approve, reject',
+			'Invitation' => 'list, listArchive, approve, reject, remove',
 		),
 		array(
 			'access' => 'user,group',

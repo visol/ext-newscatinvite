@@ -103,6 +103,7 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @ignorevalidation $invitation
 	 * @dontvalidate  $invitation
 	 * @return void
+	 * TODO permission check
 	 */
 	public function approveAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation) {
 		$backendUser = $this->backendUserRepository->findByUid($GLOBALS["BE_USER"]->user["uid"]);
@@ -122,6 +123,7 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @ignorevalidation $invitation
 	 * @dontvalidate  $invitation
 	 * @return void
+	 * TODO permission check*
 	 */
 	public function rejectAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation) {
 		$backendUser = $this->backendUserRepository->findByUid($GLOBALS["BE_USER"]->user["uid"]);
@@ -132,6 +134,23 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('rejectMessage', 'Newscatinvite'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
 
 		$this->redirect('list');
+	}
+
+	/**
+	 * action remove
+	 *
+	 * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
+	 * @ignorevalidation $invitation
+	 * @dontvalidate  $invitation
+	 * @return void
+	 * TODO permission check
+	 */
+	public function removeAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation) {
+		$this->invitationRepository->remove($invitation);
+
+		$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('deleteMessage', 'Newscatinvite'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+
+		$this->redirect('listArchive');
 	}
 
 }

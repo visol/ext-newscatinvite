@@ -10,6 +10,6 @@
 
 	<f:groupedFor each="{invitations}" as="invitationsByCategory" groupBy="category" groupKey="category">
 		<h2>{category.title}</h2>
-		<f:render partial="Invitation/Table" arguments="{invitations: invitationsByCategory}" />
+		<f:render partial="Invitation/Table" arguments="{invitations: invitationsByCategory, settings: settings}" />
 	</f:groupedFor>
 </f:section>

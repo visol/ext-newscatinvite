@@ -18,21 +18,27 @@
 				</a>
 			</td>
 			<td class="t3-title-column">
-				{invitation.news.title}
-
-				<!--
-				<f:comment>
-				<a href="alt_doc.php?edit[tx_news_domain_model_news][{invitation.news.uid}]=edit&returnUrl={returnUrl}">
-					<b>asdf</b>
-				</a>
-				</f:comment>
-				-->
+				<f:if condition="{invitation.news.tx_roqnewsevent_is_event}">
+					<f:then>
+						<a target="_blank" href="../index.php?id={settings.eventDetailPid}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news]={invitation.news.uid}">
+							{invitation.news.title}
+						</a>
+					</f:then>
+					<f:else>
+						<a target="_blank" href="../index.php?id={settings.newsDetailPid}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news]={invitation.news.uid}">
+							{invitation.news.title}
+						</a>
+					</f:else>
+				</f:if>
 			</td>
 
 			<td>
 				<f:if condition="{invitation.status} != 0">
 					<f:then>
-						{f:translate(key :'tx_newscatinvite_domain_model_invitation.status.{invitation.status}')}
+						{f:translate(key :'tx_newscatinvite_domain_model_invitation.status.{invitation.status}')} |
+						<f:link.action action="remove" onclick="return confirm('{f:translate(key: 'deleteConfirmation')}')" arguments="{invitation: invitation}" title="{f:translate(key: 'approveButtonTitle')}">
+							<f:be.buttons.icon icon="actions-edit-delete" /> {f:translate(key: 'deleteButtonLabel')}
+						</f:link.action>
 					</f:then>
 					<f:else>
 						<f:link.action action="approve" arguments="{invitation: invitation}" title="{f:translate(key: 'approveButtonTitle')}">
