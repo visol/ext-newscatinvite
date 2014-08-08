@@ -42,7 +42,7 @@
 			</trans-unit>
 			<trans-unit id="submoduleOverviewDescription">
 				<source>This is a listing of all pending invitations for News categories that are assigned to your user. If you approve an invitation, die news item is displayed in all news views showing news items of the respective category</source>
-				<target>Hier werden alle pendenten Einladungen für News-Kategorien, für die Sie berechtigt sind, eingeblendet. Nehmen Sie eine Einladung an, erscheint die News-Meldung künftig bei allen News-Ansichten, die News-Meldungen der entsprechenden Kategorie anzeigen.</target>
+				<target>Hier werden alle pendenten Einladungen für News-/Veranstaltungs-Kategorien, für die Sie berechtigt sind, eingeblendet. Nehmen Sie eine Einladung an, erscheint die News-/VA-Meldung künftig bei allen News-/VA-Ansichten, die News-/VA-Meldungen der entsprechenden Kategorie anzeigen.</target>
 			</trans-unit>
 			<trans-unit id="submoduleArchiveTitle">
 				<source>Archive</source>
@@ -50,7 +50,7 @@
 			</trans-unit>
 			<trans-unit id="tableNewsTitle">
 				<source>news title</source>
-				<target>News-Titel</target>
+				<target>News-/VA-Titel</target>
 			</trans-unit>
 			<trans-unit id="tableCommentTitle">
 				<source>comments</source>
