@@ -61,5 +61,6 @@ module.tx_newscatinvite {
 	settings {
 		newsDetailPid = 28
 		eventDetailPid = 29
+		eventsPid = 56
 	}
 }
