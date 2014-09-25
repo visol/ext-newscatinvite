@@ -10,6 +10,9 @@
 			<trans-unit id="tx_newscatinvite_domain_model_invitation.status">
 				<source>status</source>
 			</trans-unit>
+			<trans-unit id="tx_newscatinvite_domain_model_invitation.status.0">
+				<source>pending</source>
+			</trans-unit>
 			<trans-unit id="tx_newscatinvite_domain_model_invitation.status.-1">
 				<source>rejected</source>
 			</trans-unit>
@@ -37,11 +40,26 @@
 			<trans-unit id="submoduleArchiveTitle">
 				<source>Archive</source>
 			</trans-unit>
+			<trans-unit id="submoduleCreatedInvitationsTitle">
+				<source>My invitations</source>
+			</trans-unit>
 			<trans-unit id="tableNewsTitle">
 				<source>news title</source>
 			</trans-unit>
 			<trans-unit id="tableCommentTitle">
 				<source>comments</source>
+			</trans-unit>
+			<trans-unit id="tableInvitationTitle">
+				<source>Invitations</source>
+			</trans-unit>
+			<trans-unit id="tableInvitations.category">
+				<source>Category</source>
+			</trans-unit>
+			<trans-unit id="tableInvitations.status">
+				<source>Status</source>
+			</trans-unit>
+			<trans-unit id="tableInvitations.by">
+				<source>by</source>
 			</trans-unit>
 			<trans-unit id="approveButtonLabel">
 				<source>Approve</source>

@@ -34,5 +34,13 @@ config.tx_extbase.persistence.classes {
 			tableName = sys_category
 		}
 	}
+	Visol\Newscatinvite\Domain\Model\Invitation {
+		mapping {
+			tableName = tx_newscatinvite_domain_model_invitation
+			columns {
+				cruser_id.mapOnProperty = creator
+			}
+		}
+	}
 }
 

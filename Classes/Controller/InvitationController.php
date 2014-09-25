@@ -97,6 +97,17 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	}
 
 	/**
+	 * action listCreatedInvitations
+	 *
+	 * @return void
+	 */
+	public function listCreatedInvitationsAction() {
+		$backendUserUid = (int)$GLOBALS['BE_USER']->user['uid'];
+		$invitations = $this->invitationRepository->findByCreator($backendUserUid);
+		$this->view->assign('invitations', $invitations);
+	}
+
+	/**
 	 * action approve
 	 *
 	 * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation

@@ -78,6 +78,13 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $approvingBeuser;
 
 	/**
+	 * creator
+	 *
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\BackendUser
+	 */
+	protected $creator;
+
+	/**
 	 * __construct
 	 */
 	public function __construct() {
@@ -206,6 +213,20 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setApprovingBeuser(\TYPO3\CMS\Extbase\Domain\Model\BackendUser $approvingBeuser) {
 		$this->approvingBeuser = $approvingBeuser;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\BackendUser
+	 */
+	public function getCreator() {
+		return $this->creator;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $creator
+	 */
+	public function setCreator($creator) {
+		$this->creator = $creator;
 	}
 
 }
