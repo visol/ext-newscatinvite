@@ -1,0 +1,88 @@
+{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+{namespace nci = Visol\Newscatinvite\ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="content">
+	<f:flashMessages renderMode="div" />
+
+	<h1>{f:translate(key: 'submoduleCreatedInvitationsTitle')}</h1>
+
+	<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
+		<tr class="t3-row-header">
+			<td>&nbsp;</td>
+			<td>
+				{f:translate(key: 'tableNewsTitle')}
+			</td>
+			<td>
+				{f:translate(key: 'tableInvitationTitle')}
+			</td>
+		</tr>
+		<f:groupedFor each="{invitations}" as="invitationsByNews" groupBy="news" groupKey="news">
+			<tr class="db_list_normal">
+			<f:for each="{invitationsByNews}" as="invitation" iteration="iterator">
+				<f:if condition="{iterator.isFirst}">
+					<td class="col-icon">
+						<a href="#" onClick="Clickmenu.show('tx_news_domain_model_news', '{invitation.news.uid}', '1', '', '', ''); return false;" title="id={invitation.news.uid}">
+							<nci:spriteIconForRecord table="tx_news_domain_model_news" object="{invitation.news}" />
+						</a>
+					</td>
+					<td class="t3-title-column">
+						<f:if condition="{invitation.news.pid} == {settings.eventsPid}">
+							<f:then>
+								<a target="_blank" href="../index.php?id={settings.eventDetailPid}&tx_news_pi1[controller]=News&tx_news_pi1[action]=eventDetail&tx_news_pi1[news]={invitation.news.uid}&no_cache=1">
+									{invitation.news.title}
+								</a>
+							</f:then>
+							<f:else>
+								<a target="_blank" href="../index.php?id={settings.newsDetailPid}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news]={invitation.news.uid}&no_cache=1">
+									{invitation.news.title}
+								</a>
+							</f:else>
+						</f:if>
+					</td>
+					<td>
+						<table id="myinvitations-categorylist" class="typo3-dblist">
+							<tr class="t3-row-header">
+								<th><f:translate key="tableInvitations.category" /></th>
+								<th><f:translate key="tableInvitations.status" /></th>
+								<th><f:translate key="tableInvitations.by" /></th>
+							</tr>
+							<f:for each="{invitationsByNews}" as="invitationPerNews">
+								<tr class="db_list_normal">
+									<td>{invitationPerNews.category.title}</td>
+									<td>
+										<f:if condition="{invitationPerNews.status} == 1">
+											<f:translate key="tx_newscatinvite_domain_model_invitation.status.1" />
+										</f:if>
+										<f:if condition="{invitationPerNews.status} == -1">
+											<f:translate key="tx_newscatinvite_domain_model_invitation.status.-1" />
+										</f:if>
+										<f:if condition="{invitationPerNews.status} == 0">
+											<f:translate key="tx_newscatinvite_domain_model_invitation.status.0" />
+										</f:if>
+									</td>
+									<td>
+										<f:if condition="{invitation.approvingBeuser.realName}">
+											<f:then>
+												{invitation.approvingBeuser.realName}
+											</f:then>
+											<f:else>
+												{invitation.approvingBeuser.username}
+											</f:else>
+										</f:if>
+									</td>
+								</tr>
+							</f:for>
+						</table>
+					</td>
+
+
+				</f:if>
+
+
+			</f:for>
+			</tr>
+		</f:groupedFor>
+	</table>
+</f:section>
