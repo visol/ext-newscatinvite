@@ -73,4 +73,18 @@ class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		return $query->execute();
 	}
 
+	public function findPendingUnsentInvitations() {
+		$query = $this->createQuery();
+		// we wait two minutes before sending an invitation because it might be "self-approved" by then
+		$nowBeforeTwoMinutes = time() - 120;
+		$query->matching(
+			$query->logicalAnd(
+				$query->equals('status', 0),
+				$query->equals('sent', 0),
+				$query->lessThan('tstamp', $nowBeforeTwoMinutes)
+			)
+		);
+		return $query->execute();
+	}
+
 }

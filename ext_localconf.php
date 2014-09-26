@@ -17,4 +17,9 @@ if (!defined('TYPO3_MODE')) {
 	)
 );
 
+/* Command Controllers */
+if (TYPO3_MODE === 'BE') {
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Visol\Newscatinvite\Command\InvitationCommandController';
+}
+
 ?>

@@ -1,0 +1,92 @@
+<html>
+<head>
+	<style>
+		body { font-size: 12px; font-family: Calibri, Arial, sans-serif }
+		th { text-align: left; vertical-align: top;}
+		td { vertical-align: top; }
+	</style>
+</head>
+<body>
+	<p>Anfrage um Aufnahme der folgenden News/VA-Meldung:</p>
+
+	<table>
+		<tbody>
+			<tr>
+				<th>Meldung:</th>
+				<td>
+					<f:if condition="{invitation.news.pid} == {settings.eventsPid}">
+						<f:then>
+							<a target="_blank" href="{settings.baseUrl}index.php?id={settings.eventDetailPid}&tx_news_pi1[controller]=News&tx_news_pi1[action]=eventDetail&tx_news_pi1[news]={invitation.news.uid}&no_cache=1">
+								{invitation.news.title}
+							</a>
+						</f:then>
+						<f:else>
+							<a target="_blank" href="{settings.baseUrl}index.php?id={settings.newsDetailPid}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news]={invitation.news.uid}&no_cache=1">
+								{invitation.news.title}
+							</a>
+						</f:else>
+					</f:if>
+				</td>
+			</tr>
+			<tr>
+				<th>Typ:</th>
+				<td>
+					<f:if condition="{invitation.news.pid} == {settings.eventsPid}">
+						<f:then>
+							Veranstaltung
+						</f:then>
+						<f:else>
+							News
+						</f:else>
+					</f:if>
+				</td>
+			</tr>
+			<tr>
+				<th>Aufnahme in die Kategorie:</th>
+				<td>
+					{invitation.category.title}
+				</td>
+			</tr>
+			<tr>
+				<th>Einladung gesendet von:</th>
+				<td>
+					<f:if condition="{invitation.creator.email}">
+						<f:then>
+							<a href="mailto:{invitation.creator.email}">
+								<f:if condition="{invitation.creator.realName}">
+									<f:then>
+										{invitation.creator.realName}
+									</f:then>
+									<f:else>
+										{invitation.creator.username}
+									</f:else>
+								</f:if>
+							</a>
+						</f:then>
+						<f:else>
+							<a href="mailto:{invitation.creator.username}">
+								{invitation.creator.username}
+							</a>
+						</f:else>
+					</f:if>
+				</td>
+			</tr>
+			<tr>
+				<th>Bereich:</th>
+				<td>
+					<f:for each="{invitation.news.categories}" as="category">
+						<f:if condition="{category.parentcategory.uid} == 35">
+							{category.title},
+						</f:if>
+						<f:if condition="{category.parentcategory.uid} == 208">
+							{category.title},
+						</f:if>
+					</f:for>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p>Einladungen können im <a target="_blank" href="{settings.baseUrl}typo3/backend.php?module=user_NewscatinviteInvitations">TYPO3-Backend im Modul "News-/VA-Einladungen"</a> verwaltet werden.</p>
+</body>
+</html>

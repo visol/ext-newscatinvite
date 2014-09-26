@@ -62,5 +62,6 @@ module.tx_newscatinvite {
 		newsDetailPid = 28
 		eventDetailPid = 29
 		eventsPid = 56
+		baseUrl = {$visol.page.baseUrl}
 	}
 }
