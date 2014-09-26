@@ -46,22 +46,10 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 			'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.category',
 			'config' => array(
 				'type' => 'select',
-				'renderMode' => 'tree',
-				'treeConfig' => array(
-					'rootUid' => $extensionConfiguration['rootCategoryUid'],
-					'parentField' => 'parent',
-					'appearance' => array(
-						'showHeader' => TRUE,
-						'allowRecursiveMode' => TRUE,
-						'expandAll' => TRUE,
-						'maxLevels' => 99,
-						'nonSelectableLevels' => '0'
-					),
-				),
+//				'renderMode' => 'select',
 				'foreign_table' => 'sys_category',
-				'foreign_table_where' => ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.sorting',
-				'size' => 10,
-				'autoSizeMax' => 20,
+				'foreign_table_where' => ' AND sys_category.parent = ' . $extensionConfiguration['rootCategoryUid'] . ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.title',
+				'size' => 1,
 				'minitems' => 1,
 				'maxitems' => 1,
 			),
@@ -85,6 +73,9 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 				'type' => 'select',
 				'foreign_table' => 'be_users',
 				'foreign_table_where' => ' ORDER BY be_users.username',
+				'items' => array(
+					array('', ''),
+				),
 				'minitems' => 0,
 				'maxitems' => 1,
 				'readOnly' => 1,
