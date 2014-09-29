@@ -46,9 +46,11 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
 			'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.category',
 			'config' => array(
 				'type' => 'select',
-//				'renderMode' => 'select',
 				'foreign_table' => 'sys_category',
 				'foreign_table_where' => ' AND sys_category.parent = ' . $extensionConfiguration['rootCategoryUid'] . ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.title',
+				'items' => array(
+					array('', ''),
+				),
 				'size' => 1,
 				'minitems' => 1,
 				'maxitems' => 1,
