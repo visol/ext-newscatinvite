@@ -123,7 +123,7 @@ class InvitationCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comm
 				}
 				$emailIsSent = $this->sendEmail($recipientArray, $sender, $subject, $content, $replyTo);
 				if ($emailIsSent) {
-					$invitation->setSent(0);
+					$invitation->setSent(1);
 					$this->invitationRepository->update($invitation);
 				}
 			}
