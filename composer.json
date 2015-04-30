@@ -1,0 +1,7 @@
+{
+	"name": "visol/newscatinvite",
+	"type": "typo3-cms-extension",
+	"description": "News category invitation",
+	"homepage": "https://github.com/visol/newscatinvite",
+	"license": ["GPL-2.0+"]
+}
