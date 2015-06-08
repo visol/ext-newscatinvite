@@ -96,8 +96,6 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return \DateTime $tstamp
 	 */
 	public function getTstamp() {
-		// TODO: Datum aus DB ausgeben
-		return new \DateTime();
 		return $this->tstamp;
 	}
 
