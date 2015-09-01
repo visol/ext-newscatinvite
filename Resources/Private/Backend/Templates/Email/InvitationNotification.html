@@ -16,12 +16,12 @@
 				<td>
 					<f:if condition="{invitation.news.pid} == {settings.eventsPid}">
 						<f:then>
-							<a target="_blank" href="{settings.baseUrl}index.php?id={settings.eventDetailPid}&tx_news_pi1[controller]=News&tx_news_pi1[action]=eventDetail&tx_news_pi1[news]={invitation.news.uid}&no_cache=1">
+							<a target="_blank" href="{settings.baseUrl}index.php?id={settings.eventDetailPid}{f:if(condition:'{invitation.news.sysLanguageUid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=eventDetail&tx_news_pi1[news]={invitation.news.uid}&no_cache=1">
 								{invitation.news.title}
 							</a>
 						</f:then>
 						<f:else>
-							<a target="_blank" href="{settings.baseUrl}index.php?id={settings.newsDetailPid}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news]={invitation.news.uid}&no_cache=1">
+							<a target="_blank" href="{settings.baseUrl}index.php?id={settings.newsDetailPid}{f:if(condition:'{invitation.news.sysLanguageUid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news]={invitation.news.uid}&no_cache=1">
 								{invitation.news.title}
 							</a>
 						</f:else>
