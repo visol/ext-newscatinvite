@@ -11,36 +11,34 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'News category invitation',
-	'description' => 'Send invitations to let other users add news to their categories.',
-	'category' => 'module',
-	'author' => 'Jonas Renggli',
-	'author_email' => 'jonas.renggli@visol.ch',
-	'author_company' => 'visol digitale Dienstleistungen GmbH',
-	'shy' => '',
-	'priority' => '',
-	'module' => '',
-	'state' => 'stable',
-	'internal' => '',
-	'uploadfolder' => '0',
-	'createDirs' => '',
-	'modify_tables' => '',
-	'clearCacheOnLoad' => 0,
-	'lockType' => '',
-	'version' => '1.0.0',
-	'constraints' => array(
-		'depends' => array(
-			'extbase' => '6.2',
-			'fluid' => '6.2',
-			'typo3' => '6.2',
-			'news' => '3.1.0-3.99.99',
-			'roq_newsevent' => '3.0.0-3.99.99',
-		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
-	),
+    'title' => 'News category invitation',
+    'description' => 'Send invitations to let other users add news to their categories.',
+    'category' => 'module',
+    'author' => 'Jonas Renggli',
+    'author_email' => 'jonas.renggli@visol.ch',
+    'author_company' => 'visol digitale Dienstleistungen GmbH',
+    'shy' => '',
+    'priority' => '',
+    'module' => '',
+    'state' => 'stable',
+    'internal' => '',
+    'uploadfolder' => '0',
+    'createDirs' => '',
+    'modify_tables' => '',
+    'clearCacheOnLoad' => 0,
+    'lockType' => '',
+    'version' => '1.0.0',
+    'constraints' => array(
+        'depends' => array(
+            'extbase' => '6.2',
+            'fluid' => '6.2',
+            'typo3' => '6.2',
+            'news' => '3.1.0-3.99.99',
+            'roq_newsevent' => '3.0.0-3.99.99',
+        ),
+        'conflicts' => array(),
+        'suggests' => array(),
+    ),
 );
 
 ?>
