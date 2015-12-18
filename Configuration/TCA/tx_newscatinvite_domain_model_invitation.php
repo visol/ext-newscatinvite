@@ -5,8 +5,33 @@ if (!defined('TYPO3_MODE')) {
 
 $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['newscatinvite']);
 
-$TCA['tx_newscatinvite_domain_model_invitation'] = array(
-    'ctrl' => $TCA['tx_newscatinvite_domain_model_invitation']['ctrl'],
+$GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = array(
+    'ctrl' => array(
+        'title' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation',
+        'label' => 'category',
+        'label_alt' => 'status',
+        'label_alt_force' => 1,
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
+        'cruser_id' => 'cruser_id',
+        'dividers2tabs' => true,
+        // Removed versioning, translations, deleteClause and enableColumns to make Extbase constraint for invitations working
+        //'versioningWS' => 2,
+        //'versioning_followPages' => TRUE,
+        //'origUid' => 't3_origuid',
+        //'languageField' => 'sys_language_uid',
+        //'transOrigPointerField' => 'l10n_parent',
+        //'transOrigDiffSourceField' => 'l10n_diffsource',
+        //'delete' => 'deleted',
+        //'enablecolumns' => array(
+        //	'disabled' => 'hidden',
+        //	'starttime' => 'starttime',
+        //	'endtime' => 'endtime',
+        //),
+        'searchFields' => 'status,sent,category,news,approving_beuser,',
+        'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('newscatinvite') . 'Configuration/TCA/Invitation.php',
+        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('newscatinvite') . 'Resources/Public/Icons/tx_newscatinvite_domain_model_invitation.gif'
+    ),
     'interface' => array(
         'showRecordFieldList' => 'status, sent, category, news, approving_beuser',
     ),
@@ -97,4 +122,3 @@ $TCA['tx_newscatinvite_domain_model_invitation'] = array(
     ),
 );
 
-?>
