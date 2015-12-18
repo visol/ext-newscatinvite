@@ -13,11 +13,6 @@ namespace Visol\Newscatinvite\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
-/**
- * Repository for \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup.
- *
- * @api
- */
 class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository {
 
 	/**
