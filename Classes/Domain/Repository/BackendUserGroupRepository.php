@@ -16,10 +16,10 @@ namespace Visol\Newscatinvite\Domain\Repository;
 class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository {
 
 	/**
-	 * @param \Tx_News_Domain_Model_Category $category
+	 * @param \GeorgRinger\News\Domain\Model\Category $category
 	 * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 	 */
-	public function findByCategoryPermissions(\Tx_News_Domain_Model_Category $category) {
+	public function findByCategoryPermissions(\GeorgRinger\News\Domain\Model\Category $category) {
 		$query = $this->createQuery();
 		$query->matching(
 			$query->contains('categoryPerms', $category)

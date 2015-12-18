@@ -13,7 +13,7 @@ namespace Visol\Newscatinvite\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
-class News extends \Tx_News_Domain_Model_News {
+class News extends \GeorgRinger\News\Domain\Model\News {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Visol\Newscatinvite\Domain\Model\Invitation>

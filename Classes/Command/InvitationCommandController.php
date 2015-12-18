@@ -74,7 +74,7 @@ class InvitationCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comm
 		foreach ($notSentInvitations as $invitation) {
 			/** @var \Visol\Newscatinvite\Domain\Model\Invitation $invitation */
 			$recipientArray = array();
-			if ($invitation->getCategory() instanceof \Tx_News_Domain_Model_Category) {
+			if ($invitation->getCategory() instanceof \GeorgRinger\News\Domain\Model\Category) {
 				$userGroupsWithCurrentCategory = $this->backendUserGroupRepository->findByCategoryPermissions($invitation->getCategory());
 				if ($userGroupsWithCurrentCategory->count()) {
 					$backendUserGroupsArray = array();
@@ -157,4 +157,3 @@ class InvitationCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comm
 	}
 
 }
-?>

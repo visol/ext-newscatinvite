@@ -13,7 +13,7 @@ namespace Visol\Newscatinvite\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
-class Event extends \Tx_RoqNewsevent_Domain_Model_Event {
+class Event extends \Roquin\RoqNewsevent\Domain\Model\Event {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Visol\Newscatinvite\Domain\Model\Invitation>

@@ -152,10 +152,10 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the category
 	 *
-	 * @param \Tx_News_Domain_Model_Category $category
+	 * @param \GeorgRinger\News\Domain\Model\Category $category
 	 * @return void
 	 */
-	public function setCategory(\Tx_News_Domain_Model_Category $category) {
+	public function setCategory(\GeorgRinger\News\Domain\Model\Category $category) {
 		$this->category = $category;
 	}
 
@@ -171,10 +171,10 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the news
 	 *
-	 * @param \Tx_News_Domain_Model_News $news
+	 * @param \GeorgRinger\News\Domain\Model\News $news
 	 * @return void
 	 */
-	public function setNews(\Tx_News_Domain_Model_News $news) {
+	public function setNews(\GeorgRinger\News\Domain\Model\News $news) {
 		$this->news = $news;
 	}
 

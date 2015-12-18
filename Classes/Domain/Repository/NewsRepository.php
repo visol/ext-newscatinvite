@@ -13,7 +13,7 @@ namespace Visol\Newscatinvite\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
-class NewsRepository extends \Tx_News_Domain_Repository_NewsRepository {
+class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository {
 
 	/**
 	 * Returns a category constraint created by
@@ -40,7 +40,7 @@ class NewsRepository extends \Tx_News_Domain_Repository_NewsRepository {
 		}
 		foreach ($categories as $category) {
 			if ($includeSubCategories) {
-				$subCategories = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', \Tx_News_Service_CategoryService::getChildrenCategories($category, 0, '', TRUE), TRUE);
+				$subCategories = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', \GeorgRinger\News\Service\CategoryService::getChildrenCategories($category, 0, '', TRUE), TRUE);
 				$subCategoryConstraint = array();
 				$subCategoryConstraint[] = $query->contains('categories', $category);
 				if (count($subCategories) > 0) {
@@ -94,10 +94,10 @@ class NewsRepository extends \Tx_News_Domain_Repository_NewsRepository {
 	 * Get the count of news records by month/year and
 	 * returns the result compiled as array
 	 *
-	 * @param \Tx_News_Domain_Model_DemandInterface $demand
+	 * @param \GeorgRinger\News\Domain\Model\DemandInterface $demand
 	 * @return array
 	 */
-	public function countByDate(\Tx_News_Domain_Model_DemandInterface $demand) {
+	public function countByDate(\GeorgRinger\News\Domain\Model\DemandInterface $demand) {
 		$data = array();
 		$sql = $this->findDemandedRaw($demand);
 
