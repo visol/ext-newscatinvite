@@ -1,13 +1,10 @@
 plugin.tx_news {
   objects {
-     Tx_News_Domain_Repository_NewsRepository {
+     GeorgRinger\News\Domain\Repository\NewsRepository {
         className = Visol\Newscatinvite\Domain\Repository\NewsRepository
      }
-     Tx_RoqNewsevent_Domain_Repository_EventRepository {
+     Roquin\RoqNewsevent\Domain\Repository\EventRepository {
         className = Visol\Newscatinvite\Domain\Repository\EventRepository
-     }
-     Tx_News_Domain_Domain_News {
-        className = Visol\Newscatinvite\Domain\Model\News
      }
   }
 }
@@ -29,7 +26,7 @@ config.tx_extbase.persistence.classes {
 			}
 		}
 	}
-	Tx_News_Domain_Model_Category {
+	GeorgRinger\News\Domain\Model\Category {
 		mapping {
 			tableName = sys_category
 		}
