@@ -143,7 +143,7 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the category
 	 *
-	 * @return \Tx_News_Domain_Model_Category $category
+	 * @return \GeorgRinger\News\Domain\Model\Category $category
 	 */
 	public function getCategory() {
 		return $this->category;
@@ -162,7 +162,7 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the news
 	 *
-	 * @return \Tx_News_Domain_Model_News $news
+	 * @return \GeorgRinger\News\Domain\Model\News $news
 	 */
 	public function getNews() {
 		return $this->news;
