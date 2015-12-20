@@ -43,14 +43,14 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * category
 	 *
-	 * @var \Tx_News_Domain_Model_Category
+	 * @var \GeorgRinger\News\Domain\Model\Category
 	 */
 	protected $category;
 
 	/**
 	 * news
 	 *
-	 * @var \Tx_News_Domain_Model_News
+	 * @var \GeorgRinger\News\Domain\Model\News
 	 */
 	protected $news;
 
