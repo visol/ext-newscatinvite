@@ -66,8 +66,9 @@ class InvitationCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comm
 	 * Send pending invitations
 	 *
 	 * @param int $itemsPerRun
+     * @param string $overrideRecipient Override the recipient with this address - for testing purposes
 	 */
-	public function sendInvitationsCommand($itemsPerRun = 20) {
+	public function sendInvitationsCommand($itemsPerRun = 20, $overrideRecipient = '') {
 		$this->initializeAction();
 
 		$notSentInvitations = $this->invitationRepository->findPendingUnsentInvitations();
@@ -91,6 +92,11 @@ class InvitationCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comm
 				}
 			}
 			if (!empty($recipientArray)) {
+
+                if (!empty($overrideRecipient)) {
+                    // For testing purposes, the recipients can be overridden (defined in CommandController configuration)
+                    $recipientArray = array($overrideRecipient);
+                }
 
 				$subject = 'Einladung zur Aufnahme einer News-Meldung';
 
