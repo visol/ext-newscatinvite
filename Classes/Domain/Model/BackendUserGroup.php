@@ -21,7 +21,7 @@ namespace Visol\Newscatinvite\Domain\Model;
 class BackendUserGroup extends \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Tx_News_Domain_Model_Category>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\GeorgRinger\News\Domain\Model\Category>
 	 */
 	protected $categoryPerms;
 
