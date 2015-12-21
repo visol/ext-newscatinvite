@@ -13,8 +13,6 @@ namespace Visol\Newscatinvite\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use Visol\Newscatinvite\Domain\Model\Invitation;
 
 
@@ -51,10 +49,6 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return void
 	 */
 	public function listAction() {
-		//$settings = $this->configurationManager->getConfiguration(\Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'Visol.Newscatinvite', 'Invitations');$settings = $this->configurationManager->getConfiguration(\Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'Visol.Newscatinvite', 'Invitations');
-		//$settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'Visol.Newscatinvite', 'Invitations');$settings = $this->configurationManager->getConfiguration(\Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($settings);
-
 		$categoryUidArray = $GLOBALS['BE_USER']->getCategoryMountPoints();
 
 		if (empty($categoryUidArray)) {

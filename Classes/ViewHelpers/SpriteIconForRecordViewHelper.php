@@ -39,17 +39,8 @@ class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abst
 			'startTime' => FALSE,
 			'endTime' => FALSE
 		);
-		if (method_exists($object, 'getIsDisabled')) {
-			$row['disable'] = $object->getIsDisabled();
-		}
-		if ($table === 'be_users' && $object instanceof \TYPO3\CMS\Beuser\Domain\Model\BackendUser) {
-			$row['admin'] = $object->getIsAdministrator();
-		}
-		if (method_exists($object, 'getStartDateAndTime')) {
-			$row['startTime'] = $object->getStartDateAndTime();
-		}
-		if (method_exists($object, 'getEndDateAndTime')) {
-			$row['endTime'] = $object->getEndDateAndTime();
+		if (method_exists($object, 'getHidden')) {
+			$row['hidden'] = $object->getHidden();
 		}
 		return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row);
 	}

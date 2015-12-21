@@ -18,6 +18,17 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	const STATUS_PENDING = 0;
 	const STATUS_REJECTED = -1;
 
+    /**
+     * @var \Visol\Newscatinvite\Domain\Repository\NewsRepository
+     * @inject
+     */
+    protected $newsRepository;
+
+    /**
+     * @var \Visol\Newscatinvite\Service\NewsService
+     * @inject
+     */
+    protected $newsService;
 
 	/**
 	 * tstamp
@@ -50,9 +61,17 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * news
 	 *
-	 * @var \GeorgRinger\News\Domain\Model\News
+	 * @var int
 	 */
 	protected $news;
+
+    /**
+     * the raw news record as an array
+     *
+     * @var array
+     * @transient
+     */
+    protected $rawNews;
 
 	/**
 	 * approvingBeuser
@@ -157,6 +176,7 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setCategory(\GeorgRinger\News\Domain\Model\Category $category) {
 		$this->category = $category;
+
 	}
 
 	/**
@@ -165,7 +185,8 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return \GeorgRinger\News\Domain\Model\News $news
 	 */
 	public function getNews() {
-		return $this->news;
+        $newsRecord = $this->newsRepository->findByUid($this->news, false);
+		return $newsRecord;
 	}
 
 	/**
@@ -177,6 +198,17 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function setNews(\GeorgRinger\News\Domain\Model\News $news) {
 		$this->news = $news;
 	}
+
+    /**
+     * Gets the raw news
+     * Only used for notification e-mails
+     *
+     * @return array
+     */
+    public function getRawNews() {
+        $rawNewsRecord = $this->newsService->getRawNewsRecordWithCategories($this->news);
+        return $rawNewsRecord;
+    }
 
 	/**
 	 * Returns the approvingBeuser

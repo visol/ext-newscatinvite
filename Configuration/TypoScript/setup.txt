@@ -25,8 +25,8 @@ module.tx_newscatinvite {
 		layoutRootPath = {$module.tx_newscatinvite.view.layoutRootPath}
 	}
 	settings {
-		newsDetailPid = 28
-		eventDetailPid = 29
+		newsPreviewPid = 6193
+		eventPreviewPid = 6194
 		eventsPid = 56
 		baseUrl = {$visol.page.baseUrl}
 	}

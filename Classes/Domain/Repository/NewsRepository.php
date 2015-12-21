@@ -157,5 +157,4 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository 
 		return $data;
 	}
 
-
 }
