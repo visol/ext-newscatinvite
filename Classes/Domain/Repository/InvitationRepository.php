@@ -31,7 +31,7 @@ class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 				$query->equals('status', $status),
 				$query->in('category', $categories),
 				$query->greaterThan('category.uid', 0),
-				$query->greaterThan('news.uid', 0)
+				$query->greaterThan('news', 0)
 			)
 		);
 
