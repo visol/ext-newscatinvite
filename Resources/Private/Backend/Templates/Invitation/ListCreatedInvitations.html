@@ -23,19 +23,19 @@
 			<f:for each="{invitationsByNews}" as="invitation" iteration="iterator">
 				<f:if condition="{iterator.isFirst}">
 					<td class="col-icon">
-						<a href="#" onClick="Clickmenu.show('tx_news_domain_model_news', '{invitation.news}', '1', '', '', ''); return false;" title="id={invitation.news.uid}">
+						<a href="#" onClick="Clickmenu.show('tx_news_domain_model_news', '{invitation.rawNews.uid}', '1', '', '', ''); return false;" title="id={invitation.news.uid}">
 							<nci:spriteIconForRecord table="tx_news_domain_model_news" object="{invitation.news}" />
 						</a>
 					</td>
 					<td class="t3-title-column">
 						<f:if condition="{invitation.rawNews.pid} == {settings.eventsPid}">
 							<f:then>
-								<a target="_blank" href="../index.php?id={settings.eventDetailPid}&tx_news_pi1[controller]=News&tx_news_pi1[action]=eventDetail&tx_news_pi1[news]={invitation.news}&no_cache=1">
+								<a target="_blank" href="../index.php?id={settings.eventDetailPid}&tx_news_pi1[controller]=News&tx_news_pi1[action]=eventDetail&tx_news_pi1[news]={invitation.rawNews.uid}&no_cache=1">
 									{invitation.rawNews.title}
 								</a>
 							</f:then>
 							<f:else>
-								<a target="_blank" href="../index.php?id={settings.newsDetailPid}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news]={invitation.news}&no_cache=1">
+								<a target="_blank" href="../index.php?id={settings.newsDetailPid}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news]={invitation.rawNews.uid}&no_cache=1">
 									{invitation.rawNews.title}
 								</a>
 							</f:else>
