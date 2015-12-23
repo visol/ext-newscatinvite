@@ -31,7 +31,7 @@
 			<tr>
 				<th>Typ:</th>
 				<td>
-					<f:if condition="{invitation.news.pid} == {settings.eventsPid}">
+					<f:if condition="{invitation.rawNews.pid} == {settings.eventsPid}">
 						<f:then>
 							Veranstaltung
 						</f:then>
@@ -41,6 +41,29 @@
 					</f:if>
 				</td>
 			</tr>
+			<tr>
+				<th>Status:</th>
+				<td>
+					<f:if condition="{invitation.rawNews.hidden}">
+						<f:then>
+							Versteckt
+						</f:then>
+						<f:else>
+							Publiziert
+						</f:else>
+					</f:if>
+				</td>
+			</tr>
+			<f:if condition="{invitation.rawNews.pid} == {settings.eventsPid}">
+				<f:else>
+					<tr>
+						<th>News-Datum:</th>
+						<td>
+							<f:format.date format="%e. %B %Y">{invitation.rawNews.datetime}</f:format.date>
+						</td>
+					</tr>
+				</f:else>
+			</f:if>
 			<tr>
 				<th>Aufnahme in die Kategorie:</th>
 				<td>
