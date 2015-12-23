@@ -13,20 +13,20 @@
 	<f:for each="{invitations}" as="invitation">
 		<tr class="db_list_normal">
 			<td class="col-icon">
-				<a href="#" onClick="Clickmenu.show('tx_news_domain_model_news', '{invitation.news.uid}', '1', '', '', ''); return false;" title="id={invitation.news.uid}">
+				<a href="#" onClick="Clickmenu.show('tx_news_domain_model_news', '{invitation.rawNews.uid}', '1', '', '', ''); return false;" title="id={invitation.news}">
 					<nci:spriteIconForRecord table="tx_news_domain_model_news" object="{invitation.news}" />
 				</a>
 			</td>
 			<td class="t3-title-column">
-				<f:if condition="{invitation.news.pid} == {settings.eventsPid}">
+				<f:if condition="{invitation.rawNews.pid} == {settings.eventsPid}">
 					<f:then>
-						<a target="_blank" href="../index.php?id={settings.eventPreviewPid}{f:if(condition:'{invitation.news.sysLanguageUid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=eventDetail&tx_news_pi1[news_preview]={invitation.news.uid}&no_cache=1">
-							{invitation.news.title}
+						<a target="_blank" href="../index.php?id={settings.eventPreviewPid}{f:if(condition:'{invitation.rawNews.sys_language_uid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=eventDetail&tx_news_pi1[news_preview]={invitation.news}&no_cache=1">
+							{invitation.rawNews.title}
 						</a>
 					</f:then>
 					<f:else>
-						<a target="_blank" href="../index.php?id={settings.newsPreviewPid}{f:if(condition:'{invitation.news.sysLanguageUid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news_preview]={invitation.news.uid}&no_cache=1">
-							{invitation.news.title}
+						<a target="_blank" href="../index.php?id={settings.newsPreviewPid}{f:if(condition:'{invitation.rawNews.sys_language_uid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news_preview]={invitation.news}&no_cache=1">
+							{invitation.rawNews.title}
 						</a>
 					</f:else>
 				</f:if>
