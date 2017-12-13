@@ -1,4 +1,5 @@
 <?php
+
 namespace Visol\Newscatinvite\Domain\Repository;
 
 /**
@@ -13,18 +14,21 @@ namespace Visol\Newscatinvite\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
-class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository {
+class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository
+{
 
-	/**
-	 * @param \GeorgRinger\News\Domain\Model\Category $category
-	 * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
-	 */
-	public function findByCategoryPermissions(\GeorgRinger\News\Domain\Model\Category $category) {
-		$query = $this->createQuery();
-		$query->matching(
-			$query->contains('categoryPerms', $category)
-		);
-		return $query->execute();
-	}
+    /**
+     * @param \GeorgRinger\News\Domain\Model\Category $category
+     *
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function findByCategoryPermissions(\GeorgRinger\News\Domain\Model\Category $category)
+    {
+        $query = $this->createQuery();
+        $query->matching(
+            $query->contains('categoryPerms', $category)
+        );
 
+        return $query->execute();
+    }
 }

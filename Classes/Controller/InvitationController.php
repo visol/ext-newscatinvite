@@ -1,4 +1,5 @@
 <?php
+
 namespace Visol\Newscatinvite\Controller;
 
 /**
@@ -15,134 +16,165 @@ namespace Visol\Newscatinvite\Controller;
  */
 use Visol\Newscatinvite\Domain\Model\Invitation;
 
-
 /**
  * InvitationController
  */
-class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+{
 
-	/**
-	 * invitationRepository
-	 *
-	 * @var \Visol\Newscatinvite\Domain\Repository\InvitationRepository
-	 * @inject
-	 */
-	protected $invitationRepository;
+    /**
+     * invitationRepository
+     *
+     * @var \Visol\Newscatinvite\Domain\Repository\InvitationRepository
+     * @inject
+     */
+    protected $invitationRepository;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository
-	 * @inject
-	 */
-	protected $backendUserRepository;
+    /**
+     * @var \TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository
+     * @inject
+     */
+    protected $backendUserRepository;
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
-	 * @inject
-	 */
-	protected $configurationManager;
+    /**
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
+     * @inject
+     */
+    protected $configurationManager;
 
 
+    /**
+     * action list
+     *
+     * @return void
+     */
+    public function listAction()
+    {
+        $categoryUidArray = $GLOBALS['BE_USER']->getCategoryMountPoints();
 
-	/**
-	 * action list
-	 *
-	 * @return void
-	 */
-	public function listAction() {
-		$categoryUidArray = $GLOBALS['BE_USER']->getCategoryMountPoints();
+        if (empty($categoryUidArray)) {
+            $invitations = $this->invitationRepository->findByStatus(0);
+        } else {
+            $invitations = $this->invitationRepository->findByStatusAndCategories(
+                Invitation::STATUS_PENDING,
+                $categoryUidArray
+            );
+        }
 
-		if (empty($categoryUidArray)) {
-			$invitations = $this->invitationRepository->findByStatus(0);
-		} else {
-			$invitations = $this->invitationRepository->findByStatusAndCategories(Invitation::STATUS_PENDING, $categoryUidArray);
-		}
+        $this->view->assign('invitations', $invitations);
+    }
 
-		$this->view->assign('invitations', $invitations);
-	}
+    /**
+     * action listArchive
+     *
+     * @return void
+     */
+    public function listArchiveAction()
+    {
+        $categoryUidArray = $GLOBALS['BE_USER']->getCategoryMountPoints();
 
-	/**
-	 * action listArchive
-	 *
-	 * @return void
-	 */
-	public function listArchiveAction() {
-		$categoryUidArray = $GLOBALS['BE_USER']->getCategoryMountPoints();
+        if (empty($categoryUidArray)) {
+            $invitations = $this->invitationRepository->findAll();
+        } else {
+            $invitations = $this->invitationRepository->findByCategories($categoryUidArray);
+        }
 
-		if (empty($categoryUidArray)) {
-			$invitations = $this->invitationRepository->findAll();
-		} else {
-			$invitations = $this->invitationRepository->findByCategories($categoryUidArray);
-		}
+        $this->view->assign('invitations', $invitations);
+    }
 
-		$this->view->assign('invitations', $invitations);
-	}
+    /**
+     * action listCreatedInvitations
+     *
+     * @return void
+     */
+    public function listCreatedInvitationsAction()
+    {
+        $backendUserUid = (int)$GLOBALS['BE_USER']->user['uid'];
+        $invitations = $this->invitationRepository->findByCreator($backendUserUid);
+        $this->view->assign('invitations', $invitations);
+    }
 
-	/**
-	 * action listCreatedInvitations
-	 *
-	 * @return void
-	 */
-	public function listCreatedInvitationsAction() {
-		$backendUserUid = (int)$GLOBALS['BE_USER']->user['uid'];
-		$invitations = $this->invitationRepository->findByCreator($backendUserUid);
-		$this->view->assign('invitations', $invitations);
-	}
+    /**
+     * action approve
+     *
+     * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
+     * @ignorevalidation $invitation
+     * @dontvalidate  $invitation
+     *
+     * @return void
+     * TODO permission check
+     */
+    public function approveAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation)
+    {
+        $backendUser = $this->backendUserRepository->findByUid($GLOBALS["BE_USER"]->user["uid"]);
+        $invitation->setStatus(\Visol\Newscatinvite\Domain\Model\Invitation::STATUS_APPROVED);
+        $invitation->setApprovingBeuser($backendUser);
+        $this->invitationRepository->update($invitation);
 
-	/**
-	 * action approve
-	 *
-	 * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
-	 * @ignorevalidation $invitation
-	 * @dontvalidate  $invitation
-	 * @return void
-	 * TODO permission check
-	 */
-	public function approveAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation) {
-		$backendUser = $this->backendUserRepository->findByUid($GLOBALS["BE_USER"]->user["uid"]);
-		$invitation->setStatus(\Visol\Newscatinvite\Domain\Model\Invitation::STATUS_APPROVED);
-		$invitation->setApprovingBeuser($backendUser);
-		$this->invitationRepository->update($invitation);
+        $this->addFlashMessage(
+            \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+                'approveMessage',
+                'Newscatinvite'
+            ),
+            '',
+            \TYPO3\CMS\Core\Messaging\AbstractMessage::OK
+        );
 
-		$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('approveMessage', 'Newscatinvite'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+        $this->redirect('list');
+    }
 
-		$this->redirect('list');
-	}
+    /**
+     * action reject
+     *
+     * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
+     * @ignorevalidation $invitation
+     * @dontvalidate  $invitation
+     *
+     * @return void
+     * TODO permission check*
+     */
+    public function rejectAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation)
+    {
+        $backendUser = $this->backendUserRepository->findByUid($GLOBALS["BE_USER"]->user["uid"]);
+        $invitation->setStatus(\Visol\Newscatinvite\Domain\Model\Invitation::STATUS_REJECTED);
+        $invitation->setApprovingBeuser($backendUser);
+        $this->invitationRepository->update($invitation);
 
-	/**
-	 * action reject
-	 *
-	 * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
-	 * @ignorevalidation $invitation
-	 * @dontvalidate  $invitation
-	 * @return void
-	 * TODO permission check*
-	 */
-	public function rejectAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation) {
-		$backendUser = $this->backendUserRepository->findByUid($GLOBALS["BE_USER"]->user["uid"]);
-		$invitation->setStatus(\Visol\Newscatinvite\Domain\Model\Invitation::STATUS_REJECTED);
-		$invitation->setApprovingBeuser($backendUser);
-		$this->invitationRepository->update($invitation);
+        $this->addFlashMessage(
+            \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+                'rejectMessage',
+                'Newscatinvite'
+            ),
+            '',
+            \TYPO3\CMS\Core\Messaging\AbstractMessage::OK
+        );
 
-		$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('rejectMessage', 'Newscatinvite'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+        $this->redirect('list');
+    }
 
-		$this->redirect('list');
-	}
+    /**
+     * action remove
+     *
+     * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
+     * @ignorevalidation $invitation
+     * @dontvalidate  $invitation
+     *
+     * @return void
+     * TODO permission check
+     */
+    public function removeAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation)
+    {
+        $this->invitationRepository->remove($invitation);
 
-	/**
-	 * action remove
-	 *
-	 * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
-	 * @ignorevalidation $invitation
-	 * @dontvalidate  $invitation
-	 * @return void
-	 * TODO permission check
-	 */
-	public function removeAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation) {
-		$this->invitationRepository->remove($invitation);
+        $this->addFlashMessage(
+            \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+                'deleteMessage',
+                'Newscatinvite'
+            ),
+            '',
+            \TYPO3\CMS\Core\Messaging\AbstractMessage::OK
+        );
 
-		$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('deleteMessage', 'Newscatinvite'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
-
-		$this->redirect('listArchive');
-	}
-
+        $this->redirect('listArchive');
+    }
 }

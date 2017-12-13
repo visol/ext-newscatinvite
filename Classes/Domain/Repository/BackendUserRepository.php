@@ -1,4 +1,5 @@
 <?php
+
 namespace Visol\Newscatinvite\Domain\Repository;
 
 /**
@@ -20,22 +21,24 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  *
  * @api
  */
-class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository {
+class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository
+{
 
-	/**
-	 * @param array $usergroups
-	 * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
-	 */
-	public function findByUsergroups($usergroups) {
-		$usergroupConstraints = array();
-		foreach ($usergroups as $usergroup) {
-			$usergroupConstraints[] = 'AND FIND_IN_SET(' . $usergroup . ', usergroup_cached_list) ';
-		}
-		$statement = 'SELECT * FROM be_users WHERE 1=1 ' . implode($usergroupConstraints) . BackendUtility::BEenableFields('be_users') . BackendUtility::deleteClause('be_users');
-		$query = $this->createQuery();
-		$query->statement($statement);
+    /**
+     * @param array $usergroups
+     *
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function findByUsergroups($usergroups)
+    {
+        $usergroupConstraints = [];
+        foreach ($usergroups as $usergroup) {
+            $usergroupConstraints[] = 'AND FIND_IN_SET(' . $usergroup . ', usergroup_cached_list) ';
+        }
+        $statement = 'SELECT * FROM be_users WHERE 1=1 ' . implode($usergroupConstraints) . BackendUtility::BEenableFields('be_users') . BackendUtility::deleteClause('be_users');
+        $query = $this->createQuery();
+        $query->statement($statement);
 
-		return $query->execute(TRUE);
-	}
-
+        return $query->execute(true);
+    }
 }

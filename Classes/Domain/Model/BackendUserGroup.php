@@ -1,4 +1,5 @@
 <?php
+
 namespace Visol\Newscatinvite\Domain\Model;
 
 /**
@@ -18,26 +19,28 @@ namespace Visol\Newscatinvite\Domain\Model;
  *
  * @api
  */
-class BackendUserGroup extends \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup {
+class BackendUserGroup extends \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup
+{
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\GeorgRinger\News\Domain\Model\Category>
-	 */
-	protected $categoryPerms;
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\GeorgRinger\News\Domain\Model\Category>
+     */
+    protected $categoryPerms;
 
-	/**
-	 * Constructs this backend usergroup
-	 */
-	public function __construct() {
-		$this->categoryPerms = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		parent::__construct();
-	}
+    /**
+     * Constructs this backend usergroup
+     */
+    public function __construct()
+    {
+        $this->categoryPerms = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        parent::__construct();
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
-	 */
-	public function getCategoryPerms() {
-		return $this->categoryPerms;
-	}
-
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     */
+    public function getCategoryPerms()
+    {
+        return $this->categoryPerms;
+    }
 }

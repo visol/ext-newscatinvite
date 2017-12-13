@@ -1,4 +1,5 @@
 <?php
+
 namespace Visol\Newscatinvite\Domain\Model;
 
 /**
@@ -13,17 +14,18 @@ namespace Visol\Newscatinvite\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
-class Event extends \Roquin\RoqNewsevent\Domain\Model\Event {
+class Event extends \Roquin\RoqNewsevent\Domain\Model\Event
+{
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Visol\Newscatinvite\Domain\Model\Invitation>
-	 * @lazy
-	 */
-	protected $invitations;
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Visol\Newscatinvite\Domain\Model\Invitation>
+     * @lazy
+     */
+    protected $invitations;
 
-	public function __construct() {
-		$this->invitations = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		parent::__construct();
-	}
-
+    public function __construct()
+    {
+        $this->invitations = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        parent::__construct();
+    }
 }

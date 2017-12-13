@@ -10,7 +10,7 @@
  * "version" and "dependencies" must not be touched!
  ***************************************************************/
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'News category invitation',
     'description' => 'Send invitations to let other users add news to their categories.',
     'category' => 'module',
@@ -28,15 +28,15 @@ $EM_CONF[$_EXTKEY] = array(
     'clearCacheOnLoad' => 0,
     'lockType' => '',
     'version' => '1.0.0',
-    'constraints' => array(
-        'depends' => array(
+    'constraints' => [
+        'depends' => [
             'extbase' => '6.2',
             'fluid' => '6.2',
             'typo3' => '6.2',
             'news' => '3.2.0-3.99.99',
             'roq_newsevent' => '3.3.0-3.99.99',
-        ),
-        'conflicts' => array(),
-        'suggests' => array(),
-    ),
-);
+        ],
+        'conflicts' => [],
+        'suggests' => [],
+    ],
+];

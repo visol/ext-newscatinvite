@@ -1,4 +1,5 @@
 <?php
+
 namespace Visol\Newscatinvite\Service;
 
 /**
@@ -15,11 +16,11 @@ namespace Visol\Newscatinvite\Service;
  */
 use TYPO3\CMS\Core\SingletonInterface;
 
-
 /**
  * InvitationController
  */
-class NewsService implements SingletonInterface {
+class NewsService implements SingletonInterface
+{
 
     protected $newsTable = 'tx_news_domain_model_news';
     protected $categoryTable = 'sys_category';
@@ -29,17 +30,26 @@ class NewsService implements SingletonInterface {
      * Get a raw news record using TYPO3 DB API and add its related categories
      *
      * @param $newsUid
+     *
      * @return array|FALSE|NULL
      */
-    public function getRawNewsRecordWithCategories($newsUid) {
+    public function getRawNewsRecordWithCategories($newsUid)
+    {
         $newsRecord = $this->findRawRecordByUid($newsUid);
-        $this->getDatabaseConnection()->store_lastBuiltQuery = TRUE;
-        $categoryQuery = $this->getDatabaseConnection()->exec_SELECT_mm_query('sys_category.*', $this->categoryTable, $this->categoryMmTable, $this->newsTable, 'AND uid_foreign=' . $newsRecord['uid']);
-        $categories = array();
+        $this->getDatabaseConnection()->store_lastBuiltQuery = true;
+        $categoryQuery = $this->getDatabaseConnection()->exec_SELECT_mm_query(
+            'sys_category.*',
+            $this->categoryTable,
+            $this->categoryMmTable,
+            $this->newsTable,
+            'AND uid_foreign=' . $newsRecord['uid']
+        );
+        $categories = [];
         while ($category = $this->getDatabaseConnection()->sql_fetch_assoc($categoryQuery)) {
             $categories[] = $category;
         }
         $newsRecord['categories'] = $categories;
+
         return $newsRecord;
     }
 
@@ -50,16 +60,23 @@ class NewsService implements SingletonInterface {
      * is the safest way to ensure getting the correct record.
      *
      * @param $newsUid
+     *
      * @return array|FALSE|NULL
      */
-    public function findRawRecordByUid($newsUid) {
-        return $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->newsTable, 'uid=' . (int)$newsUid . ' AND NOT deleted');
+    public function findRawRecordByUid($newsUid)
+    {
+        return $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
+            '*',
+            $this->newsTable,
+            'uid=' . (int)$newsUid . ' AND NOT deleted'
+        );
     }
 
     /**
      * @return \TYPO3\CMS\Core\Database\DatabaseConnection
      */
-    public function getDatabaseConnection() {
+    public function getDatabaseConnection()
+    {
         return $GLOBALS['TYPO3_DB'];
     }
 }

@@ -1,12 +1,12 @@
 <?php
 if (!defined('TYPO3_MODE')) {
-    die ('Access denied.');
+    die('Access denied.');
 }
 
 $extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['newscatinvite']);
 
-$GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = array(
-    'ctrl' => array(
+$GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
+    'ctrl' => [
         'title' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation',
         'label' => 'category',
         'label_alt' => 'status',
@@ -31,94 +31,93 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = array(
         'searchFields' => 'status,sent,category,news,approving_beuser,',
         'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('newscatinvite') . 'Configuration/TCA/Invitation.php',
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('newscatinvite') . 'Resources/Public/Icons/tx_newscatinvite_domain_model_invitation.gif'
-    ),
-    'interface' => array(
+    ],
+    'interface' => [
         'showRecordFieldList' => 'status, sent, category, news, approving_beuser',
-    ),
-    'types' => array(
-        '1' => array('showitem' => 'status, sent, category, news, approving_beuser'),
-    ),
-    'palettes' => array(
-        '1' => array('showitem' => ''),
-    ),
-    'columns' => array(
-        'status' => array(
+    ],
+    'types' => [
+        '1' => ['showitem' => 'status, sent, category, news, approving_beuser'],
+    ],
+    'palettes' => [
+        '1' => ['showitem' => ''],
+    ],
+    'columns' => [
+        'status' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.status',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
-                'items' => array(
-                    array('', 0),
-                    array(
+                'items' => [
+                    ['', 0],
+                    [
                         'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.status.1',
                         1
-                    ),
-                    array(
+                    ],
+                    [
                         'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.status.-1',
                         -1
-                    ),
-                ),
+                    ],
+                ],
                 'size' => 1,
                 'maxitems' => 1,
                 'eval' => ''
-            ),
-        ),
-        'sent' => array(
+            ],
+        ],
+        'sent' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.sent',
-            'config' => array(
+            'config' => [
                 'type' => 'check',
                 'default' => 0,
                 'readOnly' => 1,
-            ),
-        ),
-        'category' => array(
+            ],
+        ],
+        'category' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.category',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'foreign_table' => 'sys_category',
                 'foreign_table_where' => ' AND sys_category.parent = ' . $extensionConfiguration['rootCategoryUid'] . ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.title',
-                'items' => array(
-                    array('', ''),
-                ),
+                'items' => [
+                    ['', ''],
+                ],
                 'size' => 1,
                 'minitems' => 1,
                 'maxitems' => 1,
-            ),
+            ],
             // hide field if notification mail was already sent
             'displayCond' => 'FIELD:sent:!=:1',
-        ),
-        'news' => array(
+        ],
+        'news' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.news',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'foreign_table' => 'tx_news_domain_model_news',
                 'minitems' => 1,
                 'maxitems' => 1,
-            ),
-        ),
-        'approving_beuser' => array(
+            ],
+        ],
+        'approving_beuser' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.approving_beuser',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'foreign_table' => 'be_users',
                 'foreign_table_where' => ' ORDER BY be_users.username',
-                'items' => array(
-                    array('', ''),
-                ),
+                'items' => [
+                    ['', ''],
+                ],
                 'minitems' => 0,
                 'maxitems' => 1,
                 'readOnly' => 1,
-            ),
-        ),
-        'tstamp' => array(
-            'config' => array(
+            ],
+        ],
+        'tstamp' => [
+            'config' => [
                 'type' => 'passthrough',
-            ),
-        ),
-    ),
-);
-
+            ],
+        ],
+    ],
+];

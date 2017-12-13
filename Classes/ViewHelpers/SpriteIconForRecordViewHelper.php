@@ -1,4 +1,5 @@
 <?php
+
 namespace Visol\Newscatinvite\ViewHelpers;
 
 /**
@@ -20,29 +21,32 @@ namespace Visol\Newscatinvite\ViewHelpers;
  *
  * @author Felix Kopp <felix-source@phorax.com>
  */
-class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+{
 
-	/**
-	 * Displays spriteIcon for database table and object
-	 *
-	 * @param string $table
-	 * @param object $object
-	 * @return string
-	 * @see \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row)
-	 */
-	public function render($table, $object) {
-		if (!is_object($object) || !method_exists($object, 'getUid')) {
-			return '';
-		}
-		$row = array(
-			'uid' => $object->getUid(),
-			'startTime' => FALSE,
-			'endTime' => FALSE
-		);
-		if (method_exists($object, 'getHidden')) {
-			$row['hidden'] = $object->getHidden();
-		}
-		return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row);
-	}
+    /**
+     * Displays spriteIcon for database table and object
+     *
+     * @param string $table
+     * @param object $object
+     *
+     * @return string
+     * @see \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row)
+     */
+    public function render($table, $object)
+    {
+        if (!is_object($object) || !method_exists($object, 'getUid')) {
+            return '';
+        }
+        $row = [
+            'uid' => $object->getUid(),
+            'startTime' => false,
+            'endTime' => false
+        ];
+        if (method_exists($object, 'getHidden')) {
+            $row['hidden'] = $object->getHidden();
+        }
 
+        return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row);
+    }
 }

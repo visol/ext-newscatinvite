@@ -1,4 +1,5 @@
 <?php
+
 namespace Visol\Newscatinvite\Domain\Repository;
 
 /**
@@ -13,149 +14,159 @@ namespace Visol\Newscatinvite\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
-class EventRepository extends \Roquin\RoqNewsevent\Domain\Repository\EventRepository {
+class EventRepository extends \Roquin\RoqNewsevent\Domain\Repository\EventRepository
+{
 
-	/**
-	 * Returns a category constraint created by
-	 * a given list of categories and a junction string
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-	 * @param  array $categories
-	 * @param  string $conjunction
-	 * @param  boolean $includeSubCategories
-	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface|null
-	 */
-	protected function createCategoryConstraint(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query, $categories, $conjunction, $includeSubCategories = FALSE) {
-		$constraint = NULL;
-		$categoryConstraints = array();
-		$invitationConstraints = array();
+    /**
+     * Returns a category constraint created by
+     * a given list of categories and a junction string
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+     * @param  array $categories
+     * @param  string $conjunction
+     * @param  boolean $includeSubCategories
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface|null
+     */
+    protected function createCategoryConstraint(
+        \TYPO3\CMS\Extbase\Persistence\QueryInterface $query,
+        $categories,
+        $conjunction,
+        $includeSubCategories = false
+    ) {
+        $constraint = null;
+        $categoryConstraints = [];
+        $invitationConstraints = [];
 
-		// If "ignore category selection" is used, nothing needs to be done
-		if (empty($conjunction)) {
-			return $constraint;
-		}
+        // If "ignore category selection" is used, nothing needs to be done
+        if (empty($conjunction)) {
+            return $constraint;
+        }
 
-		if (!is_array($categories)) {
-			$categories = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $categories, TRUE);
-		}
-		foreach ($categories as $category) {
-			if ($includeSubCategories) {
-				$subCategories = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', \GeorgRinger\News\Service\CategoryService::getChildrenCategories($category, 0, '', TRUE), TRUE);
-				$subCategoryConstraint = array();
-				$subCategoryConstraint[] = $query->contains('categories', $category);
-				if (count($subCategories) > 0) {
-					foreach ($subCategories as $subCategory) {
-						$subCategoryConstraint[] = $query->contains('categories', $subCategory);
-					}
-				}
-				if ($subCategoryConstraint) {
-					$categoryConstraints[] = $query->logicalOr($subCategoryConstraint);
-				}
+        if (!is_array($categories)) {
+            $categories = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $categories, true);
+        }
+        foreach ($categories as $category) {
+            if ($includeSubCategories) {
+                $subCategories = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
+                    ',',
+                    \GeorgRinger\News\Service\CategoryService::getChildrenCategories($category, 0, '', true),
+                    true
+                );
+                $subCategoryConstraint = [];
+                $subCategoryConstraint[] = $query->contains('categories', $category);
+                if (count($subCategories) > 0) {
+                    foreach ($subCategories as $subCategory) {
+                        $subCategoryConstraint[] = $query->contains('categories', $subCategory);
+                    }
+                }
+                if ($subCategoryConstraint) {
+                    $categoryConstraints[] = $query->logicalOr($subCategoryConstraint);
+                }
+            } else {
+                $categoryConstraints[] = $query->contains('categories', $category);
+                $invitationConstraints[] = $query->logicalAnd(
+                    $query->equals('invitations.category', $category),
+                    $query->equals('invitations.status', \Visol\Newscatinvite\Domain\Model\Invitation::STATUS_APPROVED)
+                );
+            }
+        }
 
-			} else {
-				$categoryConstraints[] = $query->contains('categories', $category);
-				$invitationConstraints[] = $query->logicalAnd(
-					$query->equals('invitations.category', $category),
-					$query->equals('invitations.status', \Visol\Newscatinvite\Domain\Model\Invitation::STATUS_APPROVED)
-				);
-			}
-		}
+        if ($categoryConstraints) {
+            switch (strtolower($conjunction)) {
+                case 'or':
+                    $categoryConstraint = $query->logicalOr($categoryConstraints);
+                    break;
+                case 'notor':
+                    $categoryConstraint = $query->logicalNot($query->logicalOr($categoryConstraints));
+                    break;
+                case 'notand':
+                    $categoryConstraint = $query->logicalNot($query->logicalAnd($categoryConstraints));
+                    break;
+                case 'and':
+                default:
+                    $categoryConstraint = $query->logicalAnd($categoryConstraints);
+            }
+        }
 
-		if ($categoryConstraints) {
-			switch (strtolower($conjunction)) {
-				case 'or':
-					$categoryConstraint = $query->logicalOr($categoryConstraints);
-					break;
-				case 'notor':
-					$categoryConstraint = $query->logicalNot($query->logicalOr($categoryConstraints));
-					break;
-				case 'notand':
-					$categoryConstraint = $query->logicalNot($query->logicalAnd($categoryConstraints));
-					break;
-				case 'and':
-				default:
-				$categoryConstraint = $query->logicalAnd($categoryConstraints);
-			}
-		}
+        if ($invitationConstraints) {
+            $invitationConstraint = $query->logicalOr($invitationConstraints);
+        }
 
-		if ($invitationConstraints) {
-			$invitationConstraint = $query->logicalOr($invitationConstraints);
-		}
+        $constraint = $query->logicalOr(
+            $categoryConstraint,
+            $invitationConstraint
+        );
 
-		$constraint = $query->logicalOr(
-			$categoryConstraint,
-			$invitationConstraint
-		);
+        return $constraint;
+    }
 
-		return $constraint;
-	}
+    /**
+     * Get the count of news records by month/year and
+     * returns the result compiled as array
+     *
+     * @param \GeorgRinger\News\Domain\Model\DemandInterface $demand
+     *
+     * @return array
+     */
+    public function countByDate(\GeorgRinger\News\Domain\Model\DemandInterface $demand)
+    {
+        $data = [];
+        $sql = $this->findDemandedRaw($demand);
 
-	/**
-	 * Get the count of news records by month/year and
-	 * returns the result compiled as array
-	 *
-	 * @param \GeorgRinger\News\Domain\Model\DemandInterface $demand
-	 * @return array
-	 */
-	public function countByDate(\GeorgRinger\News\Domain\Model\DemandInterface $demand) {
-		$data = array();
-		$sql = $this->findDemandedRaw($demand);
+        // Get the month/year into the result
+        $field = $demand->getDateField();
+        $field = empty($field) ? 'datetime' : $field;
 
-		// Get the month/year into the result
-		$field = $demand->getDateField();
-		$field = empty($field) ? 'datetime' : $field;
+        $where = substr($sql, strpos($sql, 'WHERE '));
+        $join = '';
 
-		$where = substr($sql, strpos($sql, 'WHERE '));
-		$join = '';
+        $categoryUidPattern = '/tx_newscatinvite_domain_model_invitation.category = \'(\d+)\'/';
+        preg_match($categoryUidPattern, $where, $matches);
+        if ($matches && $categoryUid = $matches[1]) {
+            $join = ' LEFT JOIN (SELECT * FROM tx_newscatinvite_domain_model_invitation WHERE tx_newscatinvite_domain_model_invitation.category = ' . $categoryUid . ' AND tx_newscatinvite_domain_model_invitation.status = 1 GROUP BY tx_newscatinvite_domain_model_invitation.news) tx_newscatinvite_domain_model_invitation ON tx_news_domain_model_news.uid=tx_newscatinvite_domain_model_invitation.news ';
+        }
 
-		$categoryUidPattern = '/tx_newscatinvite_domain_model_invitation.category = \'(\d+)\'/';
-		preg_match($categoryUidPattern, $where, $matches);
-		if ($matches && $categoryUid = $matches[1]) {
-			$join = ' LEFT JOIN (SELECT * FROM tx_newscatinvite_domain_model_invitation WHERE tx_newscatinvite_domain_model_invitation.category = ' . $categoryUid . ' AND tx_newscatinvite_domain_model_invitation.status = 1 GROUP BY tx_newscatinvite_domain_model_invitation.news) tx_newscatinvite_domain_model_invitation ON tx_news_domain_model_news.uid=tx_newscatinvite_domain_model_invitation.news ';
-		}
+        $sql = 'SELECT FROM_UNIXTIME(' . $field . ', "%m") AS "_Month",' .
+            ' FROM_UNIXTIME(' . $field . ', "%Y") AS "_Year" ,' .
+            ' count(FROM_UNIXTIME(' . $field . ', "%m")) as count_month,' .
+            ' count(FROM_UNIXTIME(' . $field . ', "%y")) as count_year' .
+            ' FROM tx_news_domain_model_news ' .
+            $join .
+            $where;
 
-		$sql = 'SELECT FROM_UNIXTIME(' . $field . ', "%m") AS "_Month",' .
-			' FROM_UNIXTIME(' . $field . ', "%Y") AS "_Year" ,' .
-			' count(FROM_UNIXTIME(' . $field . ', "%m")) as count_month,' .
-			' count(FROM_UNIXTIME(' . $field . ', "%y")) as count_year' .
-			' FROM tx_news_domain_model_news ' .
-			$join .
-			$where;
+        if (TYPO3_MODE === 'FE') {
+            $sql .= $GLOBALS['TSFE']->sys_page->enableFields('tx_news_domain_model_news');
+        } else {
+            $sql .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('tx_news_domain_model_news') .
+                \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_news_domain_model_news');
+        }
+        // strip unwanted order by
+        $sql = $GLOBALS['TYPO3_DB']->stripOrderBy($sql);
 
-		if (TYPO3_MODE === 'FE') {
-			$sql .= $GLOBALS['TSFE']->sys_page->enableFields('tx_news_domain_model_news');
-		} else {
-			$sql .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('tx_news_domain_model_news') .
-				\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_news_domain_model_news');
-		}
-		// strip unwanted order by
-		$sql = $GLOBALS['TYPO3_DB']->stripOrderBy($sql);
+        // group by custom month/year fields
+        $orderDirection = strtolower($demand->getOrder());
+        if ($orderDirection !== 'desc' && $orderDirection != 'asc') {
+            $orderDirection = 'asc';
+        }
+        $sql .= ' GROUP BY _Month, _Year ORDER BY _Year ' . $orderDirection . ', _Month ' . $orderDirection;
+        $res = $GLOBALS['TYPO3_DB']->sql_query($sql);
+        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+            $data['single'][$row['_Year']][$row['_Month']] = $row['count_month'];
+        }
+        $GLOBALS['TYPO3_DB']->sql_free_result($res);
 
-		// group by custom month/year fields
-		$orderDirection = strtolower($demand->getOrder());
-		if ($orderDirection !== 'desc' && $orderDirection != 'asc') {
-			$orderDirection = 'asc';
-		}
-		$sql .= ' GROUP BY _Month, _Year ORDER BY _Year ' . $orderDirection . ', _Month ' . $orderDirection;
-		$res = $GLOBALS['TYPO3_DB']->sql_query($sql);
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$data['single'][$row['_Year']][$row['_Month']] = $row['count_month'];
-		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+        // Add totals
+        if (is_array($data['single'])) {
+            foreach ($data['single'] as $year => $months) {
+                $countOfYear = 0;
+                foreach ($months as $month) {
+                    $countOfYear += $month;
+                }
+                $data['total'][$year] = $countOfYear;
+            }
+        }
 
-		// Add totals
-		if (is_array($data['single'])) {
-			foreach ($data['single'] as $year => $months) {
-				$countOfYear = 0;
-				foreach ($months as $month) {
-					$countOfYear += $month;
-				}
-				$data['total'][$year] = $countOfYear;
-			}
-		}
-
-		return $data;
-	}
-
-
+        return $data;
+    }
 }

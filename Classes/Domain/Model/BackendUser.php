@@ -1,4 +1,5 @@
 <?php
+
 namespace Visol\Newscatinvite\Domain\Model;
 
 /**
@@ -18,25 +19,27 @@ namespace Visol\Newscatinvite\Domain\Model;
  *
  * @api
  */
-class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser {
+class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
+{
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Visol\Newscatinvite\Domain\Model\BackendUserGroup>
-	 */
-	protected $usergroupCachedList;
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Visol\Newscatinvite\Domain\Model\BackendUserGroup>
+     */
+    protected $usergroupCachedList;
 
-	/**
-	 * Constructs this backend usergroup
-	 */
-	public function __construct() {
-		$this->usergroupCachedList = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-	}
+    /**
+     * Constructs this backend usergroup
+     */
+    public function __construct()
+    {
+        $this->usergroupCachedList = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
-	 */
-	public function getUsergroupCachedList() {
-		return $this->usergroupCachedList;
-	}
-
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     */
+    public function getUsergroupCachedList()
+    {
+        return $this->usergroupCachedList;
+    }
 }

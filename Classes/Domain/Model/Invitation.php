@@ -1,4 +1,5 @@
 <?php
+
 namespace Visol\Newscatinvite\Domain\Model;
 
 /**
@@ -13,10 +14,11 @@ namespace Visol\Newscatinvite\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
-class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
-	const STATUS_APPROVED = 1;
-	const STATUS_PENDING = 0;
-	const STATUS_REJECTED = -1;
+class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
+    const STATUS_APPROVED = 1;
+    const STATUS_PENDING = 0;
+    const STATUS_REJECTED = -1;
 
     /**
      * @var \Visol\Newscatinvite\Domain\Repository\NewsRepository
@@ -30,40 +32,40 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
      */
     protected $newsService;
 
-	/**
-	 * tstamp
-	 *
-	 * @var \DateTime
-	 */
-	protected $tstamp;
+    /**
+     * tstamp
+     *
+     * @var \DateTime
+     */
+    protected $tstamp;
 
-	/**
-	 * status
-	 *
-	 * @var integer
-	 */
-	protected $status = '0';
+    /**
+     * status
+     *
+     * @var integer
+     */
+    protected $status = '0';
 
-	/**
-	 * sent
-	 *
-	 * @var boolean
-	 */
-	protected $sent = 'FALSE';
+    /**
+     * sent
+     *
+     * @var boolean
+     */
+    protected $sent = 'FALSE';
 
-	/**
-	 * category
-	 *
-	 * @var \GeorgRinger\News\Domain\Model\Category
-	 */
-	protected $category;
+    /**
+     * category
+     *
+     * @var \GeorgRinger\News\Domain\Model\Category
+     */
+    protected $category;
 
-	/**
-	 * news
-	 *
-	 * @var int
-	 */
-	protected $news;
+    /**
+     * news
+     *
+     * @var int
+     */
+    protected $news;
 
     /**
      * the raw news record as an array
@@ -73,131 +75,148 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
      */
     protected $rawNews;
 
-	/**
-	 * approvingBeuser
-	 *
-	 * @var \TYPO3\CMS\Extbase\Domain\Model\BackendUser
-	 */
-	protected $approvingBeuser;
+    /**
+     * approvingBeuser
+     *
+     * @var \TYPO3\CMS\Extbase\Domain\Model\BackendUser
+     */
+    protected $approvingBeuser;
 
-	/**
-	 * creator
-	 *
-	 * @var \TYPO3\CMS\Extbase\Domain\Model\BackendUser
-	 */
-	protected $creator;
+    /**
+     * creator
+     *
+     * @var \TYPO3\CMS\Extbase\Domain\Model\BackendUser
+     */
+    protected $creator;
 
-	/**
-	 * __construct
-	 */
-	public function __construct() {
-	}
+    /**
+     * __construct
+     */
+    public function __construct()
+    {
+    }
 
-	/**
-	 * Returns the tstamp
-	 *
-	 * @return \DateTime $tstamp
-	 */
-	public function getTstamp() {
-		return $this->tstamp;
-	}
+    /**
+     * Returns the tstamp
+     *
+     * @return \DateTime $tstamp
+     */
+    public function getTstamp()
+    {
+        return $this->tstamp;
+    }
 
-	/**
-	 * Sets the tstamp
-	 *
-	 * @param \DateTime $tstamp
-	 * @return void
-	 */
-	public function setTstamp(\DateTime $tstamp) {
-		$this->tstamp = $tstamp;
-	}
+    /**
+     * Sets the tstamp
+     *
+     * @param \DateTime $tstamp
+     *
+     * @return void
+     */
+    public function setTstamp(\DateTime $tstamp)
+    {
+        $this->tstamp = $tstamp;
+    }
 
-	/**
-	 * Returns the status
-	 *
-	 * @return integer $status
-	 */
-	public function getStatus() {
-		return $this->status;
-	}
+    /**
+     * Returns the status
+     *
+     * @return integer $status
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 
-	/**
-	 * Sets the status
-	 *
-	 * @param integer $status
-	 * @return void
-	 */
-	public function setStatus($status) {
-		$this->status = $status;
-	}
+    /**
+     * Sets the status
+     *
+     * @param integer $status
+     *
+     * @return void
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
 
-	/**
-	 * Returns the sent
-	 *
-	 * @return boolean $sent
-	 */
-	public function getSent() {
-		return $this->sent;
-	}
+    /**
+     * Returns the sent
+     *
+     * @return boolean $sent
+     */
+    public function getSent()
+    {
+        return $this->sent;
+    }
 
-	/**
-	 * Sets the sent
-	 *
-	 * @param boolean $sent
-	 * @return void
-	 */
-	public function setSent($sent) {
-		$this->sent = $sent;
-	}
+    /**
+     * Sets the sent
+     *
+     * @param boolean $sent
+     *
+     * @return void
+     */
+    public function setSent($sent)
+    {
+        $this->sent = $sent;
+    }
 
-	/**
-	 * Returns the boolean state of sent
-	 *
-	 * @return boolean
-	 */
-	public function isSent() {
-		return $this->sent;
-	}
+    /**
+     * Returns the boolean state of sent
+     *
+     * @return boolean
+     */
+    public function isSent()
+    {
+        return $this->sent;
+    }
 
-	/**
-	 * Returns the category
-	 *
-	 * @return \GeorgRinger\News\Domain\Model\Category $category
-	 */
-	public function getCategory() {
-		return $this->category;
-	}
+    /**
+     * Returns the category
+     *
+     * @return \GeorgRinger\News\Domain\Model\Category $category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
 
-	/**
-	 * Sets the category
-	 *
-	 * @param \GeorgRinger\News\Domain\Model\Category $category
-	 * @return void
-	 */
-	public function setCategory(\GeorgRinger\News\Domain\Model\Category $category) {
-		$this->category = $category;
+    /**
+     * Sets the category
+     *
+     * @param \GeorgRinger\News\Domain\Model\Category $category
+     *
+     * @return void
+     */
+    public function setCategory(\GeorgRinger\News\Domain\Model\Category $category)
+    {
+        $this->category = $category;
+    }
 
-	}
-
-	/**
-	 * Returns the news
-	 *
-	 * @return \GeorgRinger\News\Domain\Model\News $news
-	 */
-	public function getNews() {
+    /**
+     * Returns the news
+     *
+     * @return \GeorgRinger\News\Domain\Model\News $news
+     */
+    public function getNews()
+    {
         $newsRecord = $this->newsRepository->findByUid($this->news, false);
-		return $newsRecord;
-	}
 
-	/**
-	 * Sets the news
-	 *
-	 * @param \GeorgRinger\News\Domain\Model\News $news
-	 * @return void
-	 */
-	public function setNews(\GeorgRinger\News\Domain\Model\News $news) {
-		$this->news = $news;
-	}
+        return $newsRecord;
+    }
+
+    /**
+     * Sets the news
+     *
+     * @param \GeorgRinger\News\Domain\Model\News $news
+     *
+     * @return void
+     */
+    public function setNews(\GeorgRinger\News\Domain\Model\News $news)
+    {
+        $this->news = $news;
+    }
 
     /**
      * Gets the raw news
@@ -205,42 +224,48 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
      *
      * @return array
      */
-    public function getRawNews() {
+    public function getRawNews()
+    {
         $rawNewsRecord = $this->newsService->getRawNewsRecordWithCategories($this->news);
+
         return $rawNewsRecord;
     }
 
-	/**
-	 * Returns the approvingBeuser
-	 *
-	 * @return \TYPO3\CMS\Extbase\Domain\Model\BackendUser $approvingBeuser
-	 */
-	public function getApprovingBeuser() {
-		return $this->approvingBeuser;
-	}
+    /**
+     * Returns the approvingBeuser
+     *
+     * @return \TYPO3\CMS\Extbase\Domain\Model\BackendUser $approvingBeuser
+     */
+    public function getApprovingBeuser()
+    {
+        return $this->approvingBeuser;
+    }
 
-	/**
-	 * Sets the approvingBeuser
-	 *
-	 * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $approvingBeuser
-	 * @return void
-	 */
-	public function setApprovingBeuser(\TYPO3\CMS\Extbase\Domain\Model\BackendUser $approvingBeuser) {
-		$this->approvingBeuser = $approvingBeuser;
-	}
+    /**
+     * Sets the approvingBeuser
+     *
+     * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $approvingBeuser
+     *
+     * @return void
+     */
+    public function setApprovingBeuser(\TYPO3\CMS\Extbase\Domain\Model\BackendUser $approvingBeuser)
+    {
+        $this->approvingBeuser = $approvingBeuser;
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Extbase\Domain\Model\BackendUser
-	 */
-	public function getCreator() {
-		return $this->creator;
-	}
+    /**
+     * @return \TYPO3\CMS\Extbase\Domain\Model\BackendUser
+     */
+    public function getCreator()
+    {
+        return $this->creator;
+    }
 
-	/**
-	 * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $creator
-	 */
-	public function setCreator($creator) {
-		$this->creator = $creator;
-	}
-
+    /**
+     * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $creator
+     */
+    public function setCreator($creator)
+    {
+        $this->creator = $creator;
+    }
 }
