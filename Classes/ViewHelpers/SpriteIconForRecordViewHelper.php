@@ -14,6 +14,9 @@ namespace Visol\Newscatinvite\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Views sprite icon for a record (object)
@@ -23,6 +26,13 @@ namespace Visol\Newscatinvite\ViewHelpers;
  */
 class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
 {
+
+    /**
+     * As this ViewHelper renders HTML, the output must not be escaped.
+     *
+     * @var bool
+     */
+    protected $escapeOutput = false;
 
     /**
      * Displays spriteIcon for database table and object
@@ -47,6 +57,9 @@ class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abst
             $row['hidden'] = $object->getHidden();
         }
 
-        return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row);
+        /** @var IconFactory $iconFactory */
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        return $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render();
     }
+
 }
