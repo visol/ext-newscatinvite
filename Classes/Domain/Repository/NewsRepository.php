@@ -2,6 +2,13 @@
 
 namespace Visol\Newscatinvite\Domain\Repository;
 
+use GeorgRinger\News\Domain\Model\DemandInterface;
+use GeorgRinger\News\Service\CategoryService;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use Visol\Newscatinvite\Domain\Model\Invitation;
+
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,15 +28,15 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
      * Returns a category constraint created by
      * a given list of categories and a junction string
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
-     * @param  array $categories
+     * @param QueryInterface $query
+     * @param  string $categories
      * @param  string $conjunction
      * @param  boolean $includeSubCategories
      *
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface|null
      */
     protected function createCategoryConstraint(
-        \TYPO3\CMS\Extbase\Persistence\QueryInterface $query,
+        QueryInterface $query,
         $categories,
         $conjunction,
         $includeSubCategories = false
@@ -44,13 +51,13 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
         }
 
         if (!is_array($categories)) {
-            $categories = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $categories, true);
+            $categories = GeneralUtility::intExplode(',', $categories, true);
         }
         foreach ($categories as $category) {
             if ($includeSubCategories) {
-                $subCategories = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
+                $subCategories = GeneralUtility::trimExplode(
                     ',',
-                    \GeorgRinger\News\Service\CategoryService::getChildrenCategories($category, 0, '', true),
+                    CategoryService::getChildrenCategories($category, 0, '', true),
                     true
                 );
                 $subCategoryConstraint = [];
@@ -67,7 +74,7 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
                 $categoryConstraints[] = $query->contains('categories', $category);
                 $invitationConstraints[] = $query->logicalAnd(
                     $query->equals('invitations.category', $category),
-                    $query->equals('invitations.status', \Visol\Newscatinvite\Domain\Model\Invitation::STATUS_APPROVED)
+                    $query->equals('invitations.status', Invitation::STATUS_APPROVED)
                 );
             }
         }
@@ -105,11 +112,11 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
      * Get the count of news records by month/year and
      * returns the result compiled as array
      *
-     * @param \GeorgRinger\News\Domain\Model\DemandInterface $demand
+     * @param DemandInterface $demand
      *
      * @return array
      */
-    public function countByDate(\GeorgRinger\News\Domain\Model\DemandInterface $demand)
+    public function countByDate(DemandInterface $demand)
     {
         $data = [];
         $sql = $this->findDemandedRaw($demand);
@@ -119,27 +126,23 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
         $field = empty($field) ? 'datetime' : $field;
 
         $where = substr($sql, strpos($sql, 'WHERE '));
+
         $join = '';
 
-        $categoryUidPattern = '/tx_newscatinvite_domain_model_invitation.category = \'(\d+)\'/';
+        $categoryUidPattern = '/`tx_newscatinvite_domain_model_invitation`.`category` = (\d+)/';
         preg_match($categoryUidPattern, $where, $matches);
         if ($matches && $categoryUid = $matches[1]) {
             $join = ' LEFT JOIN (SELECT * FROM tx_newscatinvite_domain_model_invitation WHERE tx_newscatinvite_domain_model_invitation.category = ' . $categoryUid . ' AND tx_newscatinvite_domain_model_invitation.status = 1 GROUP BY tx_newscatinvite_domain_model_invitation.news) tx_newscatinvite_domain_model_invitation ON tx_news_domain_model_news.uid=tx_newscatinvite_domain_model_invitation.news ';
         }
 
-        $sql = 'SELECT FROM_UNIXTIME(' . $field . ', "%m") AS "_Month",' .
-            ' FROM_UNIXTIME(' . $field . ', "%Y") AS "_Year" ,' .
-            ' count(FROM_UNIXTIME(' . $field . ', "%m")) as count_month,' .
-            ' count(FROM_UNIXTIME(' . $field . ', "%y")) as count_year' .
-            ' FROM tx_news_domain_model_news ' .
-            $join .
-            $where;
+        $sql = 'SELECT FROM_UNIXTIME(' . $field . ', "%m") AS "_Month",' . ' FROM_UNIXTIME(' . $field . ', "%Y") AS "_Year" ,' . ' count(FROM_UNIXTIME(' . $field . ', "%m")) as count_month,' . ' count(FROM_UNIXTIME(' . $field . ', "%y")) as count_year' . ' FROM tx_news_domain_model_news ' . $join . $where;
 
         if (TYPO3_MODE === 'FE') {
             $sql .= $GLOBALS['TSFE']->sys_page->enableFields('tx_news_domain_model_news');
         } else {
-            $sql .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('tx_news_domain_model_news') .
-                \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tx_news_domain_model_news');
+            $sql .= BackendUtility::BEenableFields('tx_news_domain_model_news') . BackendUtility::deleteClause(
+                    'tx_news_domain_model_news'
+                );
         }
         // strip unwanted order by
         $sql = $GLOBALS['TYPO3_DB']->stripOrderBy($sql);

@@ -8,10 +8,6 @@ plugin.tx_newscatinvite {
 	persistence {
 		storagePid = {$plugin.tx_newscatinvite.persistence.storagePid}
 	}
-	features {
-		# uncomment the following line to enable the new Property Mapper.
-		# rewrittenPropertyMapper = 1
-	}
 }
 
  # Module configuration

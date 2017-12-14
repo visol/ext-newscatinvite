@@ -2,6 +2,9 @@
 
 namespace Visol\Newscatinvite\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use Visol\Newscatinvite\Domain\Model\Invitation;
+
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,7 +23,7 @@ class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     public function initializeObject()
     {
         /** @var $querySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
-        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $querySettings = $this->objectManager->get(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);
         $querySettings->setRespectSysLanguage(false);
         $querySettings->setIgnoreEnableFields(true);
@@ -52,8 +55,8 @@ class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 $query->greaterThan('category.uid', 0),
                 $query->greaterThan('news', 0),
                 $query->logicalOr(
-                    $query->equals('status', \Visol\Newscatinvite\Domain\Model\Invitation::STATUS_APPROVED),
-                    $query->equals('status', \Visol\Newscatinvite\Domain\Model\Invitation::STATUS_REJECTED)
+                    $query->equals('status', Invitation::STATUS_APPROVED),
+                    $query->equals('status', Invitation::STATUS_REJECTED)
                 )
             )
         );

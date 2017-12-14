@@ -3,22 +3,11 @@ plugin.tx_news {
      GeorgRinger\News\Domain\Repository\NewsRepository {
         className = Visol\Newscatinvite\Domain\Repository\NewsRepository
      }
-     Roquin\RoqNewsevent\Domain\Repository\EventRepository {
-        className = Visol\Newscatinvite\Domain\Repository\EventRepository
-     }
   }
 }
 
 config.tx_extbase.persistence.classes {
 	Visol\Newscatinvite\Domain\Model\News {
-		mapping {
-			tableName = tx_news_domain_model_news
-			columns {
-				invitations.mapOnProperty = invitations
-			}
-		}
-	}
-	Visol\Newscatinvite\Domain\Model\Event {
 		mapping {
 			tableName = tx_news_domain_model_news
 			columns {
