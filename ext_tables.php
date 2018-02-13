@@ -16,9 +16,9 @@ if (TYPO3_MODE === 'BE') {
      */
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'Visol.' . $_EXTKEY,
-        'user',
+        'web',
         'invitations',
-        'top',
+        'after:tx_news_m2',
         [
             'Invitation' => 'list, listArchive, listCreatedInvitations, approve, reject, remove',
         ],
