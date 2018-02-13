@@ -30,7 +30,7 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
         //),
         'searchFields' => 'status,sent,category,news,approving_beuser,',
         'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('newscatinvite') . 'Configuration/TCA/Invitation.php',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('newscatinvite') . 'Resources/Public/Icons/tx_newscatinvite_domain_model_invitation.gif'
+        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('newscatinvite') . 'Resources/Public/Icons/tx_newscatinvite_domain_model_invitation.svg'
     ],
     'interface' => [
         'showRecordFieldList' => 'status, sent, category, news, approving_beuser',
