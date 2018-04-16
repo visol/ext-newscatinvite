@@ -23,12 +23,12 @@
 			<td class="t3-title-column">
 				<f:if condition="{invitation.rawNews.pid} == {settings.eventsPid}">
 					<f:then>
-						<a target="_blank" href="../index.php?id={settings.eventPreviewPid}{f:if(condition:'{invitation.rawNews.sys_language_uid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=eventDetail&tx_news_pi1[news_preview]={invitation.rawNews.uid}&no_cache=1">
+						<a target="_blank" href="{settings.baseUrl}index.php?id={settings.eventPreviewPid}{f:if(condition:'{invitation.rawNews.sys_language_uid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=eventDetail&tx_news_pi1[news_preview]={invitation.rawNews.uid}&no_cache=1">
 							{invitation.rawNews.title}
 						</a>
 					</f:then>
 					<f:else>
-						<a target="_blank" href="../index.php?id={settings.newsPreviewPid}{f:if(condition:'{invitation.rawNews.sys_language_uid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news_preview]={invitation.rawNews.uid}&no_cache=1">
+						<a target="_blank" href="{settings.baseUrl}index.php?id={settings.newsPreviewPid}{f:if(condition:'{invitation.rawNews.sys_language_uid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news_preview]={invitation.rawNews.uid}&no_cache=1">
 							{invitation.rawNews.title}
 						</a>
 					</f:else>
