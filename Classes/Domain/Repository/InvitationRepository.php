@@ -87,6 +87,7 @@ class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $query->logicalAnd(
                 $query->equals('status', 0),
                 $query->equals('sent', 0),
+                $query->greaterThan('category', 0),
                 $query->lessThan('tstamp', $nowBeforeTwoMinutes)
             )
         );
