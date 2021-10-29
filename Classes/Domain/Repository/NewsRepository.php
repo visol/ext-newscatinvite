@@ -129,10 +129,15 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
 
         $join = '';
 
-        $categoryUidPattern = '/`tx_newscatinvite_domain_model_invitation`.`category` = (\d+)/';
-        preg_match($categoryUidPattern, $where, $matches);
-        if ($matches && $categoryUid = $matches[1]) {
-            $join = ' LEFT JOIN (SELECT * FROM tx_newscatinvite_domain_model_invitation WHERE tx_newscatinvite_domain_model_invitation.category = ' . $categoryUid . ' AND tx_newscatinvite_domain_model_invitation.status = 1 GROUP BY tx_newscatinvite_domain_model_invitation.news) tx_newscatinvite_domain_model_invitation ON tx_news_domain_model_news.uid=tx_newscatinvite_domain_model_invitation.news ';
+        $categoryUidPattern = '/`tx_newscatinvite_domain_model_invitation`\.`category` = (\d+)/';
+        preg_match_all($categoryUidPattern, $where, $matches);
+        if ($matches) {
+            $jointWhere = [];
+            foreach($matches[1] as $categoryUid) {
+                $jointWhere[] = 'tx_newscatinvite_domain_model_invitation.category = ' . $categoryUid . ' AND tx_newscatinvite_domain_model_invitation.status = 1';
+            }
+            $jointWhereString = implode(' OR ', $jointWhere);
+            $join = ' LEFT JOIN (SELECT * FROM tx_newscatinvite_domain_model_invitation WHERE ' . $jointWhereString . ' GROUP BY tx_newscatinvite_domain_model_invitation.news) tx_newscatinvite_domain_model_invitation ON tx_news_domain_model_news.uid=tx_newscatinvite_domain_model_invitation.news ';
         }
 
         $sql = 'SELECT FROM_UNIXTIME(' . $field . ', "%m") AS "_Month",' . ' FROM_UNIXTIME(' . $field . ', "%Y") AS "_Year" ,' . ' count(FROM_UNIXTIME(' . $field . ', "%m")) as count_month,' . ' count(FROM_UNIXTIME(' . $field . ', "%y")) as count_year' . ' FROM tx_news_domain_model_news ' . $join . $where;
