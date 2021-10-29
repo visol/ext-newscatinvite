@@ -5,6 +5,7 @@ namespace Visol\Newscatinvite\Domain\Repository;
 use GeorgRinger\News\Domain\Model\DemandInterface;
 use GeorgRinger\News\Service\CategoryService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use Visol\Newscatinvite\Domain\Model\Invitation;
@@ -116,10 +117,13 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
      *
      * @return array
      */
-    public function countByDate(DemandInterface $demand)
+    public function countByDate(DemandInterface $demand): array
     {
         $data = [];
         $sql = $this->findDemandedRaw($demand);
+
+        // strip unwanted order by
+        $sql = $this->stripOrderBy($sql);
 
         // Get the month/year into the result
         $field = $demand->getDateField();
@@ -129,35 +133,49 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
 
         $join = '';
 
-        $categoryUidPattern = '/`tx_newscatinvite_domain_model_invitation`.`category` = (\d+)/';
-        preg_match($categoryUidPattern, $where, $matches);
-        if ($matches && $categoryUid = $matches[1]) {
-            $join = ' LEFT JOIN (SELECT * FROM tx_newscatinvite_domain_model_invitation WHERE tx_newscatinvite_domain_model_invitation.category = ' . $categoryUid . ' AND tx_newscatinvite_domain_model_invitation.status = 1 GROUP BY tx_newscatinvite_domain_model_invitation.news) tx_newscatinvite_domain_model_invitation ON tx_news_domain_model_news.uid=tx_newscatinvite_domain_model_invitation.news ';
+        $categoryUidPattern = '/`tx_newscatinvite_domain_model_invitation`\.`category` = (\d+)/';
+        preg_match_all($categoryUidPattern, $where, $matches);
+        if ($matches) {
+            $jointWhere = [];
+            foreach($matches[1] as $categoryUid) {
+                $jointWhere[] = 'tx_newscatinvite_domain_model_invitation.category = ' . $categoryUid . ' AND tx_newscatinvite_domain_model_invitation.status = 1';
+            }
+            $jointWhereString = implode(' OR ', $jointWhere);
+            $join = ' LEFT JOIN (SELECT * FROM tx_newscatinvite_domain_model_invitation WHERE ' . $jointWhereString . ' GROUP BY tx_newscatinvite_domain_model_invitation.news) tx_newscatinvite_domain_model_invitation ON tx_news_domain_model_news.uid=tx_newscatinvite_domain_model_invitation.news ';
         }
 
-        $sql = 'SELECT FROM_UNIXTIME(' . $field . ', "%m") AS "_Month",' . ' FROM_UNIXTIME(' . $field . ', "%Y") AS "_Year" ,' . ' count(FROM_UNIXTIME(' . $field . ', "%m")) as count_month,' . ' count(FROM_UNIXTIME(' . $field . ', "%y")) as count_year' . ' FROM tx_news_domain_model_news ' . $join . $where;
+        $sql = 'SELECT MONTH(FROM_UNIXTIME(0) + INTERVAL ' . $field . ' SECOND ) AS "_Month",' .
+            ' YEAR(FROM_UNIXTIME(0) + INTERVAL ' . $field . ' SECOND) AS "_Year" ,' .
+            ' count(MONTH(FROM_UNIXTIME(0) + INTERVAL ' . $field . ' SECOND )) as count_month,' .
+            ' count(YEAR(FROM_UNIXTIME(0) + INTERVAL ' . $field . ' SECOND)) as count_year' .
+            ' FROM tx_news_domain_model_news ' . $join . $where;
+
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $connection = $connectionPool->getConnectionForTable('tx_news_domain_model_news');
 
         if (TYPO3_MODE === 'FE') {
             $sql .= $GLOBALS['TSFE']->sys_page->enableFields('tx_news_domain_model_news');
         } else {
-            $sql .= BackendUtility::BEenableFields('tx_news_domain_model_news') . BackendUtility::deleteClause(
-                    'tx_news_domain_model_news'
-                );
+            $expressionBuilder = $connection
+                ->createQueryBuilder()
+                ->expr();
+            $sql .= BackendUtility::BEenableFields('tx_news_domain_model_news') .
+                ' AND ' . $expressionBuilder->eq('deleted', 0);
         }
-        // strip unwanted order by
-        $sql = $GLOBALS['TYPO3_DB']->stripOrderBy($sql);
 
         // group by custom month/year fields
         $orderDirection = strtolower($demand->getOrder());
-        if ($orderDirection !== 'desc' && $orderDirection != 'asc') {
+        if ($orderDirection !== 'desc' && $orderDirection !== 'asc') {
             $orderDirection = 'asc';
         }
         $sql .= ' GROUP BY _Month, _Year ORDER BY _Year ' . $orderDirection . ', _Month ' . $orderDirection;
-        $res = $GLOBALS['TYPO3_DB']->sql_query($sql);
-        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-            $data['single'][$row['_Year']][$row['_Month']] = $row['count_month'];
+
+        $res = $connection->query($sql);
+        while ($row = $res->fetch()) {
+            $month = strlen($row['_Month']) === 1 ? ('0' . $row['_Month']) : $row['_Month'];
+            $data['single'][$row['_Year']][$month] = $row['count_month'];
         }
-        $GLOBALS['TYPO3_DB']->sql_free_result($res);
 
         // Add totals
         if (is_array($data['single'])) {
@@ -171,5 +189,20 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
         }
 
         return $data;
+    }
+
+    /**
+     * Return stripped order sql
+     *
+     * BACKPORT of EXT:news can be removed after update
+     *
+     *
+     * @param string $str
+     * @return string
+     */
+    private function stripOrderBy(string $str): string
+    {
+        /** @noinspection NotOptimalRegularExpressionsInspection */
+        return preg_replace('/(?:ORDER[[:space:]]*BY[[:space:]]*.*)+/i', '', trim($str));
     }
 }
