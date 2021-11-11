@@ -135,7 +135,7 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
 
         $categoryUidPattern = '/`tx_newscatinvite_domain_model_invitation`\.`category` = (\d+)/';
         preg_match_all($categoryUidPattern, $where, $matches);
-        if ($matches) {
+        if ($matches[1]) {
             $jointWhere = [];
             foreach($matches[1] as $categoryUid) {
                 $jointWhere[] = 'tx_newscatinvite_domain_model_invitation.category = ' . $categoryUid . ' AND tx_newscatinvite_domain_model_invitation.status = 1';
