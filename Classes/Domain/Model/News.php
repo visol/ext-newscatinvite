@@ -2,6 +2,8 @@
 
 namespace Visol\Newscatinvite\Domain\Model;
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -19,13 +21,13 @@ class News extends \GeorgRinger\News\Domain\Model\News
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Visol\Newscatinvite\Domain\Model\Invitation>
-     * @lazy
+     * @Extbase\ORM\Lazy
      */
     protected $invitations;
 
     public function __construct()
     {
-        $this->invitations = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->invitations = new ObjectStorage();
         parent::__construct();
     }
 }

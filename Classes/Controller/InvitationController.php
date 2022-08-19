@@ -14,31 +14,36 @@ namespace Visol\Newscatinvite\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use Visol\Newscatinvite\Domain\Repository\InvitationRepository;
+use TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use Visol\Newscatinvite\Domain\Model\Invitation;
 
 /**
  * InvitationController
  */
-class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class InvitationController extends ActionController
 {
 
     /**
      * invitationRepository
      *
      * @var \Visol\Newscatinvite\Domain\Repository\InvitationRepository
-     * @inject
      */
     protected $invitationRepository;
 
     /**
      * @var \TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository
-     * @inject
      */
     protected $backendUserRepository;
 
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
-     * @inject
      */
     protected $configurationManager;
 
@@ -48,7 +53,7 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
      *
      * @return void
      */
-    public function listAction()
+    public function listAction(): ResponseInterface
     {
         $categoryUidArray = $GLOBALS['BE_USER']->getCategoryMountPoints();
 
@@ -62,6 +67,7 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         }
 
         $this->view->assign('invitations', $invitations);
+        return $this->htmlResponse();
     }
 
     /**
@@ -69,7 +75,7 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
      *
      * @return void
      */
-    public function listArchiveAction()
+    public function listArchiveAction(): ResponseInterface
     {
         $categoryUidArray = $GLOBALS['BE_USER']->getCategoryMountPoints();
 
@@ -80,6 +86,7 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         }
 
         $this->view->assign('invitations', $invitations);
+        return $this->htmlResponse();
     }
 
     /**
@@ -87,37 +94,38 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
      *
      * @return void
      */
-    public function listCreatedInvitationsAction()
+    public function listCreatedInvitationsAction(): ResponseInterface
     {
         $backendUserUid = (int)$GLOBALS['BE_USER']->user['uid'];
         $invitations = $this->invitationRepository->findByCreator($backendUserUid);
         $this->view->assign('invitations', $invitations);
+        return $this->htmlResponse();
     }
 
     /**
      * action approve
      *
      * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
-     * @ignorevalidation $invitation
      * @dontvalidate  $invitation
      *
      * @return void
      * TODO permission check
+     * @Extbase\IgnoreValidation("invitation")
      */
-    public function approveAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation)
+    public function approveAction(Invitation $invitation)
     {
         $backendUser = $this->backendUserRepository->findByUid($GLOBALS["BE_USER"]->user["uid"]);
-        $invitation->setStatus(\Visol\Newscatinvite\Domain\Model\Invitation::STATUS_APPROVED);
+        $invitation->setStatus(Invitation::STATUS_APPROVED);
         $invitation->setApprovingBeuser($backendUser);
         $this->invitationRepository->update($invitation);
 
         $this->addFlashMessage(
-            \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+            LocalizationUtility::translate(
                 'approveMessage',
                 'Newscatinvite'
             ),
             '',
-            \TYPO3\CMS\Core\Messaging\AbstractMessage::OK
+            AbstractMessage::OK
         );
 
         $this->redirect('list');
@@ -127,26 +135,26 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
      * action reject
      *
      * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
-     * @ignorevalidation $invitation
      * @dontvalidate  $invitation
      *
      * @return void
      * TODO permission check*
+     * @Extbase\IgnoreValidation("invitation")
      */
-    public function rejectAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation)
+    public function rejectAction(Invitation $invitation)
     {
         $backendUser = $this->backendUserRepository->findByUid($GLOBALS["BE_USER"]->user["uid"]);
-        $invitation->setStatus(\Visol\Newscatinvite\Domain\Model\Invitation::STATUS_REJECTED);
+        $invitation->setStatus(Invitation::STATUS_REJECTED);
         $invitation->setApprovingBeuser($backendUser);
         $this->invitationRepository->update($invitation);
 
         $this->addFlashMessage(
-            \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+            LocalizationUtility::translate(
                 'rejectMessage',
                 'Newscatinvite'
             ),
             '',
-            \TYPO3\CMS\Core\Messaging\AbstractMessage::OK
+            AbstractMessage::OK
         );
 
         $this->redirect('list');
@@ -156,25 +164,40 @@ class InvitationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
      * action remove
      *
      * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
-     * @ignorevalidation $invitation
      * @dontvalidate  $invitation
      *
      * @return void
      * TODO permission check
+     * @Extbase\IgnoreValidation("invitation")
      */
-    public function removeAction(\Visol\Newscatinvite\Domain\Model\Invitation $invitation)
+    public function removeAction(Invitation $invitation)
     {
         $this->invitationRepository->remove($invitation);
 
         $this->addFlashMessage(
-            \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+            LocalizationUtility::translate(
                 'deleteMessage',
                 'Newscatinvite'
             ),
             '',
-            \TYPO3\CMS\Core\Messaging\AbstractMessage::OK
+            AbstractMessage::OK
         );
 
         $this->redirect('listArchive');
+    }
+
+    public function injectInvitationRepository(InvitationRepository $invitationRepository): void
+    {
+        $this->invitationRepository = $invitationRepository;
+    }
+
+    public function injectBackendUserRepository(BackendUserRepository $backendUserRepository): void
+    {
+        $this->backendUserRepository = $backendUserRepository;
+    }
+
+    public function injectConfigurationManager(ConfigurationManager $configurationManager): void
+    {
+        $this->configurationManager = $configurationManager;
     }
 }

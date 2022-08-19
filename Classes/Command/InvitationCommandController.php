@@ -14,6 +14,13 @@ namespace Visol\Newscatinvite\Command;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
+use GeorgRinger\News\Domain\Model\Category;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use Visol\Newscatinvite\Domain\Repository\InvitationRepository;
+use Visol\Newscatinvite\Domain\Repository\BackendUserGroupRepository;
+use Visol\Newscatinvite\Domain\Repository\BackendUserRepository;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -23,30 +30,26 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class InvitationCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
+class InvitationCommandController extends CommandController
 {
 
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     * @inject
      */
     protected $configurationManager;
 
     /**
      * @var \Visol\Newscatinvite\Domain\Repository\InvitationRepository
-     * @inject
      */
     protected $invitationRepository;
 
     /**
      * @var \Visol\Newscatinvite\Domain\Repository\BackendUserGroupRepository
-     * @inject
      */
     protected $backendUserGroupRepository;
 
     /**
      * @var \Visol\Newscatinvite\Domain\Repository\BackendUserRepository
-     * @inject
      */
     protected $backendUserRepository;
 
@@ -61,7 +64,6 @@ class InvitationCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comm
      * persistenceManager
      *
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     * @inject
      */
     protected $persistenceManager;
 
@@ -79,7 +81,7 @@ class InvitationCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comm
         foreach ($notSentInvitations as $invitation) {
             /** @var \Visol\Newscatinvite\Domain\Model\Invitation $invitation */
             $recipientArray = [];
-            if ($invitation->getCategory() instanceof \GeorgRinger\News\Domain\Model\Category) {
+            if ($invitation->getCategory() instanceof Category) {
                 $userGroupsWithCurrentCategory = $this->backendUserGroupRepository->findByCategoryPermissions($invitation->getCategory());
                 if ($userGroupsWithCurrentCategory->count()) {
                     $backendUserGroupsArray = [];
@@ -165,9 +167,34 @@ class InvitationCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comm
     public function initializeAction()
     {
         $this->extensionConfiguration = $this->configurationManager->getConfiguration(
-            \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
             'newscatinvite',
             'newscatinvite'
         );
+    }
+
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
+    {
+        $this->configurationManager = $configurationManager;
+    }
+
+    public function injectInvitationRepository(InvitationRepository $invitationRepository): void
+    {
+        $this->invitationRepository = $invitationRepository;
+    }
+
+    public function injectBackendUserGroupRepository(BackendUserGroupRepository $backendUserGroupRepository): void
+    {
+        $this->backendUserGroupRepository = $backendUserGroupRepository;
+    }
+
+    public function injectBackendUserRepository(BackendUserRepository $backendUserRepository): void
+    {
+        $this->backendUserRepository = $backendUserRepository;
+    }
+
+    public function injectPersistenceManager(PersistenceManager $persistenceManager): void
+    {
+        $this->persistenceManager = $persistenceManager;
     }
 }

@@ -14,6 +14,7 @@ namespace Visol\Newscatinvite\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -24,7 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Felix Kopp <felix-source@phorax.com>
  */
-class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper
+class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
 {
 
     /**
@@ -37,14 +38,14 @@ class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abst
     /**
      * Displays spriteIcon for database table and object
      *
-     * @param string $table
-     * @param object $object
      *
      * @return string
      * @see \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row)
      */
-    public function render($table, $object)
+    public function render()
     {
+        $table = $this->arguments['table'];
+        $object = $this->arguments['object'];
         if (!is_object($object) || !method_exists($object, 'getUid')) {
             return '';
         }
@@ -56,10 +57,16 @@ class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abst
         if (method_exists($object, 'getHidden')) {
             $row['hidden'] = $object->getHidden();
         }
-
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         return $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render();
+    }
+
+    public function initializeArguments(): void
+    {
+        parent::initializeArguments();
+        $this->registerArgument('table', 'string', '', true);
+        $this->registerArgument('object', 'object', '', true);
     }
 
 }

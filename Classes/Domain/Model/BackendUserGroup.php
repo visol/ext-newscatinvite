@@ -2,6 +2,7 @@
 
 namespace Visol\Newscatinvite\Domain\Model;
 
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -32,7 +33,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup
      */
     public function __construct()
     {
-        $this->categoryPerms = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->categoryPerms = new ObjectStorage();
         parent::__construct();
     }
 

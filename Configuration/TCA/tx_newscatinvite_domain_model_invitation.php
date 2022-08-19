@@ -1,9 +1,11 @@
 <?php
-if (!defined('TYPO3_MODE')) {
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+if (!defined('TYPO3')) {
     die('Access denied.');
 }
 
-$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['newscatinvite']);
+$extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('newscatinvite');
 
 $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
     'ctrl' => [
@@ -14,7 +16,6 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
-        'dividers2tabs' => true,
         // Removed versioning, translations, deleteClause and enableColumns to make Extbase constraint for invitations working
         //'versioningWS' => 2,
         //'versioning_followPages' => TRUE,
@@ -29,8 +30,7 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
         //	'endtime' => 'endtime',
         //),
         'searchFields' => 'status,sent,category,news,approving_beuser,',
-        'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('newscatinvite') . 'Configuration/TCA/Invitation.php',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('newscatinvite') . 'Resources/Public/Icons/tx_newscatinvite_domain_model_invitation.svg'
+        'iconfile' => 'EXT:newscatinvite/Resources/Public/Icons/tx_newscatinvite_domain_model_invitation.svg',
     ],
     'interface' => [
         'showRecordFieldList' => 'status, sent, category, news, approving_beuser',
@@ -47,6 +47,7 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
             'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.status',
             'config' => [
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => [
                     ['', 0],
                     [
@@ -77,6 +78,7 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
             'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.category',
             'config' => [
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_category',
                 'foreign_table_where' => ' AND sys_category.parent = ' . $extensionConfiguration['rootCategoryUid'] . ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.title',
                 'items' => [
@@ -94,6 +96,7 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
             'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.news',
             'config' => [
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_news_domain_model_news',
                 'minitems' => 1,
                 'maxitems' => 1,
@@ -104,6 +107,7 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
             'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.approving_beuser',
             'config' => [
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'be_users',
                 'foreign_table_where' => ' ORDER BY be_users.username',
                 'items' => [

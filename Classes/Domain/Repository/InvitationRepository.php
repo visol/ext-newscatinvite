@@ -2,6 +2,7 @@
 
 namespace Visol\Newscatinvite\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use Visol\Newscatinvite\Domain\Model\Invitation;
 
@@ -17,7 +18,7 @@ use Visol\Newscatinvite\Domain\Model\Invitation;
  *
  * The TYPO3 project - inspiring people to share!
  */
-class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class InvitationRepository extends Repository
 {
 
     public function initializeObject()
@@ -34,11 +35,7 @@ class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         $query = $this->createQuery();
         $query->matching(
-            $query->logicalAnd(
-                $query->equals('status', $status),
-                $query->greaterThan('category.uid', 0),
-                $query->greaterThan('news', 0)
-            )
+            $query->logicalAnd([$query->equals('status', $status), $query->greaterThan('category.uid', 0), $query->greaterThan('news', 0)])
         );
 
         return $query->execute();
@@ -48,12 +45,7 @@ class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         $query = $this->createQuery();
         $query->matching(
-            $query->logicalAnd(
-                $query->equals('status', $status),
-                $query->in('category', $categories),
-                $query->greaterThan('category.uid', 0),
-                $query->greaterThan('news', 0)
-            )
+            $query->logicalAnd([$query->equals('status', $status), $query->in('category', $categories), $query->greaterThan('category.uid', 0), $query->greaterThan('news', 0)])
         );
 
 
@@ -64,15 +56,7 @@ class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         $query = $this->createQuery();
         $query->matching(
-            $query->logicalAnd(
-                $query->in('category', $categories),
-                $query->greaterThan('category.uid', 0),
-                $query->greaterThan('news', 0),
-                $query->logicalOr(
-                    $query->equals('status', Invitation::STATUS_APPROVED),
-                    $query->equals('status', Invitation::STATUS_REJECTED)
-                )
-            )
+            $query->logicalAnd([$query->in('category', $categories), $query->greaterThan('category.uid', 0), $query->greaterThan('news', 0), $query->logicalOr([$query->equals('status', Invitation::STATUS_APPROVED), $query->equals('status', Invitation::STATUS_REJECTED)])])
         );
 
         return $query->execute();
@@ -84,12 +68,7 @@ class InvitationRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         // we wait two minutes before sending an invitation because it might be "self-approved" by then
         $nowBeforeTwoMinutes = time() - 120;
         $query->matching(
-            $query->logicalAnd(
-                $query->equals('status', 0),
-                $query->equals('sent', 0),
-                $query->greaterThan('category', 0),
-                $query->lessThan('tstamp', $nowBeforeTwoMinutes)
-            )
+            $query->logicalAnd([$query->equals('status', 0), $query->equals('sent', 0), $query->greaterThan('category', 0), $query->lessThan('tstamp', $nowBeforeTwoMinutes)])
         );
 
         return $query->execute();

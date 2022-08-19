@@ -2,6 +2,13 @@
 
 namespace Visol\Newscatinvite\Domain\Model;
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use GeorgRinger\News\Domain\Model\Category;
+use GeorgRinger\News\Domain\Model\News;
+use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
+use Visol\Newscatinvite\Domain\Repository\NewsRepository;
+use Visol\Newscatinvite\Service\NewsService;
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,7 +21,7 @@ namespace Visol\Newscatinvite\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
-class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Invitation extends AbstractEntity
 {
     const STATUS_APPROVED = 1;
     const STATUS_PENDING = 0;
@@ -22,13 +29,11 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @var \Visol\Newscatinvite\Domain\Repository\NewsRepository
-     * @inject
      */
     protected $newsRepository;
 
     /**
      * @var \Visol\Newscatinvite\Service\NewsService
-     * @inject
      */
     protected $newsService;
 
@@ -71,7 +76,7 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * the raw news record as an array
      *
      * @var array
-     * @transient
+     * @Extbase\ORM\Transient
      */
     protected $rawNews;
 
@@ -189,7 +194,7 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return void
      */
-    public function setCategory(\GeorgRinger\News\Domain\Model\Category $category)
+    public function setCategory(Category $category)
     {
         $this->category = $category;
     }
@@ -213,7 +218,7 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return void
      */
-    public function setNews(\GeorgRinger\News\Domain\Model\News $news)
+    public function setNews(News $news)
     {
         $this->news = $news;
     }
@@ -248,7 +253,7 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return void
      */
-    public function setApprovingBeuser(\TYPO3\CMS\Extbase\Domain\Model\BackendUser $approvingBeuser)
+    public function setApprovingBeuser(BackendUser $approvingBeuser)
     {
         $this->approvingBeuser = $approvingBeuser;
     }
@@ -267,5 +272,15 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setCreator($creator)
     {
         $this->creator = $creator;
+    }
+
+    public function injectNewsRepository(NewsRepository $newsRepository): void
+    {
+        $this->newsRepository = $newsRepository;
+    }
+
+    public function injectNewsService(NewsService $newsService): void
+    {
+        $this->newsService = $newsService;
     }
 }

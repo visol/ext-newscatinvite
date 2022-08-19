@@ -2,6 +2,7 @@
 
 namespace Visol\Newscatinvite\Domain\Model;
 
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * This file is part of the TYPO3 CMS project.
  *
@@ -32,7 +33,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser
      */
     public function __construct()
     {
-        $this->usergroupCachedList = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->usergroupCachedList = new ObjectStorage();
     }
 
     /**
