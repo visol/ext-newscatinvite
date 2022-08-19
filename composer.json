@@ -3,17 +3,24 @@
 	"type": "typo3-cms-extension",
 	"description": "News category invitation",
 	"homepage": "https://github.com/visol/newscatinvite",
-	"license": ["GPL-2.0+"],
-	"require": {
-		"typo3/cms-core": "~8.7.0",
-		"typo3-ter/news": "^6.1"
+	"license": [
+		"GPL-2.0-or-later"
+	],
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "newscatinvite"
+		}
 	},
 	"suggest": {
-		"typo3-ter/eventnews": "^2.1"
+		"georgringer/eventnews": "^5"
 	},
 	"autoload": {
 		"psr-4": {
 			"Visol\\Newscatinvite\\": "Classes"
 		}
+	},
+	"require": {
+		"typo3/cms-core": "^11.5",
+		"georgringer/news": "^9"
 	}
 }

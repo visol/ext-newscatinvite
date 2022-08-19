@@ -1,18 +1,20 @@
 <?php
-if (!defined('TYPO3_MODE')) {
+use Visol\Newscatinvite\Controller\InvitationController;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+if (!defined('TYPO3')) {
     die('Access denied.');
 }
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Visol.' . $_EXTKEY,
+ExtensionUtility::configurePlugin(
+    'Newscatinvite',
     'Invitations',
     [
-        'Invitation' => 'list, show, new, create, edit, update, remove',
+        InvitationController::class => 'list, show, new, create, edit, update, remove',
 
     ],
     // non-cacheable actions
     [
-        'Invitation' => 'create, update, remove',
+        InvitationController::class => 'create, update, remove',
 
     ]
 );

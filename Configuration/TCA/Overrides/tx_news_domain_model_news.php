@@ -1,5 +1,6 @@
 <?php
-if (!defined('TYPO3_MODE')) {
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+if (!defined('TYPO3')) {
     die('Access denied.');
 }
 
@@ -25,12 +26,12 @@ $tmp_newscatinvite_columns = [
     ],
 ];
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
+ExtensionManagementUtility::addTCAcolumns(
     'tx_news_domain_model_news',
     $tmp_newscatinvite_columns
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+ExtensionManagementUtility::addToAllTCAtypes(
     'tx_news_domain_model_news',
     'invitations',
     '',
