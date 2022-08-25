@@ -14,6 +14,9 @@ namespace Visol\Newscatinvite\Command;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Visol\Newscatinvite\Domain\Model\Invitation;
+use Visol\Newscatinvite\Domain\Model\BackendUserGroup;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 use GeorgRinger\News\Domain\Model\Category;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -34,22 +37,22 @@ class InvitationCommandController extends CommandController
 {
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
     /**
-     * @var \Visol\Newscatinvite\Domain\Repository\InvitationRepository
+     * @var InvitationRepository
      */
     protected $invitationRepository;
 
     /**
-     * @var \Visol\Newscatinvite\Domain\Repository\BackendUserGroupRepository
+     * @var BackendUserGroupRepository
      */
     protected $backendUserGroupRepository;
 
     /**
-     * @var \Visol\Newscatinvite\Domain\Repository\BackendUserRepository
+     * @var BackendUserRepository
      */
     protected $backendUserRepository;
 
@@ -63,7 +66,7 @@ class InvitationCommandController extends CommandController
     /**
      * persistenceManager
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+     * @var PersistenceManager
      */
     protected $persistenceManager;
 
@@ -79,14 +82,14 @@ class InvitationCommandController extends CommandController
 
         $notSentInvitations = $this->invitationRepository->findPendingUnsentInvitations();
         foreach ($notSentInvitations as $invitation) {
-            /** @var \Visol\Newscatinvite\Domain\Model\Invitation $invitation */
+            /** @var Invitation $invitation */
             $recipientArray = [];
             if ($invitation->getCategory() instanceof Category) {
                 $userGroupsWithCurrentCategory = $this->backendUserGroupRepository->findByCategoryPermissions($invitation->getCategory());
                 if ($userGroupsWithCurrentCategory->count()) {
                     $backendUserGroupsArray = [];
                     foreach ($userGroupsWithCurrentCategory as $usergroup) {
-                        /** @var \Visol\Newscatinvite\Domain\Model\BackendUserGroup $usergroup */
+                        /** @var BackendUserGroup $usergroup */
                         $backendUserGroupsArray[] = $usergroup->getUid();
                     }
                     $backendUsers = $this->backendUserRepository->findByUsergroups($backendUserGroupsArray);
@@ -105,7 +108,7 @@ class InvitationCommandController extends CommandController
 
                 $subject = 'Einladung zur Aufnahme einer News-Meldung';
 
-                /** @var \TYPO3\CMS\Fluid\View\StandaloneView $standaloneView */
+                /** @var StandaloneView $standaloneView */
                 $standaloneView = $this->objectManager->get('TYPO3\CMS\Fluid\View\StandaloneView');
                 $standaloneView->setFormat('html');
                 $templateRootPath = GeneralUtility::getFileAbsFileName($this->extensionConfiguration['view']['templateRootPath']);

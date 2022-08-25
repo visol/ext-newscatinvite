@@ -5,33 +5,3 @@ plugin.tx_news {
      }
   }
 }
-
-config.tx_extbase.persistence.classes {
-	Visol\Newscatinvite\Domain\Model\News {
-		mapping {
-			tableName = tx_news_domain_model_news
-			columns {
-				invitations.mapOnProperty = invitations
-			}
-		}
-	}
-	GeorgRinger\News\Domain\Model\Category {
-		mapping {
-			tableName = sys_category
-		}
-	}
-	Visol\Newscatinvite\Domain\Model\BackendUserGroup {
-		mapping {
-			tableName = be_groups
-		}
-	}
-	Visol\Newscatinvite\Domain\Model\Invitation {
-		mapping {
-			tableName = tx_newscatinvite_domain_model_invitation
-			columns {
-				cruser_id.mapOnProperty = creator
-			}
-		}
-	}
-}
-

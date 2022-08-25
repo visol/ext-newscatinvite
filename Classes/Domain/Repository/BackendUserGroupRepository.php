@@ -2,6 +2,7 @@
 
 namespace Visol\Newscatinvite\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use GeorgRinger\News\Domain\Model\Category;
 /**
  * This file is part of the TYPO3 CMS project.
@@ -19,9 +20,9 @@ class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Ba
 {
 
     /**
-     * @param \GeorgRinger\News\Domain\Model\Category $category
+     * @param Category $category
      *
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return array|QueryResultInterface
      */
     public function findByCategoryPermissions(Category $category)
     {

@@ -2,6 +2,8 @@
 
 namespace Visol\Newscatinvite\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use GeorgRinger\News\Domain\Model\DemandInterface;
 use GeorgRinger\News\Service\CategoryService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -34,7 +36,7 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
      * @param  string $conjunction
      * @param  boolean $includeSubCategories
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface|null
+     * @return ConstraintInterface|null
      */
     protected function createCategoryConstraint(
         QueryInterface $query,
@@ -73,10 +75,7 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
                 }
             } else {
                 $categoryConstraints[] = $query->contains('categories', $category);
-                $invitationConstraints[] = $query->logicalAnd(
-                    $query->equals('invitations.category', $category),
-                    $query->equals('invitations.status', Invitation::STATUS_APPROVED)
-                );
+                $invitationConstraints[] = $query->logicalAnd([$query->equals('invitations.category', $category), $query->equals('invitations.status', Invitation::STATUS_APPROVED)]);
             }
         }
 
@@ -101,10 +100,7 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
             $invitationConstraint = $query->logicalOr($invitationConstraints);
         }
 
-        $constraint = $query->logicalOr(
-            $categoryConstraint,
-            $invitationConstraint
-        );
+        $constraint = $query->logicalOr([$categoryConstraint, $invitationConstraint]);
 
         return $constraint;
     }
@@ -154,7 +150,7 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionForTable('tx_news_domain_model_news');
 
-        if (TYPO3_MODE === 'FE') {
+        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
             $sql .= $GLOBALS['TSFE']->sys_page->enableFields('tx_news_domain_model_news');
         } else {
             $expressionBuilder = $connection

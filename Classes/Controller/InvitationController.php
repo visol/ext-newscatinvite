@@ -33,17 +33,17 @@ class InvitationController extends ActionController
     /**
      * invitationRepository
      *
-     * @var \Visol\Newscatinvite\Domain\Repository\InvitationRepository
+     * @var InvitationRepository
      */
     protected $invitationRepository;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository
+     * @var BackendUserRepository
      */
     protected $backendUserRepository;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
+     * @var ConfigurationManager
      */
     protected $configurationManager;
 
@@ -105,11 +105,11 @@ class InvitationController extends ActionController
     /**
      * action approve
      *
-     * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
-     * @dontvalidate  $invitation
+     * @param Invitation $invitation
      *
      * @return void
      * TODO permission check
+     * @Extbase\IgnoreValidation("invitation")
      * @Extbase\IgnoreValidation("invitation")
      */
     public function approveAction(Invitation $invitation)
@@ -134,11 +134,11 @@ class InvitationController extends ActionController
     /**
      * action reject
      *
-     * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
-     * @dontvalidate  $invitation
+     * @param Invitation $invitation
      *
      * @return void
      * TODO permission check*
+     * @Extbase\IgnoreValidation("invitation")
      * @Extbase\IgnoreValidation("invitation")
      */
     public function rejectAction(Invitation $invitation)
@@ -163,11 +163,11 @@ class InvitationController extends ActionController
     /**
      * action remove
      *
-     * @param \Visol\Newscatinvite\Domain\Model\Invitation $invitation
-     * @dontvalidate  $invitation
+     * @param Invitation $invitation
      *
      * @return void
      * TODO permission check
+     * @Extbase\IgnoreValidation("invitation")
      * @Extbase\IgnoreValidation("invitation")
      */
     public function removeAction(Invitation $invitation)

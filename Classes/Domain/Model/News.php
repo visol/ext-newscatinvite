@@ -20,7 +20,7 @@ class News extends \GeorgRinger\News\Domain\Model\News
 {
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<Visol\Newscatinvite\Domain\Model\Invitation>
+     * @var ObjectStorage<Invitation>
      * @Extbase\ORM\Lazy
      */
     protected $invitations;

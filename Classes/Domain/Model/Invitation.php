@@ -28,12 +28,12 @@ class Invitation extends AbstractEntity
     const STATUS_REJECTED = -1;
 
     /**
-     * @var \Visol\Newscatinvite\Domain\Repository\NewsRepository
+     * @var NewsRepository
      */
     protected $newsRepository;
 
     /**
-     * @var \Visol\Newscatinvite\Service\NewsService
+     * @var NewsService
      */
     protected $newsService;
 
@@ -61,7 +61,7 @@ class Invitation extends AbstractEntity
     /**
      * category
      *
-     * @var \GeorgRinger\News\Domain\Model\Category
+     * @var Category
      */
     protected $category;
 
@@ -83,14 +83,14 @@ class Invitation extends AbstractEntity
     /**
      * approvingBeuser
      *
-     * @var \TYPO3\CMS\Extbase\Domain\Model\BackendUser
+     * @var BackendUser
      */
     protected $approvingBeuser;
 
     /**
      * creator
      *
-     * @var \TYPO3\CMS\Extbase\Domain\Model\BackendUser
+     * @var BackendUser
      */
     protected $creator;
 
@@ -180,7 +180,7 @@ class Invitation extends AbstractEntity
     /**
      * Returns the category
      *
-     * @return \GeorgRinger\News\Domain\Model\Category $category
+     * @return Category $category
      */
     public function getCategory()
     {
@@ -190,7 +190,7 @@ class Invitation extends AbstractEntity
     /**
      * Sets the category
      *
-     * @param \GeorgRinger\News\Domain\Model\Category $category
+     * @param Category $category
      *
      * @return void
      */
@@ -202,7 +202,7 @@ class Invitation extends AbstractEntity
     /**
      * Returns the news
      *
-     * @return \GeorgRinger\News\Domain\Model\News $news
+     * @return News $news
      */
     public function getNews()
     {
@@ -214,7 +214,7 @@ class Invitation extends AbstractEntity
     /**
      * Sets the news
      *
-     * @param \GeorgRinger\News\Domain\Model\News $news
+     * @param News $news
      *
      * @return void
      */
@@ -239,7 +239,7 @@ class Invitation extends AbstractEntity
     /**
      * Returns the approvingBeuser
      *
-     * @return \TYPO3\CMS\Extbase\Domain\Model\BackendUser $approvingBeuser
+     * @return BackendUser $approvingBeuser
      */
     public function getApprovingBeuser()
     {
@@ -249,7 +249,7 @@ class Invitation extends AbstractEntity
     /**
      * Sets the approvingBeuser
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $approvingBeuser
+     * @param BackendUser $approvingBeuser
      *
      * @return void
      */
@@ -259,7 +259,7 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Domain\Model\BackendUser
+     * @return BackendUser
      */
     public function getCreator()
     {
@@ -267,7 +267,7 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Domain\Model\BackendUser $creator
+     * @param BackendUser $creator
      */
     public function setCreator($creator)
     {

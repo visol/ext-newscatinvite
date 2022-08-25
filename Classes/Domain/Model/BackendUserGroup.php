@@ -2,6 +2,7 @@
 
 namespace Visol\Newscatinvite\Domain\Model;
 
+use GeorgRinger\News\Domain\Model\Category;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * This file is part of the TYPO3 CMS project.
@@ -24,7 +25,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup
 {
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\GeorgRinger\News\Domain\Model\Category>
+     * @var ObjectStorage<Category>
      */
     protected $categoryPerms;
 
@@ -38,7 +39,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     * @return ObjectStorage
      */
     public function getCategoryPerms()
     {
