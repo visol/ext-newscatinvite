@@ -35,12 +35,12 @@ class NewsService implements SingletonInterface
                 $this->categoryMmTable,
                 "$this->categoryTable.uid = $this->categoryMmTable.uid_local"
             )
-            #->innerJoin(
-            #    $this->categoryMmTable,
-            #    $this->newsTable,
-            #    $this->newsTable,
-            #    "$this->categoryMmTable.uid_foreign = $this->newsTable.uid"
-            #)
+            ->innerJoin(
+                $this->categoryMmTable,
+                $this->newsTable,
+                $this->newsTable,
+                "$this->categoryMmTable.uid_foreign = $this->newsTable.uid"
+            )
             ->where(
                 $q->expr()->eq('uid_foreign', $newsRecord['uid'])
             )
