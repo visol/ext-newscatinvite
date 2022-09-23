@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Visol\Newscatinvite\Domain\Model\BackendUser;
 use Visol\Newscatinvite\Domain\Model\News;
 use GeorgRinger\News\Domain\Model\Category;
 use Visol\Newscatinvite\Domain\Model\BackendUserGroup;
@@ -18,6 +19,9 @@ return [
     ],
     Category::class => [
         'tableName' => 'sys_category',
+    ],
+    BackendUser::class => [
+        'tableName' => 'be_users',
     ],
     BackendUserGroup::class => [
         'tableName' => 'be_groups',

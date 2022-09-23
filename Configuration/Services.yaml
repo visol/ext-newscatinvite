@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Visol\Newscatinvite\:
+    resource: '../Classes/*'
+
+  Visol\Newscatinvite\Command\InvitationSendCommand:
+    tags:
+      - name: 'console.command'
+        command: 'invitation:sendInvitations'
+        description: 'Send pending invitations'

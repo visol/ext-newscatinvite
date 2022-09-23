@@ -6,21 +6,9 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use GeorgRinger\News\Domain\Model\Category;
 use GeorgRinger\News\Domain\Model\News;
-use TYPO3\CMS\Extbase\Domain\Model\BackendUser;
 use Visol\Newscatinvite\Domain\Repository\NewsRepository;
 use Visol\Newscatinvite\Service\NewsService;
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
+
 class Invitation extends AbstractEntity
 {
     const STATUS_APPROVED = 1;
@@ -88,11 +76,9 @@ class Invitation extends AbstractEntity
     protected $approvingBeuser;
 
     /**
-     * creator
-     *
-     * @var BackendUser
+     * @var BackendUser|null
      */
-    protected $creator;
+    protected ?BackendUser $creator = null;
 
     /**
      * __construct
@@ -259,17 +245,17 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * @return BackendUser
+     * @return BackendUser|null
      */
-    public function getCreator()
+    public function getCreator(): ?BackendUser
     {
         return $this->creator;
     }
 
     /**
-     * @param BackendUser $creator
+     * @param ?BackendUser $creator
      */
-    public function setCreator($creator)
+    public function setCreator(?BackendUser $creator): void
     {
         $this->creator = $creator;
     }

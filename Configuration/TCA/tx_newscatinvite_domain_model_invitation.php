@@ -1,6 +1,8 @@
 <?php
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+
 if (!defined('TYPO3')) {
     die('Access denied.');
 }
@@ -16,19 +18,6 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
-        // Removed versioning, translations, deleteClause and enableColumns to make Extbase constraint for invitations working
-        //'versioningWS' => 2,
-        //'versioning_followPages' => TRUE,
-        //'origUid' => 't3_origuid',
-        //'languageField' => 'sys_language_uid',
-        //'transOrigPointerField' => 'l10n_parent',
-        //'transOrigDiffSourceField' => 'l10n_diffsource',
-        //'delete' => 'deleted',
-        //'enablecolumns' => array(
-        //	'disabled' => 'hidden',
-        //	'starttime' => 'starttime',
-        //	'endtime' => 'endtime',
-        //),
         'searchFields' => 'status,sent,category,news,approving_beuser,',
         'iconfile' => 'EXT:newscatinvite/Resources/Public/Icons/tx_newscatinvite_domain_model_invitation.svg',
     ],
@@ -62,6 +51,17 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
                 'size' => 1,
                 'maxitems' => 1,
                 'eval' => ''
+            ],
+        ],
+        'cruser_id' => [
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'be_users',
+                'foreign_table_where' => 'ORDER BY username',
+                'items' => [
+                    ['', ''],
+                ],
             ],
         ],
         'sent' => [
