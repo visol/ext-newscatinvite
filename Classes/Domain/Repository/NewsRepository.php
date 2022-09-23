@@ -12,21 +12,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use Visol\Newscatinvite\Domain\Model\Invitation;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
 class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
 {
-
     /**
      * Returns a category constraint created by
      * a given list of categories and a junction string
@@ -43,7 +30,7 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
         $categories,
         $conjunction,
         $includeSubCategories = false
-    ) {
+    ): ?ConstraintInterface {
         $constraint = null;
         $categoryConstraints = [];
         $invitationConstraints = [];
@@ -133,7 +120,7 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
         preg_match_all($categoryUidPattern, $where, $matches);
         if ($matches[1]) {
             $jointWhere = [];
-            foreach($matches[1] as $categoryUid) {
+            foreach ($matches[1] as $categoryUid) {
                 $jointWhere[] = 'tx_newscatinvite_domain_model_invitation.category = ' . $categoryUid . ' AND tx_newscatinvite_domain_model_invitation.status = 1';
             }
             $jointWhereString = implode(' OR ', $jointWhere);

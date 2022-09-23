@@ -2,26 +2,16 @@
 
 namespace Visol\Newscatinvite\Service;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * InvitationController
  */
 class NewsService implements SingletonInterface
 {
-
     protected $newsTable = 'tx_news_domain_model_news';
     protected $categoryTable = 'sys_category';
     protected $categoryMmTable = 'sys_category_record_mm';
@@ -36,18 +26,27 @@ class NewsService implements SingletonInterface
     public function getRawNewsRecordWithCategories($newsUid)
     {
         $newsRecord = $this->findRawRecordByUid($newsUid);
-        $this->getDatabaseConnection()->store_lastBuiltQuery = true;
-        $categoryQuery = $this->getDatabaseConnection()->exec_SELECT_mm_query(
-            'sys_category.*',
-            $this->categoryTable,
-            $this->categoryMmTable,
-            $this->newsTable,
-            'AND uid_foreign=' . $newsRecord['uid']
-        );
-        $categories = [];
-        while ($category = $this->getDatabaseConnection()->sql_fetch_assoc($categoryQuery)) {
-            $categories[] = $category;
-        }
+        $q = $this->getQueryBuilder();
+        $categories = $q->select('sys_category.*')
+            ->from($this->categoryTable)
+            ->innerJoin(
+                $this->categoryTable,
+                $this->categoryMmTable,
+                $this->categoryMmTable,
+                "$this->categoryTable.uid = $this->categoryMmTable.uid_local"
+            )
+            #->innerJoin(
+            #    $this->categoryMmTable,
+            #    $this->newsTable,
+            #    $this->newsTable,
+            #    "$this->categoryMmTable.uid_foreign = $this->newsTable.uid"
+            #)
+            ->where(
+                $q->expr()->eq('uid_foreign', $newsRecord['uid'])
+            )
+            ->execute()
+            ->fetchAllAssociative();
+
         $newsRecord['categories'] = $categories;
 
         return $newsRecord;
@@ -65,18 +64,19 @@ class NewsService implements SingletonInterface
      */
     public function findRawRecordByUid($newsUid)
     {
-        return $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-            '*',
-            $this->newsTable,
-            'uid=' . (int)$newsUid . ' AND NOT deleted'
-        );
+        $q = $this->getQueryBuilder();
+        return $q
+            ->select('*')
+            ->from($this->newsTable)
+            ->where($q->expr()->eq('uid', (int)$newsUid))
+            ->execute()
+            ->fetchAssociative();
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    public function getDatabaseConnection()
+    protected function getQueryBuilder(): QueryBuilder
     {
-        return $GLOBALS['TYPO3_DB'];
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        return $connectionPool->getQueryBuilderForTable($this->newsTable);
     }
 }

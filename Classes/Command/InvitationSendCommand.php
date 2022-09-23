@@ -2,22 +2,14 @@
 
 namespace Visol\Newscatinvite\Command;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Visol\Newscatinvite\Domain\Model\Invitation;
 use Visol\Newscatinvite\Domain\Model\BackendUserGroup;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 use GeorgRinger\News\Domain\Model\Category;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use Visol\Newscatinvite\Domain\Repository\InvitationRepository;
@@ -27,15 +19,8 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- *
- *
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
- */
-class InvitationCommandController extends CommandController
+class InvitationSendCommand extends Command
 {
-
     /**
      * @var ConfigurationManagerInterface
      */
@@ -64,21 +49,52 @@ class InvitationCommandController extends CommandController
     protected $extensionConfiguration;
 
     /**
-     * persistenceManager
-     *
      * @var PersistenceManager
      */
     protected $persistenceManager;
 
+    protected SymfonyStyle $io;
+
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->io = new SymfonyStyle($input, $output);
+    }
+
+    public function __construct(string $name = null)
+    {
+        parent::__construct($name);
+
+        $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
+        $this->invitationRepository = GeneralUtility::makeInstance(InvitationRepository::class);
+        $this->backendUserGroupRepository = GeneralUtility::makeInstance(BackendUserGroupRepository::class);
+        $this->backendUserRepository = GeneralUtility::makeInstance(BackendUserRepository::class);
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
+
+        $this->extensionConfiguration = $this->configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+            'newscatinvite',
+            'newscatinvite'
+        );
+    }
+
+    protected function configure()
+    {
+        $this
+            ->addOption(
+                'overrideRecipient',
+                '',
+                InputOption::VALUE_OPTIONAL,
+                'Override the recipient with this address - for testing purposes',
+                ''
+            );
+    }
+
     /**
      * Send pending invitations
-     *
-     * @param int $itemsPerRun
-     * @param string $overrideRecipient Override the recipient with this address - for testing purposes
      */
-    public function sendInvitationsCommand($itemsPerRun = 20, $overrideRecipient = '')
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->initializeAction();
+        $overrideRecipient = $input->getOption('overrideRecipient');
 
         $notSentInvitations = $this->invitationRepository->findPendingUnsentInvitations();
         foreach ($notSentInvitations as $invitation) {
@@ -109,7 +125,7 @@ class InvitationCommandController extends CommandController
                 $subject = 'Einladung zur Aufnahme einer News-Meldung';
 
                 /** @var StandaloneView $standaloneView */
-                $standaloneView = $this->objectManager->get('TYPO3\CMS\Fluid\View\StandaloneView');
+                $standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
                 $standaloneView->setFormat('html');
                 $templateRootPath = GeneralUtility::getFileAbsFileName($this->extensionConfiguration['view']['templateRootPath']);
                 $templatePathAndFilename = $templateRootPath . 'Email/InvitationNotification.html';
@@ -121,7 +137,7 @@ class InvitationCommandController extends CommandController
                 $content = $standaloneView->render();
                 $sender = ['typo3@unilu.ch' => 'TYPO3 Universität Luzern'];
                 $replyTo = '';
-                if ($invitation->getCreator()->getEmail() !== '') {
+                if ($invitation->getCreator() && $invitation->getCreator()->getEmail() !== '') {
                     $replyTo = $invitation->getCreator()->getEmail();
                 }
                 $emailIsSent = $this->sendEmail($recipientArray, $sender, $subject, $content, $replyTo);
@@ -133,6 +149,7 @@ class InvitationCommandController extends CommandController
         }
 
         $this->persistenceManager->persistAll();
+        return 0;
     }
 
     /**
@@ -158,22 +175,10 @@ class InvitationCommandController extends CommandController
             $message->setReturnPath($returnPath);
         }
         $message->setSubject($subject);
-        $message->setBody($content, 'text/html');
+        $message->html($content);
         $message->send();
 
         return $message->isSent();
-    }
-
-    /**
-     * constructor
-     */
-    public function initializeAction()
-    {
-        $this->extensionConfiguration = $this->configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
-            'newscatinvite',
-            'newscatinvite'
-        );
     }
 
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void

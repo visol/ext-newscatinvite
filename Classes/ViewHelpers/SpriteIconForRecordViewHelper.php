@@ -2,18 +2,6 @@
 
 namespace Visol\Newscatinvite\ViewHelpers;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -27,7 +15,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
 {
-
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
@@ -37,7 +24,6 @@ class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
 
     /**
      * Displays spriteIcon for database table and object
-     *
      *
      * @return string
      * @see \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row)
@@ -68,5 +54,4 @@ class SpriteIconForRecordViewHelper extends AbstractBackendViewHelper
         $this->registerArgument('table', 'string', '', true);
         $this->registerArgument('object', 'object', '', true);
     }
-
 }
