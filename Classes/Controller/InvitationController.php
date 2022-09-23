@@ -2,34 +2,20 @@
 
 namespace Visol\Newscatinvite\Controller;
 
-/**
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use Visol\Newscatinvite\Domain\Repository\BackendUserRepository;
 use Visol\Newscatinvite\Domain\Repository\InvitationRepository;
-use TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use Visol\Newscatinvite\Domain\Model\Invitation;
 
-/**
- * InvitationController
- */
 class InvitationController extends ActionController
 {
-
     /**
      * invitationRepository
      *
@@ -47,6 +33,10 @@ class InvitationController extends ActionController
      */
     protected $configurationManager;
 
+    public function __construct()
+    {
+        $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
+    }
 
     /**
      * action list
@@ -194,10 +184,5 @@ class InvitationController extends ActionController
     public function injectBackendUserRepository(BackendUserRepository $backendUserRepository): void
     {
         $this->backendUserRepository = $backendUserRepository;
-    }
-
-    public function injectConfigurationManager(ConfigurationManager $configurationManager): void
-    {
-        $this->configurationManager = $configurationManager;
     }
 }
