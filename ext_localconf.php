@@ -20,3 +20,7 @@ ExtensionUtility::configurePlugin(
 
     ]
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][GeorgRinger\News\Domain\Repository\NewsRepository::class] = [
+    'className' => \Visol\Newscatinvite\Domain\Repository\NewsRepository::class
+];

@@ -12,18 +12,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class NewsService implements SingletonInterface
 {
-    protected $newsTable = 'tx_news_domain_model_news';
-    protected $categoryTable = 'sys_category';
-    protected $categoryMmTable = 'sys_category_record_mm';
+    protected string $newsTable = 'tx_news_domain_model_news';
+    protected string $categoryTable = 'sys_category';
+    protected string $categoryMmTable = 'sys_category_record_mm';
 
     /**
      * Get a raw news record using TYPO3 DB API and add its related categories
-     *
-     * @param $newsUid
-     *
-     * @return array|FALSE|NULL
      */
-    public function getRawNewsRecordWithCategories($newsUid)
+    public function getRawNewsRecordWithCategories(int $newsUid): array
     {
         $newsRecord = $this->findRawRecordByUid($newsUid);
         $q = $this->getQueryBuilder();

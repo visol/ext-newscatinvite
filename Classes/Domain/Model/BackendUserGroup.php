@@ -24,67 +24,31 @@ class BackendUserGroup extends AbstractEntity
      * @var string
      * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
-    protected $title = '';
+    protected string $title = '';
 
-    /**
-     * @var string
-     */
-    protected $description = '';
+    protected string $description = '';
 
-    /**
-     * @var string
-     */
-    protected $modules = '';
+    protected string $modules = '';
 
-    /**
-     * @var string
-     */
-    protected $tablesListening = '';
+    protected string $tablesListening = '';
 
-    /**
-     * @var string
-     */
-    protected $tablesModify = '';
+    protected string $tablesModify = '';
 
-    /**
-     * @var string
-     */
-    protected $pageTypes = '';
+    protected string $pageTypes = '';
 
-    /**
-     * @var string
-     */
-    protected $allowedExcludeFields = '';
+    protected string $allowedExcludeFields = '';
 
-    /**
-     * @var string
-     */
-    protected $explicitlyAllowAndDeny = '';
+    protected string $explicitlyAllowAndDeny = '';
 
-    /**
-     * @var string
-     */
-    protected $allowedLanguages = '';
+    protected string $allowedLanguages = '';
 
-    /**
-     * @var bool
-     */
-    protected $workspacePermission = false;
+    protected bool $workspacePermission = false;
 
-    /**
-     * @var string
-     */
-    protected $databaseMounts = '';
+    protected string $databaseMounts = '';
 
-    /**
-     * @var int
-     */
-    protected $fileOperationPermissions = 0;
+    protected int $fileOperationPermissions = 0;
 
-    /**
-     * @var string
-     */
-    protected $tsConfig = '';
+    protected string $tsConfig = '';
 
     /**
      * Constructs this backend usergroup
@@ -104,12 +68,7 @@ class BackendUserGroup extends AbstractEntity
         $this->title = $title;
     }
 
-    /**
-     * Getter for title
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -124,12 +83,7 @@ class BackendUserGroup extends AbstractEntity
         $this->description = $description;
     }
 
-    /**
-     * Getter for description
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -144,12 +98,7 @@ class BackendUserGroup extends AbstractEntity
         $this->modules = $modules;
     }
 
-    /**
-     * Getter for modules
-     *
-     * @return string
-     */
-    public function getModules()
+    public function getModules(): string
     {
         return $this->modules;
     }
@@ -164,12 +113,7 @@ class BackendUserGroup extends AbstractEntity
         $this->tablesListening = $tablesListening;
     }
 
-    /**
-     * Getter for tables listening
-     *
-     * @return string
-     */
-    public function getTablesListening()
+    public function getTablesListening(): string
     {
         return $this->tablesListening;
     }
@@ -184,12 +128,7 @@ class BackendUserGroup extends AbstractEntity
         $this->tablesModify = $tablesModify;
     }
 
-    /**
-     * Getter for tables modify
-     *
-     * @return string
-     */
-    public function getTablesModify()
+    public function getTablesModify(): string
     {
         return $this->tablesModify;
     }
@@ -204,12 +143,7 @@ class BackendUserGroup extends AbstractEntity
         $this->pageTypes = $pageTypes;
     }
 
-    /**
-     * Getter for page types
-     *
-     * @return string
-     */
-    public function getPageTypes()
+    public function getPageTypes(): string
     {
         return $this->pageTypes;
     }
@@ -224,12 +158,7 @@ class BackendUserGroup extends AbstractEntity
         $this->allowedExcludeFields = $allowedExcludeFields;
     }
 
-    /**
-     * Getter for allowed exclude fields
-     *
-     * @return string
-     */
-    public function getAllowedExcludeFields()
+    public function getAllowedExcludeFields(): string
     {
         return $this->allowedExcludeFields;
     }
@@ -244,12 +173,7 @@ class BackendUserGroup extends AbstractEntity
         $this->explicitlyAllowAndDeny = $explicitlyAllowAndDeny;
     }
 
-    /**
-     * Getter for explicitly allow and deny
-     *
-     * @return string
-     */
-    public function getExplicitlyAllowAndDeny()
+    public function getExplicitlyAllowAndDeny(): string
     {
         return $this->explicitlyAllowAndDeny;
     }
@@ -264,12 +188,7 @@ class BackendUserGroup extends AbstractEntity
         $this->allowedLanguages = $allowedLanguages;
     }
 
-    /**
-     * Getter for allowed languages
-     *
-     * @return string
-     */
-    public function getAllowedLanguages()
+    public function getAllowedLanguages(): string
     {
         return $this->allowedLanguages;
     }
@@ -289,7 +208,7 @@ class BackendUserGroup extends AbstractEntity
      *
      * @return bool
      */
-    public function getWorkspacePermission()
+    public function getWorkspacePermission(): bool
     {
         return $this->workspacePermission;
     }
@@ -304,12 +223,7 @@ class BackendUserGroup extends AbstractEntity
         $this->databaseMounts = $databaseMounts;
     }
 
-    /**
-     * Getter for database mounts
-     *
-     * @return string
-     */
-    public function getDatabaseMounts()
+    public function getDatabaseMounts(): string
     {
         return $this->databaseMounts;
     }
@@ -329,7 +243,7 @@ class BackendUserGroup extends AbstractEntity
      *
      * @return int
      */
-    public function getFileOperationPermissions()
+    public function getFileOperationPermissions(): int
     {
         return $this->fileOperationPermissions;
     }
@@ -340,7 +254,7 @@ class BackendUserGroup extends AbstractEntity
      *
      * @return bool
      */
-    public function isFileOperationAllowed()
+    public function isFileOperationAllowed(): bool
     {
         return $this->isPermissionSet(self::FILE_OPPERATIONS);
     }
@@ -360,7 +274,7 @@ class BackendUserGroup extends AbstractEntity
      *
      * @return bool
      */
-    public function isDirectoryOperationAllowed()
+    public function isDirectoryOperationAllowed(): bool
     {
         return $this->isPermissionSet(self::DIRECTORY_OPPERATIONS);
     }
@@ -380,7 +294,7 @@ class BackendUserGroup extends AbstractEntity
      *
      * @return bool
      */
-    public function isDirectoryCopyAllowed()
+    public function isDirectoryCopyAllowed(): bool
     {
         return $this->isPermissionSet(self::DIRECTORY_COPY);
     }
@@ -400,7 +314,7 @@ class BackendUserGroup extends AbstractEntity
      *
      * @return bool
      */
-    public function isDirectoryRemoveRecursivelyAllowed()
+    public function isDirectoryRemoveRecursivelyAllowed(): bool
     {
         return $this->isPermissionSet(self::DIRECTORY_REMOVE_RECURSIVELY);
     }
@@ -425,12 +339,7 @@ class BackendUserGroup extends AbstractEntity
         $this->tsConfig = $tsConfig;
     }
 
-    /**
-     * Getter for ts config
-     *
-     * @return string
-     */
-    public function getTsConfig()
+    public function getTsConfig(): string
     {
         return $this->tsConfig;
     }
@@ -441,7 +350,7 @@ class BackendUserGroup extends AbstractEntity
      * @param int $permission
      * @return bool
      */
-    protected function isPermissionSet($permission)
+    protected function isPermissionSet($permission): bool
     {
         return ($this->fileOperationPermissions & $permission) == $permission;
     }
@@ -464,7 +373,7 @@ class BackendUserGroup extends AbstractEntity
     /**
      * @return ObjectStorage
      */
-    public function getCategoryPerms()
+    public function getCategoryPerms(): ObjectStorage
     {
         return $this->categoryPerms;
     }
