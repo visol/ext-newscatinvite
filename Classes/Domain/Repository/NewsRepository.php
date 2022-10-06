@@ -154,7 +154,7 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
         }
         $sql .= ' GROUP BY _Month, _Year ORDER BY _Year ' . $orderDirection . ', _Month ' . $orderDirection;
 
-        $res = $connection->query($sql);
+        $res = $connection->executeQuery($sql);
         while ($row = $res->fetch()) {
             $month = strlen($row['_Month']) === 1 ? ('0' . $row['_Month']) : $row['_Month'];
             $data['single'][$row['_Year']][$month] = $row['count_month'];

@@ -217,7 +217,7 @@ class Invitation extends AbstractEntity
      */
     public function getRawNews()
     {
-        $rawNewsRecord = $this->newsService->getRawNewsRecordWithCategories($this->news);
+        $rawNewsRecord = $this->newsService->getRawNewsRecordWithCategories((int)$this->news);
 
         return $rawNewsRecord;
     }

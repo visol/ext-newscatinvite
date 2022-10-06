@@ -14,50 +14,25 @@ class BackendUser extends AbstractEntity
 
     // below are the "default" properties stolen from the extbase model
     /**
-     * @var string
      * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
-    protected $userName = '';
+    protected string $userName = '';
 
-    /**
-     * @var string
-     */
-    protected $description = '';
+    protected string $description = '';
 
-    /**
-     * @var bool
-     */
-    protected $isAdministrator = false;
+    protected bool $isAdministrator = false;
 
-    /**
-     * @var bool
-     */
-    protected $isDisabled = false;
+    protected bool $isDisabled = false;
 
-    /**
-     * @var \DateTime|null
-     */
-    protected $startDateAndTime;
+    protected ?\DateTime $startDateAndTime;
 
-    /**
-     * @var \DateTime|null
-     */
-    protected $endDateAndTime;
+    protected ?\DateTime $endDateAndTime;
 
-    /**
-     * @var string
-     */
-    protected $email = '';
+    protected string $email = '';
 
-    /**
-     * @var string
-     */
-    protected $realName = '';
+    protected string $realName = '';
 
-    /**
-     * @var \DateTime|null
-     */
-    protected $lastLoginDateAndTime;
+    protected ?\DateTime $lastLoginDateAndTime;
 
     /**
      * Constructs this backend usergroup
@@ -67,12 +42,7 @@ class BackendUser extends AbstractEntity
         $this->usergroupCachedList = new ObjectStorage();
     }
 
-    /**
-     * Gets the user name.
-     *
-     * @return string the user name, will not be empty
-     */
-    public function getUserName()
+    public function getUserName(): string
     {
         return $this->userName;
     }
@@ -90,7 +60,7 @@ class BackendUser extends AbstractEntity
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -108,7 +78,7 @@ class BackendUser extends AbstractEntity
      *
      * @return bool whether this user is an administrator
      */
-    public function getIsAdministrator()
+    public function getIsAdministrator(): bool
     {
         return $this->isAdministrator;
     }
@@ -128,7 +98,7 @@ class BackendUser extends AbstractEntity
      *
      * @return bool whether this user is disabled
      */
-    public function getIsDisabled()
+    public function getIsDisabled(): bool
     {
         return $this->isDisabled;
     }
@@ -148,7 +118,7 @@ class BackendUser extends AbstractEntity
      *
      * @return \DateTime|null the start date and time
      */
-    public function getStartDateAndTime()
+    public function getStartDateAndTime(): ?\DateTime
     {
         return $this->startDateAndTime;
     }
@@ -168,7 +138,7 @@ class BackendUser extends AbstractEntity
      *
      * @return \DateTime|null the end date and time
      */
-    public function getEndDateAndTime()
+    public function getEndDateAndTime(): ?\DateTime
     {
         return $this->endDateAndTime;
     }
@@ -188,7 +158,7 @@ class BackendUser extends AbstractEntity
      *
      * @return string the e-mail address, might be empty
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -208,7 +178,7 @@ class BackendUser extends AbstractEntity
      *
      * @return string the real name. might be empty
      */
-    public function getRealName()
+    public function getRealName(): string
     {
         return $this->realName;
     }
@@ -230,7 +200,7 @@ class BackendUser extends AbstractEntity
      *
      * @return bool whether this user is currently activated
      */
-    public function isActivated()
+    public function isActivated(): bool
     {
         return !$this->getIsDisabled() && $this->isActivatedViaStartDateAndTime() && $this->isActivatedViaEndDateAndTime();
     }
@@ -240,7 +210,7 @@ class BackendUser extends AbstractEntity
      *
      * @return bool whether this user is activated as far as the start date and time is concerned
      */
-    protected function isActivatedViaStartDateAndTime()
+    protected function isActivatedViaStartDateAndTime(): bool
     {
         if ($this->getStartDateAndTime() === null) {
             return true;
@@ -254,7 +224,7 @@ class BackendUser extends AbstractEntity
      *
      * @return bool whether this user is activated as far as the end date and time is concerned
      */
-    protected function isActivatedViaEndDateAndTime()
+    protected function isActivatedViaEndDateAndTime(): bool
     {
         if ($this->getEndDateAndTime() === null) {
             return true;
@@ -268,7 +238,7 @@ class BackendUser extends AbstractEntity
      *
      * @return \DateTime|null this user's last login date and time, will be NULL if this user has never logged in before
      */
-    public function getLastLoginDateAndTime()
+    public function getLastLoginDateAndTime(): ?\DateTime
     {
         return $this->lastLoginDateAndTime;
     }
@@ -286,7 +256,7 @@ class BackendUser extends AbstractEntity
     /**
      * @return ObjectStorage
      */
-    public function getUsergroupCachedList()
+    public function getUsergroupCachedList(): ObjectStorage
     {
         return $this->usergroupCachedList;
     }
