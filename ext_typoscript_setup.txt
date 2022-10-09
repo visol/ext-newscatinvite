@@ -1,7 +1,0 @@
-plugin.tx_news {
-  objects {
-     GeorgRinger\News\Domain\Repository\NewsRepository {
-        className = Visol\Newscatinvite\Domain\Repository\NewsRepository
-     }
-  }
-}
