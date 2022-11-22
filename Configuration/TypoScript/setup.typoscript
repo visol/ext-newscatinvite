@@ -24,6 +24,5 @@ module.tx_newscatinvite {
 		newsPreviewPid = 6193
 		eventPreviewPid = 6194
 		eventsPid = 56
-		baseUrl = {$site.baseUrl}
 	}
 }

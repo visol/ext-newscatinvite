@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use Visol\Newscatinvite\Domain\Model\Invitation;
 use Visol\Newscatinvite\Domain\Model\BackendUserGroup;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -132,7 +133,8 @@ class InvitationSendCommand extends Command
                 $standaloneView->setTemplatePathAndFilename($templatePathAndFilename);
                 $standaloneView->assignMultiple([
                     'invitation' => $invitation,
-                    'settings' => $this->extensionConfiguration['settings']
+                    'settings' => $this->extensionConfiguration['settings'],
+                    'baseUri' => $this->getBaseUri($invitation->getPid())
                 ]);
                 $content = $standaloneView->render();
                 $sender = ['typo3@unilu.ch' => 'TYPO3 Universität Luzern'];
@@ -142,7 +144,7 @@ class InvitationSendCommand extends Command
                 }
                 $emailIsSent = $this->sendEmail($recipientArray, $sender, $subject, $content, $replyTo);
                 if ($emailIsSent) {
-                    $invitation->setSent(1);
+                    $invitation->setSent(true);
                     $this->invitationRepository->update($invitation);
                 }
             }
@@ -179,6 +181,15 @@ class InvitationSendCommand extends Command
         $message->send();
 
         return $message->isSent();
+    }
+
+    /**
+     * Source: https://github.com/sitegeist/base-url/blob/main/Classes/Helper/BaseUrl.php
+     */
+    protected function getBaseUri(int $pageId): string {
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $site = $siteFinder->getSiteByPageId($pageId);
+        return (string) $site->getBase();
     }
 
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void

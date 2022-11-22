@@ -100,7 +100,6 @@ class InvitationController extends ActionController
      * @return void
      * TODO permission check
      * @Extbase\IgnoreValidation("invitation")
-     * @Extbase\IgnoreValidation("invitation")
      */
     public function approveAction(Invitation $invitation)
     {
@@ -129,7 +128,6 @@ class InvitationController extends ActionController
      * @return void
      * TODO permission check*
      * @Extbase\IgnoreValidation("invitation")
-     * @Extbase\IgnoreValidation("invitation")
      */
     public function rejectAction(Invitation $invitation)
     {
@@ -157,7 +155,6 @@ class InvitationController extends ActionController
      *
      * @return void
      * TODO permission check
-     * @Extbase\IgnoreValidation("invitation")
      * @Extbase\IgnoreValidation("invitation")
      */
     public function removeAction(Invitation $invitation)

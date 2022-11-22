@@ -22,6 +22,14 @@ return [
     ],
     BackendUser::class => [
         'tableName' => 'be_users',
+        'properties' => [
+            'userName' => [
+                'fieldName' => 'username'
+            ],
+            'realName' => [
+                'fieldName' => 'realName'
+            ],
+        ]
     ],
     BackendUserGroup::class => [
         'tableName' => 'be_groups',
