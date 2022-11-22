@@ -3,12 +3,18 @@
 namespace Visol\Newscatinvite\Domain\Repository;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use Visol\Newscatinvite\Domain\Model\Invitation;
 
 class InvitationRepository extends Repository
 {
+
+    protected $defaultOrderings = [
+        'category.sorting' => QueryInterface::ORDER_ASCENDING,
+    ];
+
     public function initializeObject()
     {
         /** @var $querySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
