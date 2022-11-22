@@ -4,6 +4,7 @@ namespace Visol\Newscatinvite\Service;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -23,6 +24,10 @@ class NewsService implements SingletonInterface
     {
         $newsRecord = $this->findRawRecordByUid($newsUid);
         $q = $this->getQueryBuilder();
+        $q
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $categories = $q->select('sys_category.*')
             ->from($this->categoryTable)
             ->innerJoin(
@@ -59,6 +64,10 @@ class NewsService implements SingletonInterface
     public function findRawRecordByUid($newsUid)
     {
         $q = $this->getQueryBuilder();
+        $q
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         return $q
             ->select('*')
             ->from($this->newsTable)
