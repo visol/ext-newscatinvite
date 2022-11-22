@@ -38,20 +38,18 @@ class NewsService implements SingletonInterface
                 "$this->categoryMmTable.uid_foreign = $this->newsTable.uid"
             )
             ->where(
-                $q->expr()->eq('uid_foreign', $newsRecord['uid'])
+                $q->expr()->eq("$this->categoryMmTable.uid_foreign", $newsRecord['uid'])
             )
             ->execute()
             ->fetchAllAssociative();
-
         $newsRecord['categories'] = $categories;
-
         return $newsRecord;
     }
 
     /**
      * Finds a record through the TYPO3 DB API, ignoring the frontend language.
      * This is used in the CommandController where mails for certain news records are generated.
-     * Since there is no frontend context, no overlay can happen. Therefore using the TYPO3 DB API
+     * Since there is no frontend context, no overlay can happen. Therefore, using the TYPO3 DB API
      * is the safest way to ensure getting the correct record.
      *
      * @param $newsUid

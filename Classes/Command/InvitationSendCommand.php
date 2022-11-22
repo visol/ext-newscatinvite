@@ -142,7 +142,7 @@ class InvitationSendCommand extends Command
                 }
                 $emailIsSent = $this->sendEmail($recipientArray, $sender, $subject, $content, $replyTo);
                 if ($emailIsSent) {
-                    $invitation->setSent(1);
+                    $invitation->setSent(true);
                     $this->invitationRepository->update($invitation);
                 }
             }
