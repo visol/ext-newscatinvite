@@ -26,36 +26,26 @@ class Invitation extends AbstractEntity
     protected $newsService;
 
     /**
-     * tstamp
-     *
      * @var \DateTime
      */
     protected $tstamp;
 
     /**
-     * status
-     *
      * @var integer
      */
-    protected $status = '0';
+    protected $status = 0;
 
     /**
-     * sent
-     *
      * @var boolean
      */
-    protected $sent = 'FALSE';
+    protected $sent = false;
 
     /**
-     * category
-     *
      * @var Category
      */
     protected $category;
 
     /**
-     * news
-     *
      * @var int
      */
     protected $news;
@@ -69,8 +59,6 @@ class Invitation extends AbstractEntity
     protected $rawNews;
 
     /**
-     * approvingBeuser
-     *
      * @var BackendUser
      */
     protected $approvingBeuser;
@@ -81,15 +69,6 @@ class Invitation extends AbstractEntity
     protected ?BackendUser $creator = null;
 
     /**
-     * __construct
-     */
-    public function __construct()
-    {
-    }
-
-    /**
-     * Returns the tstamp
-     *
      * @return \DateTime $tstamp
      */
     public function getTstamp()
@@ -98,8 +77,6 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * Sets the tstamp
-     *
      * @param \DateTime $tstamp
      *
      * @return void
@@ -110,8 +87,6 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * Returns the status
-     *
      * @return integer $status
      */
     public function getStatus()
@@ -120,10 +95,7 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * Sets the status
-     *
      * @param integer $status
-     *
      * @return void
      */
     public function setStatus($status)
@@ -132,8 +104,6 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * Returns the sent
-     *
      * @return boolean $sent
      */
     public function getSent()
@@ -142,8 +112,6 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * Sets the sent
-     *
      * @param boolean $sent
      *
      * @return void
@@ -154,8 +122,6 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * Returns the boolean state of sent
-     *
      * @return boolean
      */
     public function isSent()
@@ -164,8 +130,6 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * Returns the category
-     *
      * @return Category $category
      */
     public function getCategory()
@@ -174,8 +138,6 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * Sets the category
-     *
      * @param Category $category
      *
      * @return void
@@ -186,20 +148,14 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * Returns the news
-     *
      * @return News $news
      */
     public function getNews()
     {
-        $newsRecord = $this->newsRepository->findByUid($this->news, false);
-
-        return $newsRecord;
+        return $this->newsRepository->findByUid($this->news, false);
     }
 
     /**
-     * Sets the news
-     *
      * @param News $news
      *
      * @return void
@@ -223,8 +179,6 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * Returns the approvingBeuser
-     *
      * @return BackendUser $approvingBeuser
      */
     public function getApprovingBeuser()
@@ -233,8 +187,6 @@ class Invitation extends AbstractEntity
     }
 
     /**
-     * Sets the approvingBeuser
-     *
      * @param BackendUser $approvingBeuser
      *
      * @return void
