@@ -1,70 +1,71 @@
 {namespace nci = Visol\Newscatinvite\ViewHelpers}
 {namespace c = TYPO3\CMS\Core\ViewHelpers}
 
-<table border="0" cellpadding="0" cellspacing="0" class="table table-striped table-hover">
+<table class="table table-striped table-hover invitations align-middle">
 	<thead>
 		<tr>
-			<td>&nbsp;</td>
-			<td>
+			<th>&nbsp;</th>
+			<th>
 				{f:translate(key: 'tableNewsTitle')}
-			</td>
-			<td>&nbsp;</td>
-			<td>{f:translate(key: 'tableCommentTitle')}</td>
+			</th>
+			<th>&nbsp;</th>
+			<th>{f:translate(key: 'tableCommentTitle')}</th>
 		</tr>
 	</thead>
+  <tbody>
+    <f:for each="{invitations}" as="invitation">
+      <tr>
+        <td>
+          <a href="#" class="t3js-contextmenutrigger" data-table="tx_news_domain_model_news" data-uid="{invitation.rawNews.uid}">
+            <nci:spriteIconForRecord table="tx_news_domain_model_news" object="{invitation.news}" />
+          </a>
+        </td>
+        <td class="t3-title-column">
+          <f:if condition="{invitation.rawNews.pid} == {settings.eventsPid}">
+            <f:then>
+              <a target="_blank" href="/index.php?id={settings.eventPreviewPid}{f:if(condition:'{invitation.rawNews.sys_language_uid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=eventDetail&tx_news_pi1[news_preview]={invitation.rawNews.uid}&no_cache=1">
+                {invitation.rawNews.title}
+              </a>
+            </f:then>
+            <f:else>
+              <a target="_blank" href="/index.php?id={settings.newsPreviewPid}{f:if(condition:'{invitation.rawNews.sys_language_uid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news_preview]={invitation.rawNews.uid}&no_cache=1">
+                {invitation.rawNews.title}
+              </a>
+            </f:else>
+          </f:if>
+        </td>
 
-	<f:for each="{invitations}" as="invitation">
-		<tr class="db_list_normal">
-			<td class="col-icon">
-				<a href="#" onClick="Clickmenu.show('tx_news_domain_model_news', '{invitation.rawNews.uid}', '1', '', '', ''); return false;" title="id={invitation.rawNews.uid}">
-					<nci:spriteIconForRecord table="tx_news_domain_model_news" object="{invitation.news}" />
-				</a>
-			</td>
-			<td class="t3-title-column">
-				<f:if condition="{invitation.rawNews.pid} == {settings.eventsPid}">
-					<f:then>
-						<a target="_blank" href="{settings.baseUrl}index.php?id={settings.eventPreviewPid}{f:if(condition:'{invitation.rawNews.sys_language_uid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=eventDetail&tx_news_pi1[news_preview]={invitation.rawNews.uid}&no_cache=1">
-							{invitation.rawNews.title}
-						</a>
-					</f:then>
-					<f:else>
-						<a target="_blank" href="{settings.baseUrl}index.php?id={settings.newsPreviewPid}{f:if(condition:'{invitation.rawNews.sys_language_uid} == 1', then:'&L=1')}&tx_news_pi1[controller]=News&tx_news_pi1[action]=detail&tx_news_pi1[news_preview]={invitation.rawNews.uid}&no_cache=1">
-							{invitation.rawNews.title}
-						</a>
-					</f:else>
-				</f:if>
-			</td>
-
-			<td>
-				<f:if condition="{invitation.status} != 0">
-					<f:then>
-						{f:translate(key :'tx_newscatinvite_domain_model_invitation.status.{invitation.status}')} |
-						<f:link.action action="remove" onclick="return confirm('{f:translate(key: 'deleteConfirmation')}')" arguments="{invitation: invitation}" title="{f:translate(key: 'approveButtonTitle')}">
-							<c:icon identifier="actions-edit-delete" /> {f:translate(key: 'deleteButtonLabel')}
-						</f:link.action>
-					</f:then>
-					<f:else>
-						<f:link.action action="approve" arguments="{invitation: invitation}" title="{f:translate(key: 'approveButtonTitle')}">
-							<c:icon identifier="status-status-permission-granted" /> {f:translate(key: 'approveButtonLabel')}
-						</f:link.action>
-						&nbsp;&nbsp;
-						<f:link.action action="reject" arguments="{invitation: invitation}" title="{f:translate(key: 'rejectButtonTitle')}">
-							<c:icon identifier="status-status-permission-denied" /> {f:translate(key: 'rejectButtonLabel')}
-						</f:link.action>
-					</f:else>
-				</f:if>
-				<br/>
-			</td>
-			<td>
-				<f:if condition="{invitation.status} != 0">
-					<f:then>
-						{invitation.approvingBeuser.realName}<br/>
-						{invitation.tstamp -> f:format.date(format:'d.m.Y H:i')}
-					</f:then>
-					<f:else>
-					</f:else>
-				</f:if>
-			</td>
-		</tr>
-	</f:for>
+        <td>
+          <f:if condition="{invitation.status} != 0">
+            <f:then>
+              {f:translate(key :'tx_newscatinvite_domain_model_invitation.status.{invitation.status}')} |
+              <f:link.action action="remove" onclick="return confirm('{f:translate(key: 'deleteConfirmation')}')" arguments="{invitation: invitation}" title="{f:translate(key: 'approveButtonTitle')}">
+                <c:icon identifier="actions-edit-delete" /> {f:translate(key: 'deleteButtonLabel')}
+              </f:link.action>
+            </f:then>
+            <f:else>
+              <f:link.action action="approve" arguments="{invitation: invitation}" title="{f:translate(key: 'approveButtonTitle')}">
+                <c:icon identifier="status-status-permission-granted" /> {f:translate(key: 'approveButtonLabel')}
+              </f:link.action>
+              &nbsp;&nbsp;
+              <f:link.action action="reject" arguments="{invitation: invitation}" title="{f:translate(key: 'rejectButtonTitle')}">
+                <c:icon identifier="status-status-permission-denied" /> {f:translate(key: 'rejectButtonLabel')}
+              </f:link.action>
+            </f:else>
+          </f:if>
+          <br/>
+        </td>
+        <td>
+          <f:if condition="{invitation.status} != 0">
+            <f:then>
+              {invitation.approvingBeuser.realName}<br/>
+              {invitation.tstamp -> f:format.date(format:'d.m.Y H:i')}
+            </f:then>
+            <f:else>
+            </f:else>
+          </f:if>
+        </td>
+      </tr>
+    </f:for>
+  </tbody>
 </table>

@@ -1,18 +1,54 @@
-
-table.typo3-dblist tr td.col-icon {
-	vertical-align: top;
+#typo3-docheader .typo3-docheader-functions {
+  height: 52px;
+  line-height: 27px;
+  padding-left: 27px;
+  padding-top: 12px;
+  border-bottom: 1px solid #e1e1e1;
 }
 
-table.typo3-dblist td:nth-child(1) {
+.typo3-fullDoc {
+  height: 100%;
+  width: 100%;
+}
+
+#typo3-docheader {
+  background: #eee;
+}
+
+#typo3-docbody {
+  position: absolute;
+  top: 49px;
+  bottom: 0;
+  overflow: auto;
+  width: 100%;
+  z-index: 2;
+}
+
+#typo3-inner-docbody {
+  display: block;
+  position: absolute;
+  height: auto;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 30px;
+}
+
+table.invitations td:nth-child(1) {
 	width: 5%;
 }
 
-table.typo3-dblist td:nth-child(2) {
-	width: 40%;
+table.invitations td:nth-child(2) {
+	width: 45%;
 }
 
-table.typo3-dblist td:nth-child(3) {
-	width: 55%;
+table.invitations td:nth-child(3) {
+	width: 30%;
+}
+
+table.invitations td:nth-child(4) {
+	width: 20%;
 }
 
 #myinvitations-categorylist {
