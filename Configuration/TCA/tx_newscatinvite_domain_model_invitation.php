@@ -20,6 +20,10 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
         'cruser_id' => 'cruser_id',
         'searchFields' => 'status,sent,category,news,approving_beuser,',
         'iconfile' => 'EXT:newscatinvite/Resources/Public/Icons/tx_newscatinvite_domain_model_invitation.svg',
+        'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l10n_parent',
+        'transOrigDiffSourceField' => 'l10n_diffsource',
+        'translationSource' => 'l10n_source',
     ],
     'interface' => [
         'showRecordFieldList' => 'status, sent, category, news, approving_beuser',
@@ -31,8 +35,46 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
         '1' => ['showitem' => ''],
     ],
     'columns' => [
+        'sys_language_uid' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'config' => [
+                'type' => 'language',
+            ],
+        ],
+        'l10n_parent' => [
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l10n_parent',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        '',
+                        0,
+                    ],
+                ],
+                'foreign_table' => 'tx_newscatinvite_domain_model_invitation',
+                'foreign_table_where' =>
+                    'AND tx_newscatinvite_domain_model_invitation.pid=###CURRENT_PID###'
+                    . ' AND tx_newscatinvite_domain_model_invitation.sys_language_uid IN (-1,0)',
+                'default' => 0,
+            ],
+        ],
+        'l10n_source' => [
+            'config' => [
+                'type' => 'passthrough'
+            ]
+        ],
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+                'default' => ''
+            ]
+        ],
         'status' => [
             'exclude' => 1,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.status',
             'config' => [
                 'type' => 'select',
@@ -66,6 +108,7 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
         ],
         'sent' => [
             'exclude' => 1,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.sent',
             'config' => [
                 'type' => 'check',
@@ -75,6 +118,8 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
         ],
         'category' => [
             'exclude' => 0,
+            // in TYPO3 v11 translated invitations will point to the same default language category as their language parent
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.category',
             'config' => [
                 'type' => 'select',
@@ -104,6 +149,7 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
         ],
         'approving_beuser' => [
             'exclude' => 1,
+            'l10n_mode' => 'exclude',
             'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.approving_beuser',
             'config' => [
                 'type' => 'select',
