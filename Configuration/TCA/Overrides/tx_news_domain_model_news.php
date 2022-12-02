@@ -10,6 +10,7 @@ $tmp_newscatinvite_columns = [
     'invitations' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.tx_newscatinvite_invitations',
+        'l10n_mode' => 'exclude',
         'config' => [
             'type' => 'inline',
             'foreign_table' => 'tx_newscatinvite_domain_model_invitation',
@@ -19,10 +20,7 @@ $tmp_newscatinvite_columns = [
             'appearance' => [
                 'collapseAll' => 1,
                 'levelLinksPosition' => 'top',
-                'showSynchronizationLink' => 1,
-                'showPossibleLocalizationRecords' => 1,
                 'newRecordLinkTitle' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_news_domain_model_news.tx_newscatinvite_invitations.newRecordLinkTitle',
-                'showAllLocalizationLink' => 1,
             ]
         ]
     ],

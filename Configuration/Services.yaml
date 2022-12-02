@@ -12,3 +12,17 @@ services:
       - name: 'console.command'
         command: 'invitation:sendInvitations'
         description: 'Send pending invitations'
+
+  Visol\Newscatinvite\Persistence\InvitationUpdateTranslationSynchronizer:
+    tags:
+      - name: 'event.listener'
+        identifier: 'InvitationUpdateTranslationSynchronizer'
+        event: TYPO3\CMS\Extbase\Event\Persistence\EntityUpdatedInPersistenceEvent
+  Visol\Newscatinvite\Persistence\InvitationDeleteTranslationSynchronizer:
+    tags:
+      - name: 'event.listener'
+        identifier: 'InvitationDeleteTranslationSynchronizer'
+        event: TYPO3\CMS\Extbase\Event\Persistence\EntityRemovedFromPersistenceEvent
+
+  Visol\Newscatinvite\Update\TranslationUpdateWizard:
+    public: true

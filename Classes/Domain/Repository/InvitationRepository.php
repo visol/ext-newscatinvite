@@ -20,7 +20,6 @@ class InvitationRepository extends Repository
         /** @var $querySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
         $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);
-        $querySettings->setRespectSysLanguage(false);
         $querySettings->setIgnoreEnableFields(true);
         $this->setDefaultQuerySettings($querySettings);
     }
