@@ -37,6 +37,7 @@ class TranslationUpdateWizard implements UpgradeWizardInterface
         $queryBuilder
             ->select(...[
                 'invitation.uid AS l10n_parent',
+                'invitation.pid AS pid',
                 'invitation.status AS status',
                 'invitation.sent AS sent',
                 'invitation.category AS category',
