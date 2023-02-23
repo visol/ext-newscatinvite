@@ -23,32 +23,38 @@ class NewsService implements SingletonInterface
     public function getRawNewsRecordWithCategories(int $newsUid): array
     {
         $newsRecord = $this->findRawRecordByUid($newsUid);
-        $q = $this->getQueryBuilder();
-        $q
-            ->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $categories = $q->select('sys_category.*')
-            ->from($this->categoryTable)
-            ->innerJoin(
-                $this->categoryTable,
-                $this->categoryMmTable,
-                $this->categoryMmTable,
-                "$this->categoryTable.uid = $this->categoryMmTable.uid_local"
-            )
-            ->innerJoin(
-                $this->categoryMmTable,
-                $this->newsTable,
-                $this->newsTable,
-                "$this->categoryMmTable.uid_foreign = $this->newsTable.uid"
-            )
-            ->where(
-                $q->expr()->eq("$this->categoryMmTable.uid_foreign", $newsRecord['uid'])
-            )
-            ->execute()
-            ->fetchAllAssociative();
-        $newsRecord['categories'] = $categories;
-        return $newsRecord;
+        if ($newsRecord) {
+            $q = $this->getQueryBuilder();
+            $q
+                ->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $categories = $q->select('sys_category.*')
+                ->from($this->categoryTable)
+                ->innerJoin(
+                    $this->categoryTable,
+                    $this->categoryMmTable,
+                    $this->categoryMmTable,
+                    "$this->categoryTable.uid = $this->categoryMmTable.uid_local"
+                )
+                ->innerJoin(
+                    $this->categoryMmTable,
+                    $this->newsTable,
+                    $this->newsTable,
+                    "$this->categoryMmTable.uid_foreign = $this->newsTable.uid"
+                )
+                ->where(
+                    $q->expr()->eq("$this->categoryMmTable.uid_foreign", $newsRecord['uid'])
+                )
+                ->execute()
+                ->fetchAllAssociative();
+
+            $newsRecord['categories'] = $categories;
+        }
+
+        return is_array($newsRecord)
+            ? $newsRecord
+            : [];
     }
 
     /**
