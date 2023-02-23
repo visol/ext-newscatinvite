@@ -1,3 +1,7 @@
+## 3.0.1 (2023-02-23)
+
+[BUGFIX] Avoid exception if news record is not found
+
 ## 3.0.0 (2022-12-14)
 
 [BUGFIX] Fix pids of update wizard created invitations
