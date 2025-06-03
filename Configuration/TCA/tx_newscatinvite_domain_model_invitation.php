@@ -79,6 +79,7 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
+                'readOnly' => 1,
                 'items' => [
                     ['', 0],
                     [
