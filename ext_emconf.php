@@ -5,5 +5,5 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'Send invitations to let other users add news to their categories.',
     'author' => 'Jonas Renggli',
     'author_email' => 'jonas.renggli@visol.ch',
-    'author_company' => 'visol digitale Dienstleistungen GmbH',
+    'author_company' => 'visol digitale Dienstleistungen AG',
 ];
