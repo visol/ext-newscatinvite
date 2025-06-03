@@ -98,9 +98,17 @@ class InvitationSendCommand extends Command
         $overrideRecipient = $input->getOption('overrideRecipient');
 
         $notSentInvitations = $this->invitationRepository->findPendingUnsentInvitations();
+
+        if ($notSentInvitations->count() === 0) {
+            $this->io->success('No pending invitations to send.');
+            return 0;
+        }
+        $this->io->success($notSentInvitations->count() .' pending invitations to send.');
+
         foreach ($notSentInvitations as $invitation) {
             /** @var Invitation $invitation */
             $recipientArray = [];
+            // if the invitation has a category, we will send it to all backend users that have access to this category
             if ($invitation->getCategory() instanceof Category) {
                 $userGroupsWithCurrentCategory = $this->backendUserGroupRepository->findByCategoryPermissions($invitation->getCategory());
                 if ($userGroupsWithCurrentCategory->count()) {
@@ -117,6 +125,7 @@ class InvitationSendCommand extends Command
                     }
                 }
             }
+
             if (!empty($recipientArray)) {
                 if (!empty($overrideRecipient)) {
                     // For testing purposes, the recipients can be overridden (defined in CommandController configuration)
