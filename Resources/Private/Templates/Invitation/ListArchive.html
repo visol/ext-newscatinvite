@@ -1,9 +1,10 @@
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
 {namespace nci = Visol\Newscatinvite\ViewHelpers}
 
-<f:layout name="Default" />
+<f:layout name="Module" />
 
-<f:section name="content">
+<f:section name="Content">
+  <f:be.pageRenderer includeCssFiles="{0: '{f:uri.resource(path: \'Stylesheets/backend.css\')}'}" includeJavaScriptModules="{0: '@typo3/backend/context-menu.js'}" />
 	<f:flashMessages />
 
 	<h1>{f:translate(key: 'submoduleArchiveTitle')}</h1>

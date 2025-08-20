@@ -1,9 +1,8 @@
+<f:layout name="Module" />
 
-<f:layout name="Default" />
-
-<f:section name="content">
-	<f:flashMessages />
-
+<f:section name="Content">
+  <f:be.pageRenderer includeCssFiles="{0: '{f:uri.resource(path: \'Stylesheets/backend.css\')}'}" includeJavaScriptModules="{0: '@typo3/backend/context-menu.js'}" />
+  <f:flashMessages />
 	<h1>{f:translate(key: 'submoduleOverviewTitle')}</h1>
 
 	<p>{f:translate(key: 'submoduleOverviewDescription')}</p>

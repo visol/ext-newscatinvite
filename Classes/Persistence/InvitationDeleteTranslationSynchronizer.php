@@ -49,7 +49,7 @@ class InvitationDeleteTranslationSynchronizer
             ->where(
                 $queryBuilder->expr()->eq(
                     $translationOriginalPointerField,
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($uid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
                 )
             )
             ->executeStatement();

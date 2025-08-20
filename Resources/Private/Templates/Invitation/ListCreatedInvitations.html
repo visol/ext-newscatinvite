@@ -1,9 +1,10 @@
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
 {namespace nci = Visol\Newscatinvite\ViewHelpers}
 
-<f:layout name="Default" />
+<f:layout name="Module" />
 
-<f:section name="content">
+<f:section name="Content">
+  <f:be.pageRenderer includeCssFiles="{0: '{f:uri.resource(path: \'Stylesheets/backend.css\')}'}" includeJavaScriptModules="{0: '@typo3/backend/context-menu.js'}" />
 	<f:flashMessages />
 
 	<h1>{f:translate(key: 'submoduleCreatedInvitationsTitle')}</h1>
@@ -26,7 +27,7 @@
         <f:for each="{invitationsByNews}" as="invitation" iteration="iterator">
           <f:if condition="{iterator.isFirst}">
             <td>
-              <a href="#" class="t3js-contextmenutrigger" data-table="tx_news_domain_model_news" data-uid="{invitation.rawNews.uid}">
+              <a href="#" data-contextmenu-trigger="click" data-contextmenu-table="tx_news_domain_model_news" data-contextmenu-uid="{invitation.rawNews.uid}">
                 <nci:spriteIconForRecord table="tx_news_domain_model_news" object="{invitation.news}" />
               </a>
             </td>

@@ -42,11 +42,7 @@ class NewsService implements SingletonInterface
                     $this->newsTable,
                     $this->newsTable,
                     "$this->categoryMmTable.uid_foreign = $this->newsTable.uid"
-                )
-                ->where(
-                    $q->expr()->eq("$this->categoryMmTable.uid_foreign", $newsRecord['uid'])
-                )
-                ->execute()
+                )->where($q->expr()->eq("$this->categoryMmTable.uid_foreign", $newsRecord['uid']))->executeQuery()
                 ->fetchAllAssociative();
 
             $newsRecord['categories'] = $categories;
@@ -76,9 +72,7 @@ class NewsService implements SingletonInterface
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         return $q
             ->select('*')
-            ->from($this->newsTable)
-            ->where($q->expr()->eq('uid', (int)$newsUid))
-            ->execute()
+            ->from($this->newsTable)->where($q->expr()->eq('uid', (int)$newsUid))->executeQuery()
             ->fetchAssociative();
     }
 

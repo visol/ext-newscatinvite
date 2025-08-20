@@ -37,6 +37,9 @@
 			<trans-unit id="submoduleOverviewDescription">
 				<source>This is a listing of all pending invitations for News categories that are assigned to your user. If you approve an invitation, the news item is displayed in all news views showing news items of the respective category.</source>
 			</trans-unit>
+			<trans-unit id="submoduleDropdownLabel">
+				<source>Change view</source>
+			</trans-unit>
 			<trans-unit id="submoduleArchiveTitle">
 				<source>Archive</source>
 			</trans-unit>

@@ -63,7 +63,7 @@ class TranslationUpdateWizard implements UpgradeWizardInterface
             ->executeQuery()
             ->fetchAllAssociative();
 
-        if (empty($inserts)) {
+        if ($inserts === []) {
             return true;
         }
 

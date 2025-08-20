@@ -17,16 +17,15 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
         'label_alt_force' => 1,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'searchFields' => 'status,sent,category,news,approving_beuser,',
         'iconfile' => 'EXT:newscatinvite/Resources/Public/Icons/tx_newscatinvite_domain_model_invitation.svg',
         'languageField' => 'sys_language_uid',
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'translationSource' => 'l10n_source',
-    ],
-    'interface' => [
-        'showRecordFieldList' => 'status, sent, category, news, approving_beuser',
     ],
     'types' => [
         '1' => ['showitem' => 'status, sent, category, news, approving_beuser'],
@@ -50,8 +49,8 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
                 'renderType' => 'selectSingle',
                 'items' => [
                     [
-                        '',
-                        0,
+                        'label' => '',
+                        'value' => 0,
                     ],
                 ],
                 'foreign_table' => 'tx_newscatinvite_domain_model_invitation',
@@ -81,14 +80,14 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
                 'renderType' => 'selectSingle',
                 'readOnly' => 1,
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                     [
-                        'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.status.1',
-                        1
+                        'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.status.1',
+                        'value' => 1
                     ],
                     [
-                        'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.status.-1',
-                        -1
+                        'label' => 'LLL:EXT:newscatinvite/Resources/Private/Language/locallang_db.xlf:tx_newscatinvite_domain_model_invitation.status.-1',
+                        'value' => -1
                     ],
                 ],
                 'size' => 1,
@@ -103,7 +102,7 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
                 'foreign_table' => 'be_users',
                 'foreign_table_where' => 'ORDER BY username',
                 'items' => [
-                    ['', ''],
+                    ['label' => '', 'value' => ''],
                 ],
             ],
         ],
@@ -128,7 +127,7 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
                 'foreign_table' => 'sys_category',
                 'foreign_table_where' => ' AND sys_category.parent = ' . $extensionConfiguration['rootCategoryUid'] . ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.title',
                 'items' => [
-                    ['', ''],
+                    ['label' => '', 'value' => ''],
                 ],
                 'size' => 1,
                 'minitems' => 1,
@@ -158,7 +157,7 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
                 'foreign_table' => 'be_users',
                 'foreign_table_where' => ' ORDER BY be_users.username',
                 'items' => [
-                    ['', ''],
+                    ['label' => '', 'value' => ''],
                 ],
                 'minitems' => 0,
                 'maxitems' => 1,

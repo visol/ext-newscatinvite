@@ -51,9 +51,6 @@ class InvitationUpdateTranslationSynchronizer
     /**
      * Get a list of fields that will be synchronized between translations
      * by the DataHandler.
-     *
-     * @param string $table
-     * @return array
      */
     protected function getSynchronizedFields(string $table): array
     {
@@ -73,14 +70,10 @@ class InvitationUpdateTranslationSynchronizer
         $queryBuilder->getRestrictions()->removeAll();
         $statement = $queryBuilder
             ->select(...$fieldNames)
-            ->from($tableName)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                )
-            )
-            ->execute();
+            ->from($tableName)->where($queryBuilder->expr()->eq(
+            'uid',
+            $queryBuilder->createNamedParameter($uid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
+        ))->executeQuery();
 
         $result = $statement->fetchAssociative();
         if ($result === false) {
