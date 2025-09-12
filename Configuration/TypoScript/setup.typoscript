@@ -1,28 +1,28 @@
 
 plugin.tx_newscatinvite {
-	view {
-		templateRootPath = {$plugin.tx_newscatinvite.view.templateRootPath}
-		partialRootPath = {$plugin.tx_newscatinvite.view.partialRootPath}
-		layoutRootPath = {$plugin.tx_newscatinvite.view.layoutRootPath}
-	}
-	persistence {
-		storagePid = {$plugin.tx_newscatinvite.persistence.storagePid}
-	}
+  view {
+    templateRootPath = {$plugin.tx_newscatinvite.view.templateRootPath}
+    partialRootPath = {$plugin.tx_newscatinvite.view.partialRootPath}
+    layoutRootPath = {$plugin.tx_newscatinvite.view.layoutRootPath}
+  }
+  persistence {
+    storagePid = {$plugin.tx_newscatinvite.persistence.storagePid}
+  }
 }
 
- # Module configuration
+# Module configuration
 module.tx_newscatinvite {
-	persistence {
-		storagePid = {$module.tx_newscatinvite.persistence.storagePid}
-	}
-	view {
-		templateRootPath = {$module.tx_newscatinvite.view.templateRootPath}
-		partialRootPath = {$module.tx_newscatinvite.view.partialRootPath}
-		layoutRootPath = {$module.tx_newscatinvite.view.layoutRootPath}
-	}
-	settings {
-		newsPreviewPid = 6193
-		eventPreviewPid = 6194
-		eventsPid = 56
-	}
+  persistence {
+    storagePid = {$module.tx_newscatinvite.persistence.storagePid}
+  }
+  view {
+    templateRootPath = {$module.tx_newscatinvite.view.templateRootPath}
+    partialRootPath = {$module.tx_newscatinvite.view.partialRootPath}
+    layoutRootPath = {$module.tx_newscatinvite.view.layoutRootPath}
+  }
+  settings {
+    newsPreviewPid = 6193
+    eventPreviewPid = 6194
+    eventsPid = 56
+  }
 }

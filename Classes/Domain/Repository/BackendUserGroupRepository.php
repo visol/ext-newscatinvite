@@ -10,19 +10,14 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class BackendUserGroupRepository extends Repository
 {
-    public function initializeObject()
+    public function initializeObject(): void
     {
         $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($querySettings);
     }
 
-    /**
-     * @param Category $category
-     *
-     * @return array|QueryResultInterface
-     */
-    public function findByCategoryPermissions(Category $category)
+    public function findByCategoryPermissions(Category $category) : QueryResultInterface
     {
         $query = $this->createQuery();
         $query->matching(

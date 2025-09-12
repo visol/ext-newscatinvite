@@ -18,12 +18,10 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
      * Returns a category constraint created by
      * a given list of categories and a junction string
      *
-     * @param QueryInterface $query
      * @param  string $categories
      * @param  string $conjunction
      * @param  boolean $includeSubCategories
      *
-     * @return ConstraintInterface|null
      */
     protected function createCategoryConstraint(
         QueryInterface $query,
@@ -52,42 +50,43 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
                 );
                 $subCategoryConstraint = [];
                 $subCategoryConstraint[] = $query->contains('categories', $category);
-                if (count($subCategories) > 0) {
-                    foreach ($subCategories as $subCategory) {
-                        $subCategoryConstraint[] = $query->contains('categories', $subCategory);
-                    }
+                foreach ($subCategories as $subCategory) {
+                    $subCategoryConstraint[] = $query->contains('categories', $subCategory);
                 }
-                if ($subCategoryConstraint) {
+                if ($subCategoryConstraint !== []) {
                     $categoryConstraints[] = $query->logicalOr($subCategoryConstraint);
                 }
             } else {
                 $categoryConstraints[] = $query->contains('categories', $category);
-                $invitationConstraints[] = $query->logicalAnd([$query->equals('invitations.category', $category), $query->equals('invitations.status', Invitation::STATUS_APPROVED)]);
+                $invitationConstraints[] = $query->logicalAnd(
+                    $query->equals('invitations.category', $category),
+                    $query->equals('invitations.status', Invitation::STATUS_APPROVED)
+                );
             }
         }
 
-        if ($categoryConstraints) {
+        if ($categoryConstraints !== []) {
             switch (strtolower($conjunction)) {
                 case 'or':
-                    $categoryConstraint = $query->logicalOr($categoryConstraints);
+                    $categoryConstraint = $query->logicalOr(...$categoryConstraints);
                     break;
                 case 'notor':
-                    $categoryConstraint = $query->logicalNot($query->logicalOr($categoryConstraints));
+                    $categoryConstraint = $query->logicalNot($query->logicalOr(...$categoryConstraints));
                     break;
                 case 'notand':
-                    $categoryConstraint = $query->logicalNot($query->logicalAnd($categoryConstraints));
+                    $categoryConstraint = $query->logicalNot($query->logicalAnd(...$categoryConstraints));
                     break;
                 case 'and':
                 default:
-                    $categoryConstraint = $query->logicalAnd($categoryConstraints);
+                    $categoryConstraint = $query->logicalAnd(...$categoryConstraints);
             }
         }
 
-        if ($invitationConstraints) {
-            $invitationConstraint = $query->logicalOr($invitationConstraints);
+        if ($invitationConstraints !== []) {
+            $invitationConstraint = $query->logicalOr(...$invitationConstraints);
         }
 
-        $constraint = $query->logicalOr([$categoryConstraint, $invitationConstraint]);
+        $constraint = $query->logicalOr($categoryConstraint, $invitationConstraint);
 
         return $constraint;
     }
@@ -96,9 +95,7 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
      * Get the count of news records by month/year and
      * returns the result compiled as array
      *
-     * @param DemandInterface $demand
      *
-     * @return array
      */
     public function countByDate(DemandInterface $demand): array
     {
@@ -116,7 +113,7 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
 
         $join = '';
 
-        $categoryUidPattern = '/`tx_newscatinvite_domain_model_invitation`\.`category` = (\d+)/';
+        $categoryUidPattern = "/`tx_newscatinvite_domain_model_invitation`\.`category`\s*=\s*'(\d+)'/";
         preg_match_all($categoryUidPattern, $where, $matches);
         if ($matches[1]) {
             $jointWhere = [];
@@ -138,7 +135,7 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
         $connection = $connectionPool->getConnectionForTable('tx_news_domain_model_news');
 
         if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
-            $sql .= $GLOBALS['TSFE']->sys_page->enableFields('tx_news_domain_model_news');
+            $sql .= \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Domain\Repository\PageRepository::class)->enableFields('tx_news_domain_model_news');
         } else {
             $expressionBuilder = $connection
                 ->createQueryBuilder()
@@ -155,7 +152,7 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
         $sql .= ' GROUP BY _Month, _Year ORDER BY _Year ' . $orderDirection . ', _Month ' . $orderDirection;
 
         $res = $connection->executeQuery($sql);
-        while ($row = $res->fetch()) {
+        while ($row = $res->fetchAssociative()) {
             $month = strlen($row['_Month']) === 1 ? ('0' . $row['_Month']) : $row['_Month'];
             $data['single'][$row['_Year']][$month] = $row['count_month'];
         }
@@ -178,10 +175,6 @@ class NewsRepository extends \GeorgRinger\News\Domain\Repository\NewsRepository
      * Return stripped order sql
      *
      * BACKPORT of EXT:news can be removed after update
-     *
-     *
-     * @param string $str
-     * @return string
      */
     private function stripOrderBy(string $str): string
     {

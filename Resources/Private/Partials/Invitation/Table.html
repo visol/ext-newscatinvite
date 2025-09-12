@@ -16,7 +16,7 @@
     <f:for each="{invitations}" as="invitation">
       <tr>
         <td>
-          <a href="#" class="t3js-contextmenutrigger" data-table="tx_news_domain_model_news" data-uid="{invitation.rawNews.uid}">
+          <a href="#" data-contextmenu-trigger="click" data-contextmenu-table="tx_news_domain_model_news" data-contextmenu-uid="{invitation.rawNews.uid}">
             <nci:spriteIconForRecord table="tx_news_domain_model_news" object="{invitation.news}" />
           </a>
         </td>

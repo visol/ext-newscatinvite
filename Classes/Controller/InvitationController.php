@@ -2,23 +2,26 @@
 
 namespace Visol\Newscatinvite\Controller;
 
+use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use Visol\Newscatinvite\Domain\Repository\BackendUserRepository;
 use Visol\Newscatinvite\Domain\Repository\InvitationRepository;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use Visol\Newscatinvite\Domain\Model\Invitation;
 
+#[AsController]
 class InvitationController extends ActionController
 {
+    private ModuleTemplate $moduleTemplate;
+
     /**
-     * invitationRepository
-     *
      * @var InvitationRepository
      */
     protected $invitationRepository;
@@ -28,46 +31,36 @@ class InvitationController extends ActionController
      */
     protected $backendUserRepository;
 
-    /**
-     * @var ConfigurationManager
-     */
-    protected $configurationManager;
-
-    public function __construct()
-    {
-        $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
+    public function __construct(
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+    ) {
     }
 
-    /**
-     * action list
-     *
-     * @return void
-     */
+    public function initializeAction(): void
+    {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->setDocHeader();
+    }
+
     public function listAction(): ResponseInterface
     {
-        $categoryUidArray = $GLOBALS['BE_USER']->getCategoryMountPoints();
-
-        if (empty($categoryUidArray)) {
-            $invitations = $this->invitationRepository->findByStatus(0);
+        $categoryUidArray = $this->getBackendUserAuthentication()->getCategoryMountPoints();
+        if ($categoryUidArray === []) {
+            $invitations = $this->invitationRepository->findByStatus(Invitation::STATUS_PENDING);
         } else {
             $invitations = $this->invitationRepository->findByStatusAndCategories(
                 Invitation::STATUS_PENDING,
                 $categoryUidArray
             );
         }
-
-        $this->view->assign('invitations', $invitations);
-        return $this->htmlResponse();
+        $this->moduleTemplate->assign('invitations', $invitations);
+        $this->moduleTemplate->assign('settings', $this->settings);
+        return $this->moduleTemplate->renderResponse('Invitation/List');
     }
 
-    /**
-     * action listArchive
-     *
-     * @return void
-     */
     public function listArchiveAction(): ResponseInterface
     {
-        $categoryUidArray = $GLOBALS['BE_USER']->getCategoryMountPoints();
+        $categoryUidArray = $this->getBackendUserAuthentication()->getCategoryMountPoints();
 
         if (empty($categoryUidArray)) {
             $invitations = $this->invitationRepository->findAll();
@@ -75,35 +68,27 @@ class InvitationController extends ActionController
             $invitations = $this->invitationRepository->findByCategories($categoryUidArray);
         }
 
-        $this->view->assign('invitations', $invitations);
-        return $this->htmlResponse();
+        $this->moduleTemplate->assign('invitations', $invitations);
+        $this->moduleTemplate->assign('settings', $this->settings);
+        return $this->moduleTemplate->renderResponse('Invitation/ListArchive');
     }
 
-    /**
-     * action listCreatedInvitations
-     *
-     * @return void
-     */
     public function listCreatedInvitationsAction(): ResponseInterface
     {
-        $backendUserUid = (int)$GLOBALS['BE_USER']->user['uid'];
-        $invitations = $this->invitationRepository->findByCreator($backendUserUid);
-        $this->view->assign('invitations', $invitations);
-        return $this->htmlResponse();
+        $backendUserUid = (int)$this->getBackendUserAuthentication()->user['uid'];
+        $invitations = $this->invitationRepository->findBy(['creator' => $backendUserUid]);
+        $this->moduleTemplate->assign('invitations', $invitations);
+        $this->moduleTemplate->assign('settings', $this->settings);
+        return $this->moduleTemplate->renderResponse('Invitation/ListCreatedInvitations');
     }
 
     /**
-     * action approve
-     *
-     * @param Invitation $invitation
-     *
-     * @return void
      * TODO permission check
-     * @Extbase\IgnoreValidation("invitation")
      */
-    public function approveAction(Invitation $invitation)
+    #[Extbase\IgnoreValidation(['argumentName' => 'invitation'])]
+    public function approveAction(Invitation $invitation): ResponseInterface
     {
-        $backendUser = $this->backendUserRepository->findByUid($GLOBALS["BE_USER"]->user["uid"]);
+        $backendUser = $this->backendUserRepository->findByUid($this->getBackendUserAuthentication()->user['uid']);
         $invitation->setStatus(Invitation::STATUS_APPROVED);
         $invitation->setApprovingBeuser($backendUser);
         $this->invitationRepository->update($invitation);
@@ -113,25 +98,18 @@ class InvitationController extends ActionController
                 'approveMessage',
                 'Newscatinvite'
             ),
-            '',
-            AbstractMessage::OK
         );
 
-        $this->redirect('list');
+        return $this->redirect('list');
     }
 
     /**
-     * action reject
-     *
-     * @param Invitation $invitation
-     *
-     * @return void
      * TODO permission check*
-     * @Extbase\IgnoreValidation("invitation")
      */
-    public function rejectAction(Invitation $invitation)
+    #[Extbase\IgnoreValidation(['argumentName' => 'invitation'])]
+    public function rejectAction(Invitation $invitation): ResponseInterface
     {
-        $backendUser = $this->backendUserRepository->findByUid($GLOBALS["BE_USER"]->user["uid"]);
+        $backendUser = $this->backendUserRepository->findByUid($this->getBackendUserAuthentication()->user["uid"]);
         $invitation->setStatus(Invitation::STATUS_REJECTED);
         $invitation->setApprovingBeuser($backendUser);
         $this->invitationRepository->update($invitation);
@@ -141,36 +119,82 @@ class InvitationController extends ActionController
                 'rejectMessage',
                 'Newscatinvite'
             ),
-            '',
-            AbstractMessage::OK
         );
 
-        $this->redirect('list');
+        return $this->redirect('list');
     }
 
     /**
-     * action remove
-     *
-     * @param Invitation $invitation
-     *
-     * @return void
      * TODO permission check
-     * @Extbase\IgnoreValidation("invitation")
      */
-    public function removeAction(Invitation $invitation)
+    #[Extbase\IgnoreValidation(['argumentName' => 'invitation'])]
+    public function removeAction(Invitation $invitation): ResponseInterface
     {
         $this->invitationRepository->remove($invitation);
-
         $this->addFlashMessage(
             LocalizationUtility::translate(
                 'deleteMessage',
                 'Newscatinvite'
             ),
-            '',
-            AbstractMessage::OK
         );
 
-        $this->redirect('listArchive');
+        return $this->redirect('listArchive');
+    }
+
+    public function setDocHeader(): void
+    {
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $dropdownLabel = LocalizationUtility::translate(
+            'LLL:EXT:newscatinvite/Resources/Private/Language/locallang.xlf:submoduleDropdownLabel'
+        );
+        $dropDownButton = $buttonBar->makeDropDownButton()->setLabel($dropdownLabel)->setTitle(
+            $dropdownLabel
+        )->setShowLabelText($dropdownLabel);
+
+        $dropDownButton->addItem(
+            GeneralUtility::makeInstance(DropDownItem::class)->setLabel(
+                LocalizationUtility::translate(
+                    'LLL:EXT:newscatinvite/Resources/Private/Language/locallang.xlf:submoduleOverviewTitle'
+                )
+            )->setHref(
+                $this->uriBuilder->setArguments(
+                    [
+                        'controller' => 'Invitation',
+                        'action' => 'list',
+                    ]
+                )->buildBackendUri()
+            )
+        );
+        $dropDownButton->addItem(
+            GeneralUtility::makeInstance(DropDownItem::class)->setLabel(
+                LocalizationUtility::translate(
+                    'LLL:EXT:newscatinvite/Resources/Private/Language/locallang.xlf:submoduleArchiveTitle'
+                )
+            )->setHref(
+                $this->uriBuilder->setArguments(
+                    [
+                        'controller' => 'Invitation',
+                        'action' => 'listArchive',
+                    ]
+                )->buildBackendUri()
+            )
+        );
+        $dropDownButton->addItem(
+            GeneralUtility::makeInstance(DropDownItem::class)->setLabel(
+                LocalizationUtility::translate(
+                    'LLL:EXT:newscatinvite/Resources/Private/Language/locallang.xlf:submoduleCreatedInvitationsTitle'
+                )
+            )->setHref(
+                $this->uriBuilder->setArguments(
+                    [
+                        'controller' => 'Invitation',
+                        'action' => 'listCreatedInvitations',
+                    ]
+                )->buildBackendUri()
+            )
+        );
+
+        $buttonBar->addButton($dropDownButton);
     }
 
     public function injectInvitationRepository(InvitationRepository $invitationRepository): void
@@ -182,4 +206,10 @@ class InvitationController extends ActionController
     {
         $this->backendUserRepository = $backendUserRepository;
     }
+
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
 }

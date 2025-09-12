@@ -7,7 +7,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 use Visol\Newscatinvite\Domain\Model\Invitation;
 use Visol\Newscatinvite\Domain\Model\BackendUserGroup;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -43,11 +47,16 @@ class InvitationSendCommand extends Command
     protected $backendUserRepository;
 
     /**
+     * @var ClassesConfigurationFactory
+     */
+    protected $classesConfigurationFactory;
+
+    /**
      * TypoScript setup for module.tx_newscatinvite
      *
      * @var array
      */
-    protected $extensionConfiguration;
+    protected array $extensionConfiguration;
 
     /**
      * @var PersistenceManager
@@ -64,8 +73,9 @@ class InvitationSendCommand extends Command
     public function __construct(string $name = null)
     {
         parent::__construct($name);
-
         $this->configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
+        $this->initCliEnvironment();
+
         $this->invitationRepository = GeneralUtility::makeInstance(InvitationRepository::class);
         $this->backendUserGroupRepository = GeneralUtility::makeInstance(BackendUserGroupRepository::class);
         $this->backendUserRepository = GeneralUtility::makeInstance(BackendUserRepository::class);
@@ -80,8 +90,7 @@ class InvitationSendCommand extends Command
 
     protected function configure()
     {
-        $this
-            ->addOption(
+        $this->addOption(
                 'overrideRecipient',
                 '',
                 InputOption::VALUE_OPTIONAL,
@@ -103,14 +112,16 @@ class InvitationSendCommand extends Command
             $this->io->success('No pending invitations to send.');
             return 0;
         }
-        $this->io->success($notSentInvitations->count() .' pending invitations to send.');
+        $this->io->success($notSentInvitations->count() . ' pending invitations to send.');
 
         foreach ($notSentInvitations as $invitation) {
             /** @var Invitation $invitation */
             $recipientArray = [];
             // if the invitation has a category, we will send it to all backend users that have access to this category
             if ($invitation->getCategory() instanceof Category) {
-                $userGroupsWithCurrentCategory = $this->backendUserGroupRepository->findByCategoryPermissions($invitation->getCategory());
+                $userGroupsWithCurrentCategory = $this->backendUserGroupRepository->findByCategoryPermissions(
+                    $invitation->getCategory()
+                );
                 if ($userGroupsWithCurrentCategory->count()) {
                     $backendUserGroupsArray = [];
                     foreach ($userGroupsWithCurrentCategory as $usergroup) {
@@ -123,10 +134,18 @@ class InvitationSendCommand extends Command
                             $recipientArray[] = $backendUser['email'];
                         }
                     }
+                } else {
+                    $this->io->warning(
+                        sprintf(
+                            'No backend user groups found for category %s (uid %s). Skipping.',
+                            $invitation->getCategory()->getTitle(),
+                            $invitation->getCategory()->getUid()
+                        )
+                    );
                 }
             }
 
-            if (!empty($recipientArray)) {
+            if ($recipientArray !== []) {
                 if (!empty($overrideRecipient)) {
                     // For testing purposes, the recipients can be overridden (defined in CommandController configuration)
                     $recipientArray = [$overrideRecipient];
@@ -137,14 +156,18 @@ class InvitationSendCommand extends Command
                 /** @var StandaloneView $standaloneView */
                 $standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
                 $standaloneView->setFormat('html');
-                $templateRootPath = GeneralUtility::getFileAbsFileName($this->extensionConfiguration['view']['templateRootPath']);
+                $templateRootPath = GeneralUtility::getFileAbsFileName(
+                    $this->extensionConfiguration['view']['templateRootPath']
+                );
                 $templatePathAndFilename = $templateRootPath . 'Email/InvitationNotification.html';
-                $standaloneView->setTemplatePathAndFilename($templatePathAndFilename);
+                $standaloneView->getRenderingContext()->getTemplatePaths()->setTemplatePathAndFilename(
+                    $templatePathAndFilename
+                );
                 $standaloneView->assignMultiple([
-                    'invitation' => $invitation,
-                    'settings' => $this->extensionConfiguration['settings'],
-                    'baseUri' => $this->getBaseUri($invitation->getPid())
-                ]);
+                                                    'invitation' => $invitation,
+                                                    'settings' => $this->extensionConfiguration['settings'],
+                                                    'baseUri' => $this->getBaseUri($invitation->getPid())
+                                                ]);
                 $content = $standaloneView->render();
                 $sender = ['typo3@unilu.ch' => 'TYPO3 Universität Luzern'];
                 $replyTo = '';
@@ -156,26 +179,32 @@ class InvitationSendCommand extends Command
                     $invitation->setSent(true);
                     $this->invitationRepository->update($invitation);
                 }
+            } else {
+                $this->io->warning(
+                    sprintf(
+                        'No recipients found for invitation with uid %s (category %s, uid %s). Skipping.',
+                        $invitation->getUid(),
+                        $invitation->getCategory() ? $invitation->getCategory()->getTitle() : 'none',
+                        $invitation->getCategory() ? $invitation->getCategory()->getUid() : 'none'
+                    )
+                );
             }
         }
 
         $this->persistenceManager->persistAll();
+        $this->io->success('Processed all invitations.');
         return 0;
     }
 
-    /**
-     * @param array $recipient
-     * @param array $sender
-     * @param $subject
-     * @param $content
-     * @param string $replyTo
-     * @param string $returnPath
-     *
-     * @return bool
-     */
-    protected function sendEmail(array $recipient, array $sender, $subject, $content, $replyTo = '', $returnPath = '')
-    {
-        /** @var $message \TYPO3\CMS\Core\Mail\MailMessage */
+    protected function sendEmail(
+        array $recipient,
+        array $sender,
+        string $subject,
+        string $content,
+        string $replyTo = '',
+        string $returnPath = ''
+    ): bool {
+        /** @var $message MailMessage */
         $message = GeneralUtility::makeInstance(MailMessage::class);
         $message->setTo($recipient);
         $message->setFrom($sender);
@@ -195,10 +224,33 @@ class InvitationSendCommand extends Command
     /**
      * Source: https://github.com/sitegeist/base-url/blob/main/Classes/Helper/BaseUrl.php
      */
-    protected function getBaseUri(int $pageId): string {
+    protected function getBaseUri(int $pageId): string
+    {
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         $site = $siteFinder->getSiteByPageId($pageId);
-        return (string) $site->getBase();
+        return (string)$site->getBase();
+    }
+
+    /**
+     * Source: https://forge.typo3.org/issues/105616#note-2
+     */
+    private function initCliEnvironment(): void
+    {
+        if (PHP_SAPI === 'cli') {
+            Bootstrap::initializeBackendAuthentication();
+
+            /** @var SiteFinder $siteFinder */
+            $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+            $site = current($siteFinder->getAllSites());
+            $language = $site->getLanguageById(0);
+            $GLOBALS['BE_USER']->user['lang'] = $language->getLocale()->getLanguageCode();
+
+            $serverRequest = new ServerRequest();
+            $serverRequest = $serverRequest->withAttribute('extbase', []);
+            $serverRequest = $serverRequest->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+            $serverRequest = $serverRequest->withAttribute('language', $language);
+            $this->configurationManager->setRequest($serverRequest);
+        }
     }
 
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void

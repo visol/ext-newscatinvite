@@ -2,6 +2,7 @@
 
 namespace Visol\Newscatinvite\Domain\Model;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use GeorgRinger\News\Domain\Model\Category;
@@ -15,15 +16,9 @@ class Invitation extends AbstractEntity
     const STATUS_PENDING = 0;
     const STATUS_REJECTED = -1;
 
-    /**
-     * @var NewsRepository
-     */
-    protected $newsRepository;
+    protected ?NewsRepository $newsRepository = null;
 
-    /**
-     * @var NewsService
-     */
-    protected $newsService;
+    protected ?NewsService $newsService = null;
 
     /**
      * @var \DateTime
@@ -54,8 +49,8 @@ class Invitation extends AbstractEntity
      * the raw news record as an array
      *
      * @var array
-     * @Extbase\ORM\Transient
      */
+    #[Extbase\ORM\Transient]
     protected $rawNews;
 
     /**
@@ -63,10 +58,13 @@ class Invitation extends AbstractEntity
      */
     protected $approvingBeuser;
 
-    /**
-     * @var BackendUser|null
-     */
     protected ?BackendUser $creator = null;
+
+    public function initializeObject(): void
+    {
+        $this->newsRepository = GeneralUtility::makeInstance(NewsRepository::class);
+        $this->newsService = GeneralUtility::makeInstance(NewsService::class);
+    }
 
     /**
      * @return \DateTime $tstamp
@@ -76,12 +74,7 @@ class Invitation extends AbstractEntity
         return $this->tstamp;
     }
 
-    /**
-     * @param \DateTime $tstamp
-     *
-     * @return void
-     */
-    public function setTstamp(\DateTime $tstamp)
+    public function setTstamp(\DateTime $tstamp): void
     {
         $this->tstamp = $tstamp;
     }
@@ -96,9 +89,8 @@ class Invitation extends AbstractEntity
 
     /**
      * @param integer $status
-     * @return void
      */
-    public function setStatus($status)
+    public function setStatus($status): void
     {
         $this->status = $status;
     }
@@ -113,10 +105,8 @@ class Invitation extends AbstractEntity
 
     /**
      * @param boolean $sent
-     *
-     * @return void
      */
-    public function setSent($sent)
+    public function setSent($sent): void
     {
         $this->sent = $sent;
     }
@@ -137,12 +127,7 @@ class Invitation extends AbstractEntity
         return $this->category;
     }
 
-    /**
-     * @param Category $category
-     *
-     * @return void
-     */
-    public function setCategory(Category $category)
+    public function setCategory(Category $category): void
     {
         $this->category = $category;
     }
@@ -155,12 +140,7 @@ class Invitation extends AbstractEntity
         return $this->newsRepository->findByUid($this->news, false);
     }
 
-    /**
-     * @param News $news
-     *
-     * @return void
-     */
-    public function setNews(News $news)
+    public function setNews(News $news): void
     {
         $this->news = $news;
     }
@@ -173,9 +153,7 @@ class Invitation extends AbstractEntity
      */
     public function getRawNews()
     {
-        $rawNewsRecord = $this->newsService->getRawNewsRecordWithCategories((int)$this->news);
-
-        return $rawNewsRecord;
+        return $this->newsService->getRawNewsRecordWithCategories($this->news);
     }
 
     /**
@@ -186,39 +164,19 @@ class Invitation extends AbstractEntity
         return $this->approvingBeuser;
     }
 
-    /**
-     * @param BackendUser $approvingBeuser
-     *
-     * @return void
-     */
-    public function setApprovingBeuser(BackendUser $approvingBeuser)
+    public function setApprovingBeuser(BackendUser $approvingBeuser): void
     {
         $this->approvingBeuser = $approvingBeuser;
     }
 
-    /**
-     * @return BackendUser|null
-     */
     public function getCreator(): ?BackendUser
     {
         return $this->creator;
     }
 
-    /**
-     * @param ?BackendUser $creator
-     */
     public function setCreator(?BackendUser $creator): void
     {
         $this->creator = $creator;
     }
 
-    public function injectNewsRepository(NewsRepository $newsRepository): void
-    {
-        $this->newsRepository = $newsRepository;
-    }
-
-    public function injectNewsService(NewsService $newsService): void
-    {
-        $this->newsService = $newsService;
-    }
 }

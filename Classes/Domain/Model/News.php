@@ -9,8 +9,8 @@ class News extends \GeorgRinger\News\Domain\Model\News
 {
     /**
      * @var ObjectStorage<Invitation>
-     * @Extbase\ORM\Lazy
      */
+    #[Extbase\ORM\Lazy]
     protected $invitations;
 
     public function __construct()

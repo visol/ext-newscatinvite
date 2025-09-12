@@ -24,5 +24,11 @@ services:
         identifier: 'InvitationDeleteTranslationSynchronizer'
         event: TYPO3\CMS\Extbase\Event\Persistence\EntityRemovedFromPersistenceEvent
 
+  Visol\Newscatinvite\Controller\InvitationController:
+    public: true
+
+  Visol\Newscatinvite\Domain\Model\Invitation:
+    public: true
+
   Visol\Newscatinvite\Update\TranslationUpdateWizard:
     public: true
