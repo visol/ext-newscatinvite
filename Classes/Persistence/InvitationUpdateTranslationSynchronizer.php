@@ -3,8 +3,6 @@
 namespace Visol\Newscatinvite\Persistence;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Event\Persistence\EntityUpdatedInPersistenceEvent;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use Visol\Newscatinvite\Domain\Model\Invitation;
@@ -37,20 +35,46 @@ class InvitationUpdateTranslationSynchronizer
 
     protected function triggerLocalizationSynchronization(string $table, ?int $uid): void
     {
+        if ($uid === null) {
+            return;
+        }
+
         $synchronizedFields = $this->getSynchronizedFields($table);
-        $dataMap = [
-            $table => [
-                $uid => $this->getCurrentValuesFromDb($table, $uid, $synchronizedFields),
-            ],
-        ];
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start($dataMap, []);
-        $dataHandler->process_datamap();
+        if (empty($synchronizedFields)) {
+            return;
+        }
+
+        $currentValues = $this->getCurrentValuesFromDb($table, $uid, $synchronizedFields);
+
+        if (empty($currentValues)) {
+            return;
+        }
+
+        $translationOriginalPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null;
+        if (!$translationOriginalPointerField) {
+            return;
+        }
+
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->update($table);
+
+        foreach ($currentValues as $field => $value) {
+            $queryBuilder->set($field, $value);
+        }
+
+        $queryBuilder
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $translationOriginalPointerField,
+                    $queryBuilder->createNamedParameter($uid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
+                )
+            )
+            ->executeStatement();
     }
 
     /**
-     * Get a list of fields that will be synchronized between translations
-     * by the DataHandler.
+     * Get a list of fields that will be synchronized between translations.
      */
     protected function getSynchronizedFields(string $table): array
     {
@@ -65,7 +89,6 @@ class InvitationUpdateTranslationSynchronizer
 
     protected function getCurrentValuesFromDb(string $tableName, int $uid, array $fieldNames): array
     {
-        $fieldNames = array_merge(['uid'], $fieldNames);
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()->removeAll();
         $statement = $queryBuilder

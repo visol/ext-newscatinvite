@@ -53,8 +53,6 @@ class InvitationSendCommand extends Command
 
     /**
      * TypoScript setup for module.tx_newscatinvite
-     *
-     * @var array
      */
     protected array $extensionConfiguration;
 
