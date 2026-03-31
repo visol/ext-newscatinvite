@@ -19,10 +19,10 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
         'crdate' => 'crdate',
         'searchFields' => 'status,sent,category,news,approving_beuser,',
         'iconfile' => 'EXT:newscatinvite/Resources/Public/Icons/tx_newscatinvite_domain_model_invitation.svg',
-        'languageField' => 'sys_language_uid',
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],
+        'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'translationSource' => 'l10n_source',
@@ -34,42 +34,18 @@ $GLOBALS['TCA']['tx_newscatinvite_domain_model_invitation'] = [
         '1' => ['showitem' => ''],
     ],
     'columns' => [
-        'sys_language_uid' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'language',
-            ],
-        ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l10n_parent',
+            // Prevent TYPO3 from looking up the single category titles (ctrl:label) when rendering the l10n_parent field
+            // Inspired by vendor/typo3/cms-core/Configuration/TCA/Overrides/sys_file_metadata.php
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    [
-                        'label' => '',
-                        'value' => 0,
-                    ],
-                ],
-                'foreign_table' => 'tx_newscatinvite_domain_model_invitation',
-                'foreign_table_where' =>
-                    'AND tx_newscatinvite_domain_model_invitation.pid=###CURRENT_PID###'
-                    . ' AND tx_newscatinvite_domain_model_invitation.sys_language_uid IN (-1,0)',
+                'type' => 'group',
+                'allowed' => 'tx_newscatinvite_domain_model_invitation',
+                'size' => 1,
+                'relationship' => 'manyToOne',
                 'default' => 0,
             ],
-        ],
-        'l10n_source' => [
-            'config' => [
-                'type' => 'passthrough'
-            ]
-        ],
-        'l10n_diffsource' => [
-            'config' => [
-                'type' => 'passthrough',
-                'default' => ''
-            ]
         ],
         'status' => [
             'exclude' => 1,
